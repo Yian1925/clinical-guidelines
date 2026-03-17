@@ -611,18 +611,30 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
     [treeData]
   );
 
-  const [selectionState, setSelectionState] = useState(() => ({}));
-  const defaultExpandedRef = useRef(false);
-  useEffect(() => {
-    if (!fullGraph?.nodes?.length || defaultExpandedRef.current) return;
-    defaultExpandedRef.current = true;
+  const [selectionState, setSelectionState] = useState(() => {
+    if (!treeData?.nodes?.length) return {};
     const next = {};
-    fullGraph.nodes.forEach((n) => {
+    treeData.nodes.forEach((n) => {
       if (n.data?.selector?.options?.length) {
         next[n.id] = new Set(n.data.selector.options.map((o) => o.id));
       }
     });
-    if (Object.keys(next).length > 0) setSelectionState(next);
+    return next;
+  });
+  const defaultExpandedRef = useRef(false);
+  useEffect(() => {
+    if (!fullGraph?.nodes?.length || defaultExpandedRef.current) return;
+    defaultExpandedRef.current = true;
+    setSelectionState((prev) => {
+      if (Object.keys(prev).length > 0) return prev;
+      const next = {};
+      fullGraph.nodes.forEach((n) => {
+        if (n.data?.selector?.options?.length) {
+          next[n.id] = new Set(n.data.selector.options.map((o) => o.id));
+        }
+      });
+      return Object.keys(next).length > 0 ? next : prev;
+    });
   }, [fullGraph]);
 
   const handleSelectionChange = useCallback((selectorId, optionId, checked) => {
