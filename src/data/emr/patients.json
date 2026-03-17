@@ -1,7 +1,7 @@
 [
   {
     "id": "p1",
-    "name": "张伟",
+    "name": "张某",
     "gender": "男",
     "age": 58,
     "admissionId": "Y000000",
@@ -11,7 +11,7 @@
   },
   {
     "id": "p2",
-    "name": "李秀英",
+    "name": "李某",
     "gender": "男",
     "age": 49,
     "admissionId": "Y3030647",
@@ -22,7 +22,7 @@
   },
   {
     "id": "p3",
-    "name": "王芳",
+    "name": "王某",
     "gender": "女",
     "age": 63,
     "admissionId": "Y000001",
