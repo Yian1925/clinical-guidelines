@@ -35,7 +35,6 @@ export default function ChatInterface({
   const uploadMenuRef = useRef<HTMLDivElement>(null);
   const { setPage, setGuidelineTocId } = useAppStore();
   const uploadMaskIdA = useId();
-  const uploadMaskIdB = useId();
   const [uploadMenuOpen, setUploadMenuOpen] = useState(false);
   const [uploadFileOpen, setUploadFileOpen] = useState(false);
   const [uploadFolderOpen, setUploadFolderOpen] = useState(false);
@@ -213,37 +212,6 @@ export default function ChatInterface({
               rows={2}
             />
             <div className="input-actions">
-              <div className="upload-trigger-wrap" ref={uploadMenuRef}>
-                <button
-                  type="button"
-                  className="ic-btn"
-                  title="上传"
-                  onClick={() => setUploadMenuOpen((v) => !v)}
-                  aria-haspopup="true"
-                  aria-expanded={uploadMenuOpen}
-                >
-                  <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <mask id={uploadMaskIdB} maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48" style={{ maskType: 'alpha' }}>
-                      <path d="M48 0H0V48H48V0Z" fill="#333" />
-                    </mask>
-                    <g mask={`url(#${uploadMaskIdB})`}>
-                      <path d="M6 24.0083V42H42V24" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M33 15L24 6L15 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M23.9917 32V6" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                    </g>
-                  </svg>
-                </button>
-                {uploadMenuOpen && (
-                  <div className="upload-dropdown">
-                    <button type="button" className="upload-dropdown-item" onClick={() => { setUploadMenuOpen(false); setUploadFileOpen(true); }}>
-                      上传文件
-                    </button>
-                    <button type="button" className="upload-dropdown-item" onClick={() => { setUploadMenuOpen(false); setUploadFolderOpen(true); }}>
-                      上传文件夹
-                    </button>
-                  </div>
-                )}
-              </div>
               <button type="button" className="send-btn" onClick={handleSend}>
                 <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M18 10L3 4l3 6-3 6z" />
