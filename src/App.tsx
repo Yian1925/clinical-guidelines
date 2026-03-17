@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Patient } from './types';
 import { AppStoreProvider, useAppStore } from './store';
 import { useAgent } from './hooks/useAgent';
@@ -13,16 +13,24 @@ import './styles/platform.css';
 
 function AppContent() {
   const { page, setPage, patient, setPatient } = useAppStore();
-  const { messages, loading, sendMessage, askQuestion, addAIMessage } = useAgent();
+  const { messages, loading, sendMessage, askQuestion } = useAgent();
   const { doc } = useGuideline();
   const [emrModalOpen, setEmrModalOpen] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   const handleSelectPatient = (p: Patient) => {
     if (!p) return;
     setPatient(p);
     setEmrModalOpen(false);
     const desc = `${p.gender}·${p.age}岁·${p.diagnosis}`;
-    addAIMessage(`已载入患者：<strong>${p.name}</strong>（${desc}）。后续问答将结合该患者病历数据进行分析。`);
+    const toastText = `已载入患者：${p.name}（${desc}）。后续问答将结合该患者病历数据进行分析。`;
+    setToast(toastText);
   };
 
   const handleAskAboutNode = (nodeTitle: string) => {
@@ -40,6 +48,28 @@ function AppContent() {
     <div className="shell" style={{ position: 'relative' }}>
       <Sidebar page={page} onPageChange={setPage} />
       <div className="main">
+        {toast && (
+          <div
+            role="alert"
+            className="patient-toast"
+            style={{
+              position: 'absolute',
+              top: 24,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              background: '#000',
+              color: '#fff',
+              padding: '8px 16px',
+              borderRadius: 16,
+              fontSize: 13,
+              zIndex: 10000,
+              maxWidth: '90%',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+            }}
+          >
+            {toast}
+          </div>
+        )}
         <TopBar
           title={pageConfig.title}
           badge={pageConfig.badge}
@@ -52,7 +82,7 @@ function AppContent() {
             onSendMessage={sendMessage}
             onAskQuestion={askQuestion}
             onOpenPatientSelector={() => setEmrModalOpen(true)}
-            patientLabel={patient ? patient.name : '选择患者'}
+            patientLabel={patient ? `ID ${patient.admissionId}` : '选择患者'}
           />
         </div>
         <div className={`page ${page === 'guidelines' ? 'active' : ''}`} id="page-guidelines">
