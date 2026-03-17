@@ -612,6 +612,19 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
   );
 
   const [selectionState, setSelectionState] = useState(() => ({}));
+  const defaultExpandedRef = useRef(false);
+  useEffect(() => {
+    if (!fullGraph?.nodes?.length || defaultExpandedRef.current) return;
+    defaultExpandedRef.current = true;
+    const next = {};
+    fullGraph.nodes.forEach((n) => {
+      if (n.data?.selector?.options?.length) {
+        next[n.id] = new Set(n.data.selector.options.map((o) => o.id));
+      }
+    });
+    if (Object.keys(next).length > 0) setSelectionState(next);
+  }, [fullGraph]);
+
   const handleSelectionChange = useCallback((selectorId, optionId, checked) => {
     setSelectionState((prev) => {
       const next = {};
