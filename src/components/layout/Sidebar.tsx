@@ -65,13 +65,13 @@ export default function Sidebar({ page, onPageChange }: SidebarProps) {
           </div>
         ))}
         <div className="nav-section">历史</div>
-        <div className="nav-item" style={{ fontSize: 12, padding: '7px 16px', color: '#666' }}>
+        <div className="nav-item" style={{ fontSize: 13, padding: '7px 16px', color: '#666' }}>
           弥漫大B细胞淋巴瘤诊断...
         </div>
-        <div className="nav-item" style={{ fontSize: 12, padding: '7px 16px', color: '#666' }}>
+        <div className="nav-item" style={{ fontSize: 13, padding: '7px 16px', color: '#666' }}>
           套细胞淋巴瘤一线治疗方案...
         </div>
-        <div className="nav-item" style={{ fontSize: 12, padding: '7px 16px', color: '#666' }}>
+        <div className="nav-item" style={{ fontSize: 13, padding: '7px 16px', color: '#666' }}>
           滤泡性淋巴瘤分期评估...
         </div>
       </nav>
