@@ -1,16 +1,16 @@
 {
   "schema_version": "1.1",
   "dimension": "patient_timeline",
-  "patient_id": "p2",
+  "patient_id": "Y3030647",
   "generated_at": "2026-03-16",
   "patient_summary": {
     "visit_id": 1,
-    "gender": "女",
-    "age": 45,
+    "gender": "男",
+    "age": 49,
     "admission_date": "2017-10-19",
     "discharge_date": "2017-10-29",
     "chief_complaint": "发现左肺占位10余天",
-    "final_diagnosis": "弥漫大B细胞淋巴瘤",
+    "final_diagnosis": "左肺小细胞癌",
     "treat_result": "好转",
     "treat_days": 10
   },

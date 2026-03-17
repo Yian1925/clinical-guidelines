@@ -48,7 +48,7 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
         <div className="modal-body">
           <input
             type="text"
-            placeholder="搜索患者姓名、住院号..."
+            placeholder="搜索患者姓名、ID..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
@@ -74,7 +74,7 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
             >
               <div className="emr-info">
                 <p>{p.name}</p>
-                <span>{p.gender} · {p.age}岁 · 住院号 {p.admissionId}</span>
+                <span>{p.gender} · {p.age}岁 · ID {p.admissionId}</span>
                 <div className="emr-tags">
                   {p.tags.map((t) => (
                     <span key={t} className={tagClass(t)}>{t}</span>

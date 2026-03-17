@@ -522,7 +522,13 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
             onPaneClick={onPaneClick}
             nodeTypes={nodeTypes}
             fitView
-            fitViewOptions={{ padding: 0.15 }}
+            fitViewOptions={{ padding: 0, duration: 0 }}
+            onInit={(rf) => {
+              const fit = () => rf.fitView({ padding: 0, duration: 0 });
+              fit();
+              setTimeout(fit, 50);
+              setTimeout(fit, 200);
+            }}
             minZoom={0.3}
             maxZoom={2}
             proOptions={{ hideAttribution: true }}

@@ -19,7 +19,7 @@ export default function EMRPanel({ patient, onClose }: EMRPanelProps) {
       <div className="emr-av" style={{ marginBottom: 8 }}>{patient.name.slice(0, 1)}</div>
       <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-text-primary)' }}>{patient.name}</p>
       <span style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
-        {patient.gender} · {patient.age}岁 · 住院号 {patient.admissionId}
+        {patient.gender} · {patient.age}岁 · ID {patient.admissionId}
       </span>
       <div className="emr-tags" style={{ marginTop: 4 }}>
         {patient.tags.map((t) => (

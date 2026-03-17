@@ -46,7 +46,7 @@ export default function PatientsPage() {
         >
           <input
             type="text"
-            placeholder="搜索患者姓名、住院号、诊断..."
+            placeholder="搜索患者姓名、ID、诊断..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
@@ -72,7 +72,7 @@ export default function PatientsPage() {
               >
                 <div className="emr-info">
                   <p>{p.name}</p>
-                  <span>{p.gender} · {p.age}岁 · 住院号 {p.admissionId}</span>
+                  <span>{p.gender} · {p.age}岁 · ID {p.admissionId}</span>
                   <div className="emr-tags">
                     {p.tags.map((t) => (
                       <span key={t} className={tagClass(t)}>{t}</span>
