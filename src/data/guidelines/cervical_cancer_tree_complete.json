@@ -1,0 +1,324 @@
+{
+  "meta": {
+    "id": "3d60cd38-76ce-449d-93c2-8d9bd0c045c2",
+    "name": "Cervical cancer: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up",
+    "source": "ESMO",
+    "version": "May 2017",
+    "publication_date": "2017",
+    "description": "Complete treatment algorithm for cervical cancer covering precancerous lesions through metastatic disease, stratified by FIGO staging."
+  },
+  "tree": {
+    "name": "Treatment algorithm for cervical cancer",
+    "nodes": [
+      {
+        "id": "1",
+        "type": "custom",
+        "category": "entry",
+        "data": {
+          "id": "1",
+          "label": "Positive Pap-smear / HPV-HR+ / Suspected Cervix",
+          "sublabel": "Initial Screening",
+          "content": "Positive Pap-smear/HPV-high risk positive/suspected cervix",
+          "detail": "Positive Pap-smear result, HPV high-risk positive test, or clinical suspicion of cervical pathology requiring further investigation.",
+          "attribute_text": "Entry point for the cervical cancer management pathway. Triggered by abnormal screening results or clinical suspicion."
+        }
+      },
+      {
+        "id": "2",
+        "type": "custom",
+        "category": "diagnosis",
+        "data": {
+          "id": "2",
+          "label": "Colposcopy / Biopsy",
+          "sublabel": "Diagnostic Workup",
+          "content": "Colposcopy/Biopsy",
+          "detail": "Colposcopic examination with directed biopsy to characterize the lesion and determine degree of dysplasia or invasive carcinoma.",
+          "attribute_text": "Key branching node. Results determine the pathway: CIN2/CIN3 (precancerous), Invasive cancer, Locally advanced, or Metastatic disease."
+        }
+      },
+      {
+        "id": "3",
+        "type": "custom",
+        "category": "precancer",
+        "data": {
+          "id": "3",
+          "label": "CIN2 / CIN3",
+          "sublabel": "Precancerous Lesion",
+          "content": "CIN2/CIN3",
+          "detail": "High-grade squamous intraepithelial lesion (CIN2/CIN3) confirmed on biopsy. Requires excisional or ablative treatment.",
+          "attribute_text": "High-grade cervical intraepithelial neoplasia. Treatment required to prevent progression to invasive carcinoma."
+        }
+      },
+      {
+        "id": "4",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "4",
+          "label": "Conisation",
+          "sublabel": "Treatment",
+          "content": "Conisation",
+          "detail": "Loop excision (LEEP/LLETZ) or cold-knife cone biopsy. Aims for negative surgical margins to reduce recurrence risk.",
+          "attribute_text": "Excisional treatment for CIN2/CIN3. LEEP is preferred for most cases. Cold-knife cone reserved for endocervical involvement or glandular lesions."
+        }
+      },
+      {
+        "id": "5",
+        "type": "custom",
+        "category": "diagnosis",
+        "data": {
+          "id": "5",
+          "label": "Invasive Cervical Cancer",
+          "sublabel": "Confirmed Diagnosis",
+          "content": "Invasive cervical cancer",
+          "detail": "Histologically confirmed invasive carcinoma of the cervix. Further staging via MRI, PET-CT and multidisciplinary team review required.",
+          "attribute_text": "Confirmed invasive carcinoma. Requires comprehensive staging workup and MDT discussion prior to treatment planning."
+        }
+      },
+      {
+        "id": "6",
+        "type": "custom",
+        "category": "early",
+        "data": {
+          "id": "6",
+          "label": "Early Disease",
+          "sublabel": "FIGO IA1 – IB2 / IIA1",
+          "content": "Early disease",
+          "detail": "Surgically resectable disease. Management depends on exact FIGO sub-stage, LVSI status, and fertility-preservation wishes.",
+          "attribute_text": "Early-stage cervical cancer encompasses FIGO stages IA1 through IB2/IIA1. Surgical approach is primary modality."
+        }
+      },
+      {
+        "id": "7",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "7",
+          "label": "FIGO IA1",
+          "sublabel": "Stage",
+          "content": "FIGO IA1",
+          "detail": "Microscopically invasive carcinoma ≤3 mm depth, ≤7 mm horizontal spread. Treatment varies with LVSI status.",
+          "attribute_text": "Stage IA1: invasion depth ≤3 mm and horizontal spread ≤7 mm. Lowest-risk category for lymph node involvement."
+        }
+      },
+      {
+        "id": "8",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "8",
+          "label": "No LVSI",
+          "sublabel": "Simple hysterectomy · Conisation",
+          "content": "No LVSI: simple hysterectomy\nFrozen section: conisation only if negative margins",
+          "detail": "Simple (extrafascial) hysterectomy preferred.\nFertility-sparing: conisation only if margins negative on frozen section.\nNo lymphadenectomy required.",
+          "attribute_text": "IA1 without lymphovascular space invasion. Low risk of lymph node metastasis; lymphadenectomy not routinely required."
+        }
+      },
+      {
+        "id": "9",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "9",
+          "label": "LVSI Present",
+          "sublabel": "Hysterectomy + PLND ± PALND",
+          "content": "With LVSI: simple hysterectomy + PLND ± PALND\nTrachelectomy",
+          "detail": "Simple hysterectomy + pelvic lymph node dissection (PLND) ± para-aortic LND (PALND).\nFertility-sparing: trachelectomy + PLND.",
+          "attribute_text": "IA1 with LVSI carries higher risk of lymph node involvement; pelvic lymphadenectomy is required."
+        }
+      },
+      {
+        "id": "10",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "10",
+          "label": "FIGO IA2",
+          "sublabel": "Stage",
+          "content": "FIGO IA2",
+          "detail": "Microscopically invasive carcinoma >3 mm and ≤5 mm depth, ≤7 mm horizontal spread.",
+          "attribute_text": "Stage IA2: invasion depth >3–5 mm. Intermediate risk; lymphadenectomy recommended."
+        }
+      },
+      {
+        "id": "11",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "11",
+          "label": "Radical / Simple Hysterectomy",
+          "sublabel": "Hysterectomy + PLND ± PALND · SLN",
+          "content": "Radical hysterectomy\nSimple hysterectomy\nTrachelectomy + PLND ± PALND\nSLN",
+          "detail": "Options:\n• Radical hysterectomy\n• Simple hysterectomy\n• Trachelectomy + PLND ± PALND (fertility-sparing)\n• Sentinel lymph node (SLN) biopsy",
+          "attribute_text": "Multiple surgical options for IA2. Choice depends on fertility wishes, tumour size, and institutional expertise."
+        }
+      },
+      {
+        "id": "12",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "12",
+          "label": "FIGO IB1 + IIA1",
+          "sublabel": "Stage",
+          "content": "FIGO IB1 + IIA1",
+          "detail": "Clinically visible lesion ≤4 cm (IB1) or vaginal involvement without parametrial extension (IIA1).",
+          "attribute_text": "Clinically visible tumours. Standard treatment is radical surgery or chemoradiotherapy depending on institutional preference."
+        }
+      },
+      {
+        "id": "13",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "13",
+          "label": "Radical Hysterectomy + PLND",
+          "sublabel": "± PALND · SLN · Trachelectomy",
+          "content": "Radical hysterectomy + PLND ± PALND\nSLN\nFrozen section: trachelectomy",
+          "detail": "• Radical hysterectomy + PLND ± PALND\n• SLN biopsy\n• Frozen section: trachelectomy if fertility desired and tumour ≤2 cm",
+          "attribute_text": "Standard surgical approach for IB1/IIA1. Trachelectomy with PLND may be considered for fertility-sparing in selected IB1 cases ≤2 cm."
+        }
+      },
+      {
+        "id": "14",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "14",
+          "label": "FIGO IB2 / II / III",
+          "sublabel": "Stage",
+          "content": "FIGO IB2/II/III",
+          "detail": "Tumour >4 cm (IB2), parametrial extension (IIA2, IIB), or pelvic wall / lower vaginal involvement (III).",
+          "attribute_text": "Bulky or locally advanced tumours not amenable to primary radical surgery. CRT is the standard of care."
+        }
+      },
+      {
+        "id": "15",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "15",
+          "label": "Chemoradiotherapy (CRT)",
+          "sublabel": "Primary Treatment",
+          "content": "CRT\nTailoring of radiation according to surgical staging or PET-CT",
+          "detail": "Concurrent platinum-based chemotherapy + external beam radiotherapy (EBRT) + brachytherapy.\nTailoring of radiation volume based on surgical staging or PET-CT.",
+          "attribute_text": "Standard of care for IB2-III. Cisplatin-based concurrent CRT achieves superior locoregional control versus RT alone."
+        }
+      },
+      {
+        "id": "16",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "16",
+          "label": "Neoadjuvant Chemotherapy",
+          "sublabel": "Followed by Surgery or RT",
+          "content": "Neoadjuvant chemotherapy followed by surgery or RT",
+          "detail": "Platinum-based neoadjuvant chemotherapy (NACT) followed by radical surgery or definitive radiotherapy depending on response.",
+          "attribute_text": "NACT may be considered in selected centres as alternative to primary CRT for IB2-IIB disease."
+        }
+      },
+      {
+        "id": "17",
+        "type": "custom",
+        "category": "advanced",
+        "data": {
+          "id": "17",
+          "label": "Locally Advanced Disease",
+          "sublabel": "FIGO IVA",
+          "content": "Locally advanced disease",
+          "detail": "Tumour invading adjacent pelvic organs (bladder / rectum) but without distant metastases.",
+          "attribute_text": "FIGO IVA: invasion of adjacent organs. Curative intent still possible in selected cases."
+        }
+      },
+      {
+        "id": "18",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "18",
+          "label": "FIGO IVA",
+          "sublabel": "Stage",
+          "content": "FIGO IVA",
+          "detail": "Invasion of bladder or rectal mucosa confirmed by biopsy.",
+          "attribute_text": "Stage IVA: confirmed organ invasion by biopsy (bullous oedema alone is insufficient for IVA staging)."
+        }
+      },
+      {
+        "id": "19",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "19",
+          "label": "Chemo(RT) / Pelvic Exenteration",
+          "sublabel": "Chemotherapy ± RT",
+          "content": "Chemotherapy (C)RT\nPelvic exenteration",
+          "detail": "• Chemotherapy (C)RT for unresectable disease\n• Pelvic exenteration for selected cases with resectable fistula\nGoal: cure or durable local control.",
+          "attribute_text": "IVA treatment depends on resectability. Exenteration is major surgery considered only in carefully selected patients."
+        }
+      },
+      {
+        "id": "20",
+        "type": "custom",
+        "category": "meta",
+        "data": {
+          "id": "20",
+          "label": "Metastatic Disease",
+          "sublabel": "FIGO IVB",
+          "content": "Metastatic disease",
+          "detail": "Distant metastases beyond the true pelvis. Primarily palliative intent; systemic therapy is mainstay.",
+          "attribute_text": "FIGO IVB: distant organ metastases. Treatment is palliative; goal is symptom control and quality of life."
+        }
+      },
+      {
+        "id": "21",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "21",
+          "label": "FIGO IVB",
+          "sublabel": "Stage",
+          "content": "FIGO IVB",
+          "detail": "Distant organ metastases (lung, liver, bone, distant lymph nodes).",
+          "attribute_text": "Confirmed distant metastatic disease. Systemic chemotherapy ± bevacizumab is first-line palliative treatment."
+        }
+      },
+      {
+        "id": "22",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "22",
+          "label": "Chemotherapy + Bevacizumab",
+          "sublabel": "± Radiotherapy",
+          "content": "Chemotherapy + bevacizumab\nRT",
+          "detail": "• Cisplatin/carboplatin + paclitaxel + bevacizumab (VEGF inhibitor)\n• Pembrolizumab for PD-L1+/MSI-H (subsequent lines)\n• Palliative RT for symptomatic sites",
+          "attribute_text": "GOG-240 established cisplatin+paclitaxel+bevacizumab as standard first-line for IVB. Immunotherapy options available for subsequent lines."
+        }
+      }
+    ],
+    "edges": [
+      { "id": "e1",  "type": "smoothstep", "source": "1",  "target": "2",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e2",  "type": "smoothstep", "source": "2",  "target": "3",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e3",  "type": "smoothstep", "source": "2",  "target": "5",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e4",  "type": "smoothstep", "source": "2",  "target": "17", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e5",  "type": "smoothstep", "source": "2",  "target": "20", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e6",  "type": "smoothstep", "source": "3",  "target": "4",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e7",  "type": "smoothstep", "source": "5",  "target": "6",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e8",  "type": "smoothstep", "source": "6",  "target": "7",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e9",  "type": "smoothstep", "source": "6",  "target": "10", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e10", "type": "smoothstep", "source": "6",  "target": "12", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e11", "type": "smoothstep", "source": "6",  "target": "14", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e12", "type": "smoothstep", "source": "7",  "target": "8",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e13", "type": "smoothstep", "source": "7",  "target": "9",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e14", "type": "smoothstep", "source": "10", "target": "11", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e15", "type": "smoothstep", "source": "12", "target": "13", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e16", "type": "smoothstep", "source": "14", "target": "15", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e17", "type": "smoothstep", "source": "14", "target": "16", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e18", "type": "smoothstep", "source": "17", "target": "18", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e19", "type": "smoothstep", "source": "18", "target": "19", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e20", "type": "smoothstep", "source": "20", "target": "21", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e21", "type": "smoothstep", "source": "21", "target": "22", "markerEnd": { "type": "arrowclosed" } }
+    ]
+  }
+}

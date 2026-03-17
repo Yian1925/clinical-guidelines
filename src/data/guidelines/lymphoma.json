@@ -1,0 +1,87 @@
+{
+  "id": "lymphoma",
+  "title": "B细胞淋巴瘤 — 诊断路径",
+  "meta": "标准诊疗路径 · 更新于2026年1月 · 来源：院内病理科+NCCN",
+  "toc": [
+    {
+      "id": "tumor",
+      "label": "肿瘤",
+      "children": [
+        { "id": "tumor-all", "label": "急性淋巴细胞白血病" },
+        { "id": "tumor-breast", "label": "原位乳腺癌" },
+        { "id": "tumor-cervical", "label": "宫颈癌" },
+        { "id": "tumor-endometrial", "label": "子宫内膜癌" }
+      ]
+    },
+    {
+      "id": "war-trauma",
+      "label": "战创伤",
+      "children": [
+        { "id": "war-brain", "label": "颅脑战创伤" },
+        { "id": "war-maxillofacial", "label": "口腔颌面部战创伤" },
+        { "id": "war-eye", "label": "眼部战创伤" },
+        { "id": "war-ent-neck", "label": "耳鼻咽喉头颈部战创伤" },
+        { "id": "war-thoracoabdominal", "label": "胸腹部战创伤" },
+        { "id": "war-limb-spine-pelvis", "label": "四肢、脊柱与骨盆战创伤" },
+        { "id": "war-special-env", "label": "特殊军事作业环境战创伤" },
+        { "id": "war-nursing-psych", "label": "战创伤护理与心理" }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "DIAG_a",
+      "tag": "诊断 DIAGNOSIS",
+      "title": "组织活检方式选择",
+      "body": "首选切除或切取活检以明确诊断或组织学分级。细针穿刺（FNA）不足以完成淋巴瘤初始诊断或分级。",
+      "type": "diag",
+      "ref": "DIAG_a"
+    },
+    {
+      "id": "DIAG_b",
+      "tag": "分型 CLASSIFICATION",
+      "title": "选择淋巴瘤亚型",
+      "type": "choice",
+      "ref": "DIAG_b",
+      "options": [
+        { "label": "滤泡性淋巴瘤 (FL)", "selected": false },
+        { "label": "套细胞淋巴瘤 (MCL)", "selected": true },
+        { "label": "弥漫大B细胞淋巴瘤 (DLBCL)", "selected": false },
+        { "label": "胃EMZL", "selected": false },
+        { "label": "伯基特淋巴瘤 (BL)", "selected": false }
+      ]
+    },
+    {
+      "id": "MANT_a",
+      "tag": "附加检测 ADX TESTING",
+      "title": "IHC 免疫组化检测",
+      "body": "必要：充分免疫表型分析以确诊。CD20、CD3、CD5、cyclin D1、CD21、CD23、BCL2、BCL6、SOX11、Ki-67",
+      "type": "action",
+      "ref": "MANT_a"
+    },
+    {
+      "id": "MANT_b",
+      "tag": "可选检测",
+      "title": "流式细胞术",
+      "body": "外周血和/或活检标本：kappa/lambda、CD19、CD5、CD23、CD10、CD200",
+      "type": "action",
+      "ref": "MANT_b"
+    },
+    {
+      "id": "MANT_c",
+      "tag": "基因检测",
+      "title": "TP53 测序",
+      "body": "必要：检测TP53基因突变状态，影响预后分层和治疗选择",
+      "type": "warning",
+      "ref": "MANT_c"
+    }
+  ],
+  "nodeDetails": {
+    "DIAG_a": ["组织活检方式选择", "首选切除活检（excisional biopsy）或切取活检（incisional biopsy）作为淋巴瘤确诊和组织学分级的标准方法。细针穿刺（FNA）组织量不足，不能用于初始诊断。当无法进行切除或切取活检时，可选多点空芯针活检（core needle biopsy），需同时配合IHC、流式细胞术和分子检测。"],
+    "DIAG_b": ["亚型分类", "根据病理形态学、免疫表型及分子特征进行B细胞淋巴瘤的亚型鉴别。不同亚型的治疗方案差异显著，分类准确性直接影响后续治疗决策。院内病理科提供标准化诊断流程。"],
+    "MANT_a": ["IHC免疫组化检测", "套细胞淋巴瘤必选IHC组合：CD20、CD3、CD5、cyclin D1、CD21、CD23、BCL2、BCL6、SOX11、Ki-67（带或不带）。Ki-67>30%提示高增殖活性，需加强治疗方案。"],
+    "MANT_b": ["流式细胞术", "对外周血和/或活检标本进行流式检测，用于免疫表型确认和MRD监测。检测抗体组合：kappa/lambda、CD19、CD5、CD23、CD10、CD200。"],
+    "MANT_c": ["TP53基因测序", "TP53突变见于约20-30%的套细胞淋巴瘤患者，与预后不良相关。TP53突变患者对标准化疗（含苯达莫司汀）的应答率下降，可能更适合BTK抑制剂为基础的方案。"]
+  },
+  "footnotes": "脚注 · DIAG_a：推荐切除活检，尤其对于无法切除的淋巴结考虑多点空芯针活检。 · MANT_a：IHC检测组合见本院病理科标准操作规程 v2.3"
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "p1",
+    "name": "张伟",
+    "gender": "男",
+    "age": 58,
+    "admissionId": "2024-087432",
+    "diagnosis": "套细胞淋巴瘤",
+    "tags": ["套细胞淋巴瘤", "化疗中", "高危"],
+    "riskLevel": "high"
+  },
+  {
+    "id": "p2",
+    "name": "李秀英",
+    "gender": "女",
+    "age": 45,
+    "admissionId": "2024-091205",
+    "diagnosis": "弥漫大B细胞淋巴瘤",
+    "tags": ["DLBCL", "新患", "中高危"],
+    "riskLevel": "medium"
+  },
+  {
+    "id": "p3",
+    "name": "王芳",
+    "gender": "女",
+    "age": 63,
+    "admissionId": "2024-078810",
+    "diagnosis": "滤泡性淋巴瘤",
+    "tags": ["滤泡性淋巴瘤", "随访", "低危"],
+    "riskLevel": "low"
+  }
+]

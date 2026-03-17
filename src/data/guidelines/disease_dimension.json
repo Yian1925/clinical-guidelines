@@ -1,0 +1,1809 @@
+{
+  "schema_version": "1.1",
+  "dimension": "disease_type_statistics",
+  "generated_at": "2026-03-16",
+  "data_sources": {
+    "diagnosis_records": 5,
+    "emr_notes": 11,
+    "examination_records": 7,
+    "lab_test_items": 183,
+    "order_items": 116
+  },
+  "disease_summary": [
+    {
+      "disease_name": "肺肿物",
+      "diagnosis_type": "入院诊断",
+      "occurrences": 1,
+      "patient_ids": [
+        "Y3030647"
+      ],
+      "treat_results": [],
+      "surgery_cases": 0,
+      "coding_system": "ICD-10"
+    },
+    {
+      "disease_name": "肺占位性质待排：中央型肺癌？纵膈恶性肿瘤？",
+      "diagnosis_type": "门诊诊断",
+      "occurrences": 1,
+      "patient_ids": [
+        "Y3030647"
+      ],
+      "treat_results": [],
+      "surgery_cases": 0,
+      "coding_system": "ICD-10"
+    },
+    {
+      "disease_name": "左肺小细胞癌",
+      "diagnosis_type": "出院诊断",
+      "occurrences": 1,
+      "patient_ids": [
+        "Y3030647"
+      ],
+      "treat_results": [
+        "好转"
+      ],
+      "surgery_cases": 1,
+      "coding_system": "ICD-10"
+    },
+    {
+      "disease_name": "小细胞癌",
+      "diagnosis_type": "手术诊断",
+      "occurrences": 1,
+      "patient_ids": [
+        "Y3030647"
+      ],
+      "treat_results": [],
+      "surgery_cases": 0,
+      "coding_system": "ICD-10"
+    },
+    {
+      "disease_name": "恶性肿瘤维持性化疗",
+      "diagnosis_type": "其他诊断",
+      "occurrences": 1,
+      "patient_ids": [
+        "Y3030647"
+      ],
+      "treat_results": [
+        "好转"
+      ],
+      "surgery_cases": 0,
+      "coding_system": "ICD-10"
+    }
+  ],
+  "lab_item_statistics": [
+    {
+      "item_name": "红细胞比积测定",
+      "item_code": "101010",
+      "units": "L/L",
+      "total_tests": 4,
+      "abnormal_count": 4,
+      "low_count": 4,
+      "high_count": 0,
+      "results": [
+        "0.388",
+        "0.356",
+        "0.379",
+        "0.399"
+      ]
+    },
+    {
+      "item_name": "红细胞计数",
+      "item_code": "101002",
+      "units": "10^12/L",
+      "total_tests": 4,
+      "abnormal_count": 3,
+      "low_count": 3,
+      "high_count": 0,
+      "results": [
+        "4.24",
+        "3.84",
+        "4.17",
+        "4.36"
+      ]
+    },
+    {
+      "item_name": "血红蛋白测定",
+      "item_code": "101001",
+      "units": "g/L",
+      "total_tests": 4,
+      "abnormal_count": 2,
+      "low_count": 2,
+      "high_count": 0,
+      "results": [
+        "140",
+        "124",
+        "136",
+        "139"
+      ]
+    },
+    {
+      "item_name": "白细胞计数",
+      "item_code": "101003",
+      "units": "10^9/L",
+      "total_tests": 4,
+      "abnormal_count": 2,
+      "low_count": 0,
+      "high_count": 2,
+      "results": [
+        "8.39",
+        "10.98",
+        "10.34",
+        "8.09"
+      ]
+    },
+    {
+      "item_name": "C-反应蛋白测定",
+      "item_code": "402001",
+      "units": "mg/dl",
+      "total_tests": 2,
+      "abnormal_count": 2,
+      "low_count": 0,
+      "high_count": 2,
+      "results": [
+        "1.863",
+        "1.546"
+      ]
+    },
+    {
+      "item_name": "白细胞介素-6",
+      "item_code": "411008.3",
+      "units": "pg/ml",
+      "total_tests": 2,
+      "abnormal_count": 2,
+      "low_count": 0,
+      "high_count": 2,
+      "results": [
+        "12.4",
+        "27.95"
+      ]
+    },
+    {
+      "item_name": "中性粒细胞",
+      "item_code": "101004A",
+      "units": null,
+      "total_tests": 4,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "0.623",
+        "0.854",
+        "0.689",
+        "0.644"
+      ]
+    },
+    {
+      "item_name": "淋巴细胞",
+      "item_code": "101004B",
+      "units": null,
+      "total_tests": 4,
+      "abnormal_count": 1,
+      "low_count": 1,
+      "high_count": 0,
+      "results": [
+        "0.268",
+        "0.126",
+        "0.229",
+        "0.272"
+      ]
+    },
+    {
+      "item_name": "单核细胞",
+      "item_code": "101004C",
+      "units": null,
+      "total_tests": 4,
+      "abnormal_count": 1,
+      "low_count": 1,
+      "high_count": 0,
+      "results": [
+        "0.074",
+        "0.019",
+        "0.066",
+        "0.063"
+      ]
+    },
+    {
+      "item_name": "嗜酸性粒细胞",
+      "item_code": "101004D",
+      "units": null,
+      "total_tests": 4,
+      "abnormal_count": 1,
+      "low_count": 1,
+      "high_count": 0,
+      "results": [
+        "0.03",
+        "0",
+        "0.012",
+        "0.017"
+      ]
+    },
+    {
+      "item_name": "平均红细胞血红蛋白浓度",
+      "item_code": "101013",
+      "units": "g/L",
+      "total_tests": 4,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "361",
+        "348",
+        "359",
+        "348"
+      ]
+    },
+    {
+      "item_name": "尿素",
+      "item_code": "302020",
+      "units": "mmol/L",
+      "total_tests": 2,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "5.61",
+        "8"
+      ]
+    },
+    {
+      "item_name": "凝血酶时间测定",
+      "item_code": "202008",
+      "units": "s",
+      "total_tests": 1,
+      "abnormal_count": 1,
+      "low_count": 1,
+      "high_count": 0,
+      "results": [
+        "14.5"
+      ]
+    },
+    {
+      "item_name": "血浆纤维蛋白原测定",
+      "item_code": "209021",
+      "units": "g/L",
+      "total_tests": 1,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "6.17"
+      ]
+    },
+    {
+      "item_name": "乙型肝炎病毒E抗体（发光法）",
+      "item_code": "404006A",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "阳性(0.003)"
+      ]
+    },
+    {
+      "item_name": "乙型肝炎病毒核心抗体（发光法）",
+      "item_code": "404007A",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "阳性(0.008)"
+      ]
+    },
+    {
+      "item_name": "乙型肝炎病毒表面抗体（发光法）",
+      "item_code": "404004A",
+      "units": "IU/L",
+      "total_tests": 1,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "阳性(424.9)"
+      ]
+    },
+    {
+      "item_name": "癌胚抗原测定",
+      "item_code": "411001A",
+      "units": "μg/L",
+      "total_tests": 1,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "7.5"
+      ]
+    },
+    {
+      "item_name": "NSE",
+      "item_code": "411010",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 1,
+      "low_count": 0,
+      "high_count": 1,
+      "results": [
+        "32.5"
+      ]
+    },
+    {
+      "item_name": "人胃蛋白酶原Ⅰ(PGⅠ)",
+      "item_code": "210001Z",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 1,
+      "low_count": 1,
+      "high_count": 0,
+      "results": [
+        "50"
+      ]
+    },
+    {
+      "item_name": "嗜碱性粒细胞",
+      "item_code": "101004E",
+      "units": null,
+      "total_tests": 4,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.005",
+        "0.001",
+        "0.004",
+        "0.004"
+      ]
+    },
+    {
+      "item_name": "平均红细胞体积",
+      "item_code": "101011",
+      "units": "fl",
+      "total_tests": 4,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "91.5",
+        "92.7",
+        "90.9",
+        "91.5"
+      ]
+    },
+    {
+      "item_name": "平均红细胞血红蛋白量",
+      "item_code": "101012",
+      "units": "pg",
+      "total_tests": 4,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "33",
+        "32.3",
+        "32.6",
+        "31.9"
+      ]
+    },
+    {
+      "item_name": "红细胞体积分布宽度测定CV",
+      "item_code": "101016",
+      "units": "%",
+      "total_tests": 4,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "11.5",
+        "11.2",
+        "11.6",
+        "11.6"
+      ]
+    },
+    {
+      "item_name": "血小板计数",
+      "item_code": "101019",
+      "units": "10^9/L",
+      "total_tests": 4,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "270",
+        "286",
+        "220",
+        "262"
+      ]
+    },
+    {
+      "item_name": "平均血小板体积测定",
+      "item_code": "101021",
+      "units": "fl",
+      "total_tests": 4,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "8.9",
+        "9.1",
+        "8.8",
+        "8.8"
+      ]
+    },
+    {
+      "item_name": "丙氨酸氨基转移酶",
+      "item_code": "308001",
+      "units": "U/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "13.8",
+        "10.8"
+      ]
+    },
+    {
+      "item_name": "天冬氨酸氨基转移酶",
+      "item_code": "308002",
+      "units": "U/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "12.5",
+        "13.4"
+      ]
+    },
+    {
+      "item_name": "总蛋白",
+      "item_code": "302001",
+      "units": "g/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "63.7",
+        "74.4"
+      ]
+    },
+    {
+      "item_name": "血清白蛋白",
+      "item_code": "302002",
+      "units": "g/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "35.5",
+        "39.6"
+      ]
+    },
+    {
+      "item_name": "总胆红素",
+      "item_code": "307001",
+      "units": "umol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "14.7",
+        "6.1"
+      ]
+    },
+    {
+      "item_name": "直接胆红素",
+      "item_code": "307002",
+      "units": "umol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "4.4",
+        "2.2"
+      ]
+    },
+    {
+      "item_name": "总胆汁酸",
+      "item_code": "307003",
+      "units": "umol/L",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "2.2"
+      ]
+    },
+    {
+      "item_name": "碱性磷酸酶",
+      "item_code": "308009",
+      "units": "U/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "56.2",
+        "62.5"
+      ]
+    },
+    {
+      "item_name": "γ-谷氨酰基转移酶",
+      "item_code": "308008",
+      "units": "U/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "28.4",
+        "29.8"
+      ]
+    },
+    {
+      "item_name": "葡萄糖",
+      "item_code": "301001",
+      "units": "mmol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "4.82",
+        "5.11"
+      ]
+    },
+    {
+      "item_name": "肌酐",
+      "item_code": "302023",
+      "units": "umol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "70.6",
+        "72.8"
+      ]
+    },
+    {
+      "item_name": "血清尿酸",
+      "item_code": "302025",
+      "units": "umol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "245.7",
+        "318.6"
+      ]
+    },
+    {
+      "item_name": "肌酸激酶",
+      "item_code": "308005",
+      "units": "U/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "44.6",
+        "76.1"
+      ]
+    },
+    {
+      "item_name": "乳酸脱氢酶",
+      "item_code": "308003",
+      "units": "U/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "158.8",
+        "163.1"
+      ]
+    },
+    {
+      "item_name": "钙",
+      "item_code": "305005",
+      "units": "mmol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "2.21",
+        "2.11"
+      ]
+    },
+    {
+      "item_name": "钾",
+      "item_code": "305001",
+      "units": "mmol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "4.68",
+        "3.75"
+      ]
+    },
+    {
+      "item_name": "钠",
+      "item_code": "305003",
+      "units": "mmol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "142.1",
+        "138.5"
+      ]
+    },
+    {
+      "item_name": "氯化物",
+      "item_code": "305008",
+      "units": "mmol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "102.3",
+        "103.2"
+      ]
+    },
+    {
+      "item_name": "二氧化碳",
+      "item_code": "306007A",
+      "units": "mmol/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "25.3",
+        "25"
+      ]
+    },
+    {
+      "item_name": "肌钙蛋白T",
+      "item_code": "302029",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.003"
+      ]
+    },
+    {
+      "item_name": "无机磷",
+      "item_code": "305010",
+      "units": "mmol/L",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "1.02"
+      ]
+    },
+    {
+      "item_name": "镁",
+      "item_code": "305014",
+      "units": "mmol/L",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.87"
+      ]
+    },
+    {
+      "item_name": "淀粉酶",
+      "item_code": "308011",
+      "units": "U/L",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "75.2"
+      ]
+    },
+    {
+      "item_name": "脂肪酶",
+      "item_code": "308014",
+      "units": "U/L",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "161.8"
+      ]
+    },
+    {
+      "item_name": "肌红蛋白定量",
+      "item_code": "302008",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "21"
+      ]
+    },
+    {
+      "item_name": "肌酸激酶同工酶定量测定",
+      "item_code": "308006A",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.68"
+      ]
+    },
+    {
+      "item_name": "脑利钠肽前体",
+      "item_code": "305003A",
+      "units": "pg/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "21.3"
+      ]
+    },
+    {
+      "item_name": "心脏型脂肪酸结合蛋白（H-FABP）",
+      "item_code": "402060",
+      "units": "ug/L",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.5"
+      ]
+    },
+    {
+      "item_name": "嗜酸粒细胞直接计数",
+      "item_code": "101006",
+      "units": "10^9/L",
+      "total_tests": 2,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.12",
+        "0.14"
+      ]
+    },
+    {
+      "item_name": "血浆活化部分凝血活酶时间测定",
+      "item_code": "209003",
+      "units": "s",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "35.4"
+      ]
+    },
+    {
+      "item_name": "血浆凝血酶原时间测定",
+      "item_code": "209013",
+      "units": "s",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "13.3"
+      ]
+    },
+    {
+      "item_name": "血浆凝血酶原活动度测定",
+      "item_code": "209013A",
+      "units": "%",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "96"
+      ]
+    },
+    {
+      "item_name": "国际标准化比值",
+      "item_code": "209013B",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "1.03"
+      ]
+    },
+    {
+      "item_name": "血浆D-二聚体测定",
+      "item_code": "210005",
+      "units": "μg/mL",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.38"
+      ]
+    },
+    {
+      "item_name": "ABO血型鉴定",
+      "item_code": "10103000",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "AB型"
+      ]
+    },
+    {
+      "item_name": "RH血型正定型（D抗原）",
+      "item_code": "10103015",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阳性"
+      ]
+    },
+    {
+      "item_name": "降钙素原(发光法)",
+      "item_code": "D135",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.117"
+      ]
+    },
+    {
+      "item_name": "血培养(需氧菌)+鉴定+药敏",
+      "item_code": "502006",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "普通培养5天无菌生长"
+      ]
+    },
+    {
+      "item_name": "血培养(真菌）+鉴定+药敏",
+      "item_code": "505002F",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "真菌培养5天无菌生长"
+      ]
+    },
+    {
+      "item_name": "乙肝表面抗原（发光法）",
+      "item_code": "404003f",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性(0.423)"
+      ]
+    },
+    {
+      "item_name": "急诊丙肝抗体测定（发光法）",
+      "item_code": "404010j",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性(0.032)"
+      ]
+    },
+    {
+      "item_name": "急诊梅毒特异抗体测定(发光法）",
+      "item_code": "409001j",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性(0.777)"
+      ]
+    },
+    {
+      "item_name": "乙型肝炎病毒E抗原（发光法）",
+      "item_code": "404005A",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性(0.105)"
+      ]
+    },
+    {
+      "item_name": "艾滋病抗原、抗体二联检测（发光法）",
+      "item_code": "4040241",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性(0.197)"
+      ]
+    },
+    {
+      "item_name": "尿液酸碱度测定",
+      "item_code": "102002",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "5.5"
+      ]
+    },
+    {
+      "item_name": "尿比重测定",
+      "item_code": "102003",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "1.015"
+      ]
+    },
+    {
+      "item_name": "尿红细胞检查",
+      "item_code": "102005A",
+      "units": "/ul",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿白细胞检查",
+      "item_code": "102005B",
+      "units": "/ul",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿红细胞检查(镜检）",
+      "item_code": "102005C",
+      "units": "/HPF",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿白细胞检查(镜检）",
+      "item_code": "102005D",
+      "units": "/HPF",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿上皮细胞检查(镜检）",
+      "item_code": "102005E",
+      "units": "/HPF",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿蛋白定性试验",
+      "item_code": "102008",
+      "units": "mg/dl",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿糖定性试验",
+      "item_code": "102013",
+      "units": "mg/dl",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "正常"
+      ]
+    },
+    {
+      "item_name": "尿酮体试验",
+      "item_code": "102019",
+      "units": "mg/dl",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿胆红素定性试验",
+      "item_code": "102024",
+      "units": "mg/dl",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿胆原定性试验",
+      "item_code": "102026",
+      "units": "mg/dl",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "正常"
+      ]
+    },
+    {
+      "item_name": "尿液亚硝酸盐试验",
+      "item_code": "102028",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿浊度",
+      "item_code": "102101",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "尿液颜色",
+      "item_code": "102102",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "黄色"
+      ]
+    },
+    {
+      "item_name": "尿红细胞",
+      "item_code": "402042A",
+      "units": "/ul",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "1.4"
+      ]
+    },
+    {
+      "item_name": "尿白细胞",
+      "item_code": "402042B",
+      "units": "/ul",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "2.4"
+      ]
+    },
+    {
+      "item_name": "尿上皮细胞",
+      "item_code": "402042C",
+      "units": "/ul",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "3.3"
+      ]
+    },
+    {
+      "item_name": "尿液管型",
+      "item_code": "402042D",
+      "units": "/ul",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.13"
+      ]
+    },
+    {
+      "item_name": "尿液结晶",
+      "item_code": "402042F",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0"
+      ]
+    },
+    {
+      "item_name": "尿液小圆上皮细胞",
+      "item_code": "402042G",
+      "units": "/ul",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.9"
+      ]
+    },
+    {
+      "item_name": "尿酵母细胞",
+      "item_code": "402042I",
+      "units": "/ul",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0"
+      ]
+    },
+    {
+      "item_name": "尿70%红细胞前向散射光所在位置",
+      "item_code": "402042K",
+      "units": "ch",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0"
+      ]
+    },
+    {
+      "item_name": "尿红细胞前向散射光分布宽度",
+      "item_code": "402042L",
+      "units": "ch",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0"
+      ]
+    },
+    {
+      "item_name": "尿液电导率",
+      "item_code": "402042M",
+      "units": "mS/cm",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "12.5"
+      ]
+    },
+    {
+      "item_name": "尿液管型(镜检)",
+      "item_code": "102005Z",
+      "units": "/LPF",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "其它",
+      "item_code": "102901",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": []
+    },
+    {
+      "item_name": "粪便颜色",
+      "item_code": "109001A",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "黄色"
+      ]
+    },
+    {
+      "item_name": "粪便性状",
+      "item_code": "109001B",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "软便"
+      ]
+    },
+    {
+      "item_name": "粪便白细胞",
+      "item_code": "109002A",
+      "units": "/HFP",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "粪便红细胞",
+      "item_code": "109002B",
+      "units": "/HFP",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "粪便虫卵",
+      "item_code": "109002C",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "隐血检查",
+      "item_code": "109003",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "阴性"
+      ]
+    },
+    {
+      "item_name": "甲胎蛋白测定",
+      "item_code": "411001B",
+      "units": "μg/L",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "3.14"
+      ]
+    },
+    {
+      "item_name": "CA125",
+      "item_code": "411005",
+      "units": "u/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "11.5"
+      ]
+    },
+    {
+      "item_name": "CA19-9",
+      "item_code": "411006",
+      "units": "u/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "19.03"
+      ]
+    },
+    {
+      "item_name": "CA15-3",
+      "item_code": "411007A",
+      "units": "u/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "11"
+      ]
+    },
+    {
+      "item_name": "CA724",
+      "item_code": "411008A",
+      "units": "u/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "2.99"
+      ]
+    },
+    {
+      "item_name": "CYFRA21-1",
+      "item_code": "411009",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "1.96"
+      ]
+    },
+    {
+      "item_name": "SCC",
+      "item_code": "411015",
+      "units": "ng/mL",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.5"
+      ]
+    },
+    {
+      "item_name": "绒毛膜促性腺激素β亚单位",
+      "item_code": "309041",
+      "units": "U/L",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "0.1"
+      ]
+    },
+    {
+      "item_name": "血清铁蛋白",
+      "item_code": "21290199",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "333"
+      ]
+    },
+    {
+      "item_name": "人胃蛋白酶原Ⅱ(PGⅡ)",
+      "item_code": "210001Y",
+      "units": "ng/ml",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "5.5"
+      ]
+    },
+    {
+      "item_name": "人胃蛋白酶原Ⅰ/Ⅱ(PGⅠ/Ⅱ)",
+      "item_code": "210001X",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "9.09"
+      ]
+    },
+    {
+      "item_name": "降钙素检测",
+      "item_code": "11010090",
+      "units": "pg/mL",
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "<2.00"
+      ]
+    },
+    {
+      "item_name": "厌氧血培养+鉴定",
+      "item_code": "502007D",
+      "units": null,
+      "total_tests": 1,
+      "abnormal_count": 0,
+      "low_count": 0,
+      "high_count": 0,
+      "results": [
+        "厌氧培养5天无菌生长"
+      ]
+    }
+  ],
+  "examination_statistics": [
+    {
+      "category": "放射",
+      "sub_category": "胸部",
+      "total_exams": 1,
+      "abnormal_count": 0,
+      "findings": [
+        "PICC管置入后改变，左上肺肺癌、纵隔淋巴结转移。"
+      ]
+    },
+    {
+      "category": "磁共振",
+      "sub_category": "颅脑",
+      "total_exams": 1,
+      "abnormal_count": 0,
+      "findings": [
+        "1、脑内散在缺血灶。\n2、枕骨异常信号影；请结合临床及CT检查。"
+      ]
+    },
+    {
+      "category": "超声",
+      "sub_category": "小器官",
+      "total_exams": 1,
+      "abnormal_count": 0,
+      "findings": [
+        "左侧锁骨上窝多发低回声结节，淋巴结，建议定期复查"
+      ]
+    },
+    {
+      "category": "ＣＴ",
+      "sub_category": "腹部",
+      "total_exams": 1,
+      "abnormal_count": 0,
+      "findings": [
+        "肝、胆、脾、胰及双侧肾上腺未见明确病变征象。"
+      ]
+    },
+    {
+      "category": "心电图",
+      "sub_category": "普通",
+      "total_exams": 1,
+      "abnormal_count": 0,
+      "findings": [
+        "窦性心律 正常心电图"
+      ]
+    },
+    {
+      "category": "病理",
+      "sub_category": "细胞学",
+      "total_exams": 1,
+      "abnormal_count": 0,
+      "findings": [
+        "诊断结论：\n    (气管下端后壁穿刺组织)涂片见退变的核异型细胞，倾向小细胞癌。"
+      ]
+    },
+    {
+      "category": "病理",
+      "sub_category": "常规",
+      "total_exams": 1,
+      "abnormal_count": 0,
+      "findings": [
+        "常规诊断：\n    (气管下端后壁)凝血组织内见小圆形肿瘤细胞，结合免疫组化结果考虑为小细胞癌。免疫组化结果：TTF-1(+)，Syn(+)，CgA(-)，CD56(+)，CK(部分+)，Ki-67(+80%)，p63(-)，CD3(-)，CD20(-)。"
+      ]
+    }
+  ],
+  "order_statistics": [
+    {
+      "order_class": "护理医嘱",
+      "total": 4,
+      "top_items": [
+        {
+          "name": "二级护理（新版）",
+          "count": 1
+        },
+        {
+          "name": "按内科护理常规",
+          "count": 1
+        },
+        {
+          "name": "按PICC置管后护理",
+          "count": 1
+        },
+        {
+          "name": "静脉置管护理（新版）",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "order_class": "检查医嘱",
+      "total": 6,
+      "top_items": [
+        {
+          "name": "心电图检查（多导）",
+          "count": 1
+        },
+        {
+          "name": "电子气管镜检查+活检",
+          "count": 1
+        },
+        {
+          "name": "胸部正位",
+          "count": 1
+        },
+        {
+          "name": "腹部CT平扫+增强（新版）",
+          "count": 1
+        },
+        {
+          "name": "颈部淋巴结+锁骨上窝淋巴结超声检查",
+          "count": 1
+        },
+        {
+          "name": "颅脑磁共振平扫+增强（新版）",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "order_class": "检验医嘱",
+      "total": 16,
+      "top_items": [
+        {
+          "name": "静脉采血（新版）",
+          "count": 7
+        },
+        {
+          "name": "中换药（新版）",
+          "count": 2
+        },
+        {
+          "name": "电脑营养评价",
+          "count": 1
+        },
+        {
+          "name": "持续低流量吸氧（新版）",
+          "count": 1
+        },
+        {
+          "name": "吸氧（新版）",
+          "count": 1
+        },
+        {
+          "name": "留置针穿刺",
+          "count": 1
+        },
+        {
+          "name": "小换药（新版）",
+          "count": 1
+        },
+        {
+          "name": "经外周静脉置入中心静脉导管术（新版）",
+          "count": 1
+        },
+        {
+          "name": "换药(小)（新版）",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "order_class": "输液医嘱",
+      "total": 1,
+      "top_items": [
+        {
+          "name": "普食",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "order_class": "化验申请",
+      "total": 37,
+      "top_items": [
+        {
+          "name": "血常规+CRP+IL-6",
+          "count": 2
+        },
+        {
+          "name": "急诊血常规",
+          "count": 1
+        },
+        {
+          "name": "急诊生化检验",
+          "count": 1
+        },
+        {
+          "name": "凝血四项",
+          "count": 1
+        },
+        {
+          "name": "血浆D-二聚体测定",
+          "count": 1
+        },
+        {
+          "name": "急诊血清术前八项",
+          "count": 1
+        },
+        {
+          "name": "肿瘤标记物检验",
+          "count": 1
+        },
+        {
+          "name": "血型鉴定",
+          "count": 1
+        },
+        {
+          "name": "尿液常规",
+          "count": 1
+        },
+        {
+          "name": "粪便常规",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "order_class": "药物医嘱",
+      "total": 50,
+      "top_items": [
+        {
+          "name": "0.9%氯化钠注射液",
+          "count": 14
+        },
+        {
+          "name": "★复方甘草片",
+          "count": 6
+        },
+        {
+          "name": "巴氯芬片(诺华-CH)",
+          "count": 4
+        },
+        {
+          "name": "盐酸莫西沙星氯化钠注射液",
+          "count": 3
+        },
+        {
+          "name": "5%葡萄糖注射液",
+          "count": 3
+        },
+        {
+          "name": "★氯化铵甘草口服溶液",
+          "count": 2
+        },
+        {
+          "name": "肝素钠注射液",
+          "count": 2
+        },
+        {
+          "name": "多维元素片",
+          "count": 2
+        },
+        {
+          "name": "依托泊苷注射液",
+          "count": 2
+        },
+        {
+          "name": "吲哚美辛栓",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "order_class": "其他医嘱",
+      "total": 2,
+      "top_items": [
+        {
+          "name": "陪伴(有床)",
+          "count": 1
+        },
+        {
+          "name": "出院",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
