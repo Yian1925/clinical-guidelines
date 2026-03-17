@@ -308,6 +308,7 @@ function buildGraphFromTree(treeData) {
       sublabel: n.data?.sublabel ?? "",
       detail: n.data?.detail ?? "",
       category: n.category || "treatment",
+      attribute_text: n.data?.attribute_text ?? "",
     },
     position: { x: 0, y: 0 },
   }));
@@ -389,18 +390,21 @@ function DetailPanel({ node, onClose }) {
         <div style={{ fontSize: 13, color: "#374151", lineHeight: 1.7, whiteSpace: "pre-line" }}>
           {node.data.detail}
         </div>
-        <div
-          style={{
-            marginTop: 14,
-            padding: "8px 12px",
-            background: "#F8FAFC",
-            borderRadius: 8,
-            fontSize: 11,
-            color: "#64748B",
-          }}
-        >
-          <strong>Source:</strong> ESMO Cervical Cancer Guidelines 2017
-        </div>
+        {node.data.attribute_text != null && node.data.attribute_text !== "" && (
+          <div
+            style={{
+              marginTop: 14,
+              padding: "8px 12px",
+              background: "#F8FAFC",
+              borderRadius: 8,
+              fontSize: 11,
+              color: "#64748B",
+            }}
+          >
+            <strong>属性：</strong>
+            {node.data.attribute_text}
+          </div>
+        )}
       </div>
     </div>
   );
