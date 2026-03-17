@@ -26,7 +26,7 @@ export default function ChatInterface({
   messages,
   loading,
   onSendMessage,
-  onAskQuestion,
+  onAskQuestion: _onAskQuestion,
   onOpenPatientSelector,
   patientLabel,
 }: ChatInterfaceProps) {

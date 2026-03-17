@@ -1,16 +1,16 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import ReactFlow, {
   Background,
   Controls,
   MiniMap,
   useNodesState,
   useEdgesState,
-  addEdge,
   Handle,
   Position,
 } from "reactflow";
 import dagre from "dagre";
 import "reactflow/dist/style.css";
+import { computeVisibleGraph } from "./graphVisibility";
 
 // ─── Color palette by node category ───────────────────────────────────────────
 const CATEGORY = {
@@ -209,26 +209,50 @@ const RAW_EDGES = [
 // ─── Dagre layout ──────────────────────────────────────────────────────────────
 const NODE_W = 220;
 const NODE_H = 80;
+const NODE_W_SELECTOR = 200;
+const NODE_H_CLINICAL = 100;
+const NODE_H_SELECTOR = 145;
+
+function getNodeSize(node) {
+  const isSelector = node.type === "selector" || node.data?.selector;
+  return {
+    width: NODE_W_SELECTOR,
+    height: isSelector ? NODE_H_SELECTOR : NODE_H_CLINICAL,
+  };
+}
 
 function getLayoutedElements(nodes, edges) {
   const g = new dagre.graphlib.Graph();
   g.setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: "LR", nodesep: 40, ranksep: 60, marginx: 40, marginy: 40 });
+  g.setGraph({ rankdir: "LR", nodesep: 50, ranksep: 70, marginx: 40, marginy: 40 });
 
-  nodes.forEach((n) => g.setNode(n.id, { width: NODE_W, height: NODE_H }));
+  nodes.forEach((n) => {
+    const { width, height } = getNodeSize(n);
+    g.setNode(n.id, { width, height });
+  });
   edges.forEach((e) => g.setEdge(e.source, e.target));
   dagre.layout(g);
 
   return {
     nodes: nodes.map((n) => {
       const { x, y } = g.node(n.id);
-      return { ...n, position: { x: x - NODE_W / 2, y: y - NODE_H / 2 } };
+      const { width, height } = getNodeSize(n);
+      return { ...n, position: { x: x - width / 2, y: y - height / 2 } };
     }),
     edges,
   };
 }
 
-// ─── Custom node component ─────────────────────────────────────────────────────
+// ─── Option box (white background, used by all nodes) ─────────────────────────────
+const OPTION_BOX_STYLE = {
+  background: "#fff",
+  borderRadius: 6,
+  padding: "6px 10px",
+  marginTop: 6,
+  boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+};
+
+// ─── Custom node component (option form: header + white content box) ─────────────
 function ClinicalNode({ data, selected }) {
   const c = CATEGORY[data.category] || CATEGORY.treatment;
   return (
@@ -236,9 +260,11 @@ function ClinicalNode({ data, selected }) {
       style={{
         background: c.bg,
         border: `2px solid ${selected ? c.text : c.border}`,
-        borderRadius: 10,
-        padding: "10px 14px",
-        width: NODE_W,
+        borderRadius: 8,
+        padding: "6px 10px",
+        width: NODE_W_SELECTOR,
+        minHeight: NODE_H_CLINICAL,
+        boxSizing: "border-box",
         boxShadow: selected
           ? `0 0 0 3px ${c.border}44, 0 4px 20px ${c.border}33`
           : "0 1px 6px rgba(0,0,0,0.08)",
@@ -248,32 +274,119 @@ function ClinicalNode({ data, selected }) {
         position: "relative",
       }}
     >
-      <Handle type="target" position={Position.Left} style={{ background: c.border, width: 8, height: 8 }} />
+      <Handle type="target" position={Position.Left} style={{ background: c.border, width: 6, height: 6 }} />
       <div
         style={{
           display: "inline-block",
           background: c.badge,
           color: c.badgeText,
-          fontSize: 9,
+          fontSize: 8,
           fontWeight: 600,
-          letterSpacing: "0.06em",
+          letterSpacing: "0.05em",
           textTransform: "uppercase",
-          padding: "2px 6px",
-          borderRadius: 4,
-          marginBottom: 5,
+          padding: "1px 5px",
+          borderRadius: 3,
+          marginBottom: 4,
         }}
       >
         {data.sublabel}
       </div>
-      <div style={{ fontSize: 12, fontWeight: 600, color: c.text, lineHeight: 1.35 }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: c.text, lineHeight: 1.25 }}>
         {data.label}
       </div>
-      <Handle type="source" position={Position.Right} style={{ background: c.border, width: 8, height: 8 }} />
+      <Handle type="source" position={Position.Right} style={{ background: c.border, width: 6, height: 6 }} />
     </div>
   );
 }
 
-const nodeTypes = { clinical: ClinicalNode };
+// ─── Selector node (multi-select branch) ───────────────────────────────────────
+function SelectorNode({ id, data, selected }) {
+  const c = CATEGORY[data.category] || CATEGORY.early;
+  const selector = data.selector;
+  const selectedIds = data.selectedIds ?? [];
+  const onToggle = data.onToggle;
+  if (!selector?.options?.length) {
+    return <ClinicalNode data={data} selected={selected} />;
+  }
+  return (
+    <div
+      style={{
+        background: c.bg,
+        border: `2px solid ${selected ? c.text : c.border}`,
+        borderRadius: 8,
+        padding: "6px 10px",
+        width: NODE_W_SELECTOR,
+        minHeight: NODE_H_SELECTOR,
+        boxSizing: "border-box",
+        boxShadow: selected
+          ? `0 0 0 3px ${c.border}44, 0 4px 20px ${c.border}33`
+          : "0 1px 6px rgba(0,0,0,0.08)",
+        cursor: "default",
+        transition: "box-shadow 0.15s, border-color 0.15s",
+        fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+        position: "relative",
+      }}
+    >
+      <Handle type="target" position={Position.Left} style={{ background: c.border, width: 6, height: 6 }} />
+      <div
+        style={{
+          display: "inline-block",
+          background: c.badge,
+          color: c.badgeText,
+          fontSize: 8,
+          fontWeight: 600,
+          letterSpacing: "0.05em",
+          textTransform: "uppercase",
+          padding: "1px 5px",
+          borderRadius: 3,
+          marginBottom: 4,
+        }}
+      >
+        {data.sublabel}
+      </div>
+      <div style={{ fontSize: 11, fontWeight: 600, color: c.text, lineHeight: 1.25, marginBottom: 0 }}>
+        {data.label}
+      </div>
+      <div style={{ ...OPTION_BOX_STYLE }}>
+        {selectedIds.length === 0 && (
+          <div style={{ fontSize: 9, color: "#94A3B8", marginBottom: 4 }}>
+            勾选分期以展开后续路径
+          </div>
+        )}
+        {selectedIds.length > 0 && (
+          <div style={{ fontSize: 9, color: c.badgeText, marginBottom: 4 }}>
+            已选 {selectedIds.length} 项
+          </div>
+        )}
+        {selector.options.map((opt) => (
+          <label
+            key={opt.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: 10,
+              color: "#374151",
+              cursor: "pointer",
+            }}
+            onClick={(ev) => ev.stopPropagation()}
+          >
+            <input
+              type="checkbox"
+              className="guideline-option-checkbox"
+              checked={selectedIds.includes(opt.id)}
+              onChange={(ev) => onToggle?.(opt.id, ev.target.checked)}
+            />
+            <span>{opt.label}</span>
+          </label>
+        ))}
+      </div>
+      <Handle type="source" position={Position.Right} style={{ background: c.border, width: 6, height: 6 }} />
+    </div>
+  );
+}
+
+const nodeTypes = { clinical: ClinicalNode, selector: SelectorNode };
 
 // ─── Build RF nodes/edges ──────────────────────────────────────────────────────
 function buildGraph() {
@@ -322,6 +435,35 @@ function buildGraphFromTree(treeData) {
     markerEnd: { type: "arrowclosed", color: "#94A3B8" },
   }));
   return getLayoutedElements(rfNodes, rfEdges);
+}
+
+/** Build full graph with selector and edge conditions (when) for dynamic visibility */
+function buildFullGraphFromTree(treeData) {
+  if (!treeData?.nodes?.length) return null;
+  const nodes = treeData.nodes.map((n) => ({
+    id: n.id,
+    type: n.data?.selector ? "selector" : "clinical",
+    data: {
+      label: n.data?.label ?? n.id,
+      sublabel: n.data?.sublabel ?? "",
+      detail: n.data?.detail ?? "",
+      category: n.category || "treatment",
+      attribute_text: n.data?.attribute_text ?? "",
+      selector: n.data?.selector ?? undefined,
+    },
+    position: { x: 0, y: 0 },
+  }));
+  const edges = (treeData.edges || []).map((e, i) => ({
+    id: e.id || `e${i}`,
+    source: e.source,
+    target: e.target,
+    when: e.when,
+    type: "smoothstep",
+    animated: false,
+    style: { stroke: "#94A3B8", strokeWidth: 1.5 },
+    markerEnd: { type: "arrowclosed", color: "#94A3B8" },
+  }));
+  return { nodes, edges };
 }
 
 const { nodes: INIT_NODES, edges: INIT_EDGES } = buildGraph();
@@ -460,12 +602,65 @@ function Legend() {
 
 // ─── Main app ──────────────────────────────────────────────────────────────────
 export default function CervicalCancerTree({ treeData, embedded = false }) {
-  const initial = useMemo(
-    () => (treeData ? buildGraphFromTree(treeData) : { nodes: INIT_NODES, edges: INIT_EDGES }),
+  const fullGraph = useMemo(
+    () => (treeData ? buildFullGraphFromTree(treeData) : null),
     [treeData]
   );
-  const [nodes, setNodes, onNodesChange] = useNodesState(initial.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initial.edges);
+  const staticInitial = useMemo(
+    () => (!treeData ? { nodes: INIT_NODES, edges: INIT_EDGES } : null),
+    [treeData]
+  );
+
+  const [selectionState, setSelectionState] = useState(() => ({}));
+  const handleSelectionChange = useCallback((selectorId, optionId, checked) => {
+    setSelectionState((prev) => {
+      const next = {};
+      for (const k of Object.keys(prev)) next[k] = new Set(prev[k]);
+      if (!next[selectorId]) next[selectorId] = new Set();
+      if (checked) next[selectorId].add(optionId);
+      else next[selectorId].delete(optionId);
+      return next;
+    });
+  }, []);
+
+  const visibleGraph = useMemo(() => {
+    if (!fullGraph) return staticInitial;
+    const { nodes: vNodes, edges: vEdges } = computeVisibleGraph(
+      fullGraph.nodes,
+      fullGraph.edges,
+      selectionState
+    );
+    const nodesWithCallbacks = vNodes.map((n) => {
+      if (n.data?.selector && n.type === "selector") {
+        return {
+          ...n,
+          data: {
+            ...n.data,
+            selectedIds: selectionState[n.id] ? Array.from(selectionState[n.id]) : [],
+            onToggle: (optionId, checked) => handleSelectionChange(n.id, optionId, checked),
+          },
+        };
+      }
+      return n;
+    });
+    return getLayoutedElements(nodesWithCallbacks, vEdges);
+  }, [fullGraph, staticInitial, selectionState, handleSelectionChange]);
+
+  const initialNodes = visibleGraph?.nodes ?? staticInitial?.nodes ?? [];
+  const initialEdges = visibleGraph?.edges ?? staticInitial?.edges ?? [];
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  const rfInstanceRef = useRef(null);
+  useEffect(() => {
+    if (fullGraph && visibleGraph) {
+      setNodes(visibleGraph.nodes);
+      setEdges(visibleGraph.edges);
+      const t = setTimeout(() => rfInstanceRef.current?.fitView?.({ padding: 0, duration: 200 }), 50);
+      return () => clearTimeout(t);
+    }
+  }, [fullGraph, visibleGraph, setNodes, setEdges]);
+
   const [selectedNode, setSelectedNode] = useState(null);
 
   const onNodeClick = useCallback((_, node) => {
@@ -528,6 +723,7 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
             fitView
             fitViewOptions={{ padding: 0, duration: 0 }}
             onInit={(rf) => {
+              rfInstanceRef.current = rf;
               const fit = () => rf.fitView({ padding: 0, duration: 0 });
               fit();
               setTimeout(fit, 50);

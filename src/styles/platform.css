@@ -855,3 +855,28 @@
 .toc-search-input::placeholder {
   color: var(--color-text-tertiary);
 }
+
+/* 诊疗路径选项复选框：未选中时方框内背景为白色 */
+.guideline-option-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid #94A3B8;
+  border-radius: 2px;
+  background: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.guideline-option-checkbox:checked {
+  background: var(--brand, #8B5CF6);
+  border-color: var(--brand, #8B5CF6);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7l3 3 5-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 8px 8px;
+}
+.guideline-option-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+}

@@ -85,7 +85,16 @@
           "sublabel": "FIGO IA1 – IB2 / IIA1",
           "content": "Early disease",
           "detail": "Surgically resectable disease. Management depends on exact FIGO sub-stage, LVSI status, and fertility-preservation wishes.",
-          "attribute_text": "Early-stage cervical cancer encompasses FIGO stages IA1 through IB2/IIA1. Surgical approach is primary modality."
+          "attribute_text": "Early-stage cervical cancer encompasses FIGO stages IA1 through IB2/IIA1. Surgical approach is primary modality.",
+          "selector": {
+            "mode": "multi",
+            "options": [
+              { "id": "7", "label": "FIGO IA1", "targets": ["7"] },
+              { "id": "10", "label": "FIGO IA2", "targets": ["10"] },
+              { "id": "12", "label": "FIGO IB1 + IIA1", "targets": ["12"] },
+              { "id": "14", "label": "FIGO IB2 / II / III", "targets": ["14"] }
+            ]
+          }
         }
       },
       {
@@ -305,10 +314,10 @@
       { "id": "e5",  "type": "smoothstep", "source": "2",  "target": "20", "markerEnd": { "type": "arrowclosed" } },
       { "id": "e6",  "type": "smoothstep", "source": "3",  "target": "4",  "markerEnd": { "type": "arrowclosed" } },
       { "id": "e7",  "type": "smoothstep", "source": "5",  "target": "6",  "markerEnd": { "type": "arrowclosed" } },
-      { "id": "e8",  "type": "smoothstep", "source": "6",  "target": "7",  "markerEnd": { "type": "arrowclosed" } },
-      { "id": "e9",  "type": "smoothstep", "source": "6",  "target": "10", "markerEnd": { "type": "arrowclosed" } },
-      { "id": "e10", "type": "smoothstep", "source": "6",  "target": "12", "markerEnd": { "type": "arrowclosed" } },
-      { "id": "e11", "type": "smoothstep", "source": "6",  "target": "14", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e8",  "type": "smoothstep", "source": "6",  "target": "7",  "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "6", "optionId": "7" } },
+      { "id": "e9",  "type": "smoothstep", "source": "6",  "target": "10", "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "6", "optionId": "10" } },
+      { "id": "e10", "type": "smoothstep", "source": "6",  "target": "12", "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "6", "optionId": "12" } },
+      { "id": "e11", "type": "smoothstep", "source": "6",  "target": "14", "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "6", "optionId": "14" } },
       { "id": "e12", "type": "smoothstep", "source": "7",  "target": "8",  "markerEnd": { "type": "arrowclosed" } },
       { "id": "e13", "type": "smoothstep", "source": "7",  "target": "9",  "markerEnd": { "type": "arrowclosed" } },
       { "id": "e14", "type": "smoothstep", "source": "10", "target": "11", "markerEnd": { "type": "arrowclosed" } },
