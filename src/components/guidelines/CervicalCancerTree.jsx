@@ -401,7 +401,7 @@ function DetailPanel({ node, onClose }) {
               color: "#64748B",
             }}
           >
-            <strong>属性：</strong>
+            <strong>Notes：</strong>
             {node.data.attribute_text}
           </div>
         )}
