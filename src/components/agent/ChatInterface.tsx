@@ -32,6 +32,7 @@ export default function ChatInterface({
 }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
   const areaRef = useRef<HTMLDivElement>(null);
+  const welcomeInputRef = useRef<HTMLTextAreaElement>(null);
   const uploadMenuRef = useRef<HTMLDivElement>(null);
   const { setPage, setGuidelineTocId } = useAppStore();
   const uploadMaskIdA = useId();
@@ -64,6 +65,7 @@ export default function ChatInterface({
 
   const handleChip = (q: string) => {
     setInput(q);
+    welcomeInputRef.current?.focus();
   };
 
   const goToGuidelines = (tocId?: string) => {
@@ -113,6 +115,7 @@ export default function ChatInterface({
               </div>
               <div className="input-box">
                 <textarea
+                  ref={welcomeInputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => {
