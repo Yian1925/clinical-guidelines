@@ -270,7 +270,7 @@
   width: 100%;
   box-sizing: border-box;
   background: var(--color-background-secondary);
-  border: 1.2px solid #b5b5b5;
+  border: 1.2px solid oklab(0.7109 -0.131805 0.0071752 / 0.999953);
   border-radius: 12px;
   min-height: 200px;
   transition: border-color 0.2s, border-width 0.2s;
