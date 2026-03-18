@@ -33,16 +33,7 @@
           "sublabel": "Diagnostic Workup",
           "content": "Colposcopy/Biopsy",
           "detail": "Colposcopic examination with directed biopsy to characterize the lesion and determine degree of dysplasia or invasive carcinoma.",
-          "attribute_text": "Key branching node. Results determine the pathway: CIN2/CIN3 (precancerous), Invasive cancer, Locally advanced, or Metastatic disease.",
-          "selector": {
-            "mode": "multi",
-            "options": [
-              { "id": "3", "label": "CIN2 / CIN3 (Precancerous)", "targets": ["3"] },
-              { "id": "5", "label": "Invasive Cervical Cancer", "targets": ["5"] },
-              { "id": "17", "label": "Locally Advanced Disease", "targets": ["17"] },
-              { "id": "20", "label": "Metastatic Disease", "targets": ["20"] }
-            ]
-          }
+          "attribute_text": "Key branching node. Results determine the pathway: CIN2/CIN3 (precancerous), Invasive cancer, Locally advanced, or Metastatic disease."
         }
       },
       {
@@ -94,16 +85,7 @@
           "sublabel": "FIGO IA1 – IB2 / IIA1",
           "content": "Early disease",
           "detail": "Surgically resectable disease. Management depends on exact FIGO sub-stage, LVSI status, and fertility-preservation wishes.",
-          "attribute_text": "Early-stage cervical cancer encompasses FIGO stages IA1 through IB2/IIA1. Surgical approach is primary modality.",
-          "selector": {
-            "mode": "multi",
-            "options": [
-              { "id": "7", "label": "FIGO IA1", "targets": ["7"] },
-              { "id": "10", "label": "FIGO IA2", "targets": ["10"] },
-              { "id": "12", "label": "FIGO IB1 + IIA1", "targets": ["12"] },
-              { "id": "14", "label": "FIGO IB2 / II / III", "targets": ["14"] }
-            ]
-          }
+          "attribute_text": "Early-stage cervical cancer encompasses FIGO stages IA1 through IB2/IIA1. Surgical approach is primary modality."
         }
       },
       {
@@ -317,16 +299,16 @@
     ],
     "edges": [
       { "id": "e1",  "type": "smoothstep", "source": "1",  "target": "2",  "markerEnd": { "type": "arrowclosed" } },
-      { "id": "e2",  "type": "smoothstep", "source": "2",  "target": "3",  "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "2", "optionId": "3" } },
-      { "id": "e3",  "type": "smoothstep", "source": "2",  "target": "5",  "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "2", "optionId": "5" } },
-      { "id": "e4",  "type": "smoothstep", "source": "2",  "target": "17", "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "2", "optionId": "17" } },
-      { "id": "e5",  "type": "smoothstep", "source": "2",  "target": "20", "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "2", "optionId": "20" } },
+      { "id": "e2",  "type": "smoothstep", "source": "2",  "target": "3",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e3",  "type": "smoothstep", "source": "2",  "target": "5",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e4",  "type": "smoothstep", "source": "2",  "target": "17", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e5",  "type": "smoothstep", "source": "2",  "target": "20", "markerEnd": { "type": "arrowclosed" } },
       { "id": "e6",  "type": "smoothstep", "source": "3",  "target": "4",  "markerEnd": { "type": "arrowclosed" } },
       { "id": "e7",  "type": "smoothstep", "source": "5",  "target": "6",  "markerEnd": { "type": "arrowclosed" } },
-      { "id": "e8",  "type": "smoothstep", "source": "6",  "target": "7",  "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "6", "optionId": "7" } },
-      { "id": "e9",  "type": "smoothstep", "source": "6",  "target": "10", "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "6", "optionId": "10" } },
-      { "id": "e10", "type": "smoothstep", "source": "6",  "target": "12", "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "6", "optionId": "12" } },
-      { "id": "e11", "type": "smoothstep", "source": "6",  "target": "14", "markerEnd": { "type": "arrowclosed" }, "when": { "selectorId": "6", "optionId": "14" } },
+      { "id": "e8",  "type": "smoothstep", "source": "6",  "target": "7",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e9",  "type": "smoothstep", "source": "6",  "target": "10", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e10", "type": "smoothstep", "source": "6",  "target": "12", "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e11", "type": "smoothstep", "source": "6",  "target": "14", "markerEnd": { "type": "arrowclosed" } },
       { "id": "e12", "type": "smoothstep", "source": "7",  "target": "8",  "markerEnd": { "type": "arrowclosed" } },
       { "id": "e13", "type": "smoothstep", "source": "7",  "target": "9",  "markerEnd": { "type": "arrowclosed" } },
       { "id": "e14", "type": "smoothstep", "source": "10", "target": "11", "markerEnd": { "type": "arrowclosed" } },

@@ -26,13 +26,14 @@ function getRootIds(nodes: NodeLike[], edges: EdgeWithCondition[]): string[] {
 
 /**
  * From root node ids, BFS traverse the graph. When leaving a node, follow an edge only if:
- * - the edge has no `when`, or
- * - the edge has `when` and selectionState[when.selectorId] contains when.optionId.
+ * - the node is not in collapsedNodes (if provided),
+ * - the edge has no `when`, or the edge has `when` and selectionState[when.selectorId] contains when.optionId.
  */
 export function computeVisibleNodeIds(
   nodes: NodeLike[],
   edges: EdgeWithCondition[],
-  selectionState: SelectionState
+  selectionState: SelectionState,
+  collapsedNodes?: Set<string>
 ): Set<string> {
   const outEdges = new Map<string, EdgeWithCondition[]>();
   for (const e of edges) {
@@ -48,6 +49,7 @@ export function computeVisibleNodeIds(
 
   while (queue.length > 0) {
     const u = queue.shift()!;
+    if (collapsedNodes?.has(u)) continue;
     const outgoing = outEdges.get(u) ?? [];
     for (const e of outgoing) {
       const canFollow = !e.when || (selectionState[e.when.selectorId]?.has(e.when.optionId) ?? false);
@@ -62,18 +64,20 @@ export function computeVisibleNodeIds(
 }
 
 /**
- * Returns visible nodes and edges: nodes that are reachable under selectionState,
- * and edges that are traversable (no when, or when satisfied) and whose source is reachable.
+ * Returns visible nodes and edges: nodes that are reachable under selectionState and collapsedNodes,
+ * and edges that are traversable and whose source is reachable and not collapsed.
  */
 export function computeVisibleGraph<TNode extends NodeLike>(
   fullNodes: TNode[],
   fullEdges: EdgeWithCondition[],
-  selectionState: SelectionState
+  selectionState: SelectionState,
+  collapsedNodes?: Set<string>
 ): { nodes: TNode[]; edges: EdgeWithCondition[] } {
-  const visibleIds = computeVisibleNodeIds(fullNodes, fullEdges, selectionState);
+  const visibleIds = computeVisibleNodeIds(fullNodes, fullEdges, selectionState, collapsedNodes);
   const nodes = fullNodes.filter((n) => visibleIds.has(n.id));
   const edges = fullEdges.filter((e) => {
     if (!visibleIds.has(e.source)) return false;
+    if (collapsedNodes?.has(e.source)) return false;
     if (!e.when) return true;
     return selectionState[e.when.selectorId]?.has(e.when.optionId) ?? false;
   });

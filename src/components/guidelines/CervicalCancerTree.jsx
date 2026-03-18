@@ -291,8 +291,23 @@ function ClinicalNode({ data, selected }) {
       >
         {data.sublabel}
       </div>
-      <div style={{ fontSize: 11, fontWeight: 600, color: c.text, lineHeight: 1.25 }}>
-        {data.label}
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
+        {data.hasChildren && (
+          <input
+            type="checkbox"
+            className="guideline-option-checkbox"
+            checked={!data.isCollapsed}
+            onChange={(ev) => {
+              ev.stopPropagation();
+              data.onToggleCollapse?.();
+            }}
+            onClick={(ev) => ev.stopPropagation()}
+            style={{ marginTop: 2, flexShrink: 0 }}
+          />
+        )}
+        <div style={{ fontSize: 11, fontWeight: 600, color: c.text, lineHeight: 1.25, flex: 1 }}>
+          {data.label}
+        </div>
       </div>
       <Handle type="source" position={Position.Right} style={{ background: c.border, width: 6, height: 6 }} />
     </div>
@@ -344,8 +359,23 @@ function SelectorNode({ id, data, selected }) {
       >
         {data.sublabel}
       </div>
-      <div style={{ fontSize: 11, fontWeight: 600, color: c.text, lineHeight: 1.25, marginBottom: 0 }}>
-        {data.label}
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 6, marginBottom: 0 }}>
+        {data.hasChildren && (
+          <input
+            type="checkbox"
+            className="guideline-option-checkbox"
+            checked={!data.isCollapsed}
+            onChange={(ev) => {
+              ev.stopPropagation();
+              data.onToggleCollapse?.();
+            }}
+            onClick={(ev) => ev.stopPropagation()}
+            style={{ marginTop: 2, flexShrink: 0 }}
+          />
+        )}
+        <div style={{ fontSize: 11, fontWeight: 600, color: c.text, lineHeight: 1.25, flex: 1 }}>
+          {data.label}
+        </div>
       </div>
       <div style={{ ...OPTION_BOX_STYLE }}>
         {selectedIds.length === 0 && (
@@ -637,6 +667,7 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
     });
   }, [fullGraph]);
 
+  const [collapsedNodes, setCollapsedNodes] = useState(() => new Set());
   const handleSelectionChange = useCallback((selectorId, optionId, checked) => {
     setSelectionState((prev) => {
       const next = {};
@@ -648,28 +679,49 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
     });
   }, []);
 
+  const handleToggleCollapse = useCallback((nodeId) => {
+    setCollapsedNodes((prev) => {
+      const next = new Set(prev);
+      if (next.has(nodeId)) next.delete(nodeId);
+      else next.add(nodeId);
+      return next;
+    });
+  }, []);
+
+  const hasChildren = useMemo(
+    () => (fullGraph?.edges ? new Set(fullGraph.edges.map((e) => e.source)) : new Set()),
+    [fullGraph?.edges]
+  );
+
   const visibleGraph = useMemo(() => {
     if (!fullGraph) return staticInitial;
     const { nodes: vNodes, edges: vEdges } = computeVisibleGraph(
       fullGraph.nodes,
       fullGraph.edges,
-      selectionState
+      selectionState,
+      collapsedNodes
     );
     const nodesWithCallbacks = vNodes.map((n) => {
+      const baseData = {
+        ...n.data,
+        hasChildren: hasChildren.has(n.id),
+        isCollapsed: collapsedNodes.has(n.id),
+        onToggleCollapse: () => handleToggleCollapse(n.id),
+      };
       if (n.data?.selector && n.type === "selector") {
         return {
           ...n,
           data: {
-            ...n.data,
+            ...baseData,
             selectedIds: selectionState[n.id] ? Array.from(selectionState[n.id]) : [],
             onToggle: (optionId, checked) => handleSelectionChange(n.id, optionId, checked),
           },
         };
       }
-      return n;
+      return { ...n, data: baseData };
     });
     return getLayoutedElements(nodesWithCallbacks, vEdges);
-  }, [fullGraph, staticInitial, selectionState, handleSelectionChange]);
+  }, [fullGraph, staticInitial, selectionState, collapsedNodes, hasChildren, handleSelectionChange, handleToggleCollapse]);
 
   const initialNodes = visibleGraph?.nodes ?? staticInitial?.nodes ?? [];
   const initialEdges = visibleGraph?.edges ?? staticInitial?.edges ?? [];
