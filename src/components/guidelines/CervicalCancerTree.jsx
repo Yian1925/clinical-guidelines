@@ -346,24 +346,26 @@ function SelectorNode({ id, data, selected }) {
       }}
     >
       <Handle type="target" position={Position.Left} style={{ background: c.border, width: 6, height: 6 }} />
+      {!!data.sublabel && (
+        <div
+          style={{
+            display: "inline-block",
+            background: c.badge,
+            color: c.badgeText,
+            fontSize: 8,
+            fontWeight: 600,
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+            padding: "1px 5px",
+            borderRadius: 3,
+            marginBottom: 4,
+          }}
+        >
+          {data.sublabel}
+        </div>
+      )}
       {!selectorOnly && (
         <>
-          <div
-            style={{
-              display: "inline-block",
-              background: c.badge,
-              color: c.badgeText,
-              fontSize: 8,
-              fontWeight: 600,
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
-              padding: "1px 5px",
-              borderRadius: 3,
-              marginBottom: 4,
-            }}
-          >
-            {data.sublabel}
-          </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 6, marginBottom: 0 }}>
             {data.hasChildren && (
               <input
@@ -405,6 +407,7 @@ function SelectorNode({ id, data, selected }) {
               fontSize: 10,
               color: "#374151",
               cursor: "pointer",
+              marginBottom: 8,
             }}
             onClick={(ev) => ev.stopPropagation()}
           >
@@ -514,7 +517,7 @@ function buildFullGraphFromTree(treeData) {
       const parentLabel = (n.data?.label ?? n.id).trim();
       const options = childIds.map((id) => {
         const child = nodeMap.get(id);
-        const label = (child?.data?.label ?? id).trim();
+        const label = (child?.data?.label ?? id).trim().replace(/\s*\/\s*/g, "/");
         return { id, label, targets: [id] };
       }).filter((opt) => opt.label !== parentLabel);
       if (options.length > 0) {
@@ -524,10 +527,13 @@ function buildFullGraphFromTree(treeData) {
           id: selId,
           type: "selector",
           data: {
-            label: "",
-            sublabel: "",
+            // Keep selector-only card UI minimal, but allow DetailPanel to show full content
+            // by inheriting the parent's label/detail/notes.
+            label: n.data?.label ?? n.id,
+            sublabel: n.data?.sublabel ?? "",
             category: n.category || "diagnosis",
-            attribute_text: "",
+            detail: n.data?.detail ?? "",
+            attribute_text: n.data?.attribute_text ?? "",
             selector: { mode: "multi", options },
             selectorOnly: true,
           },

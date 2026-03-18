@@ -1,0 +1,394 @@
+{
+  "meta": {
+    "id": "bae722ad-9fb3-45f5-aac1-7706f563e21b",
+    "name": "Early breast cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "source": "ESMO",
+    "version": "2023",
+    "publication_date": "December 13 2023",
+    "description": "Comprehensive treatment algorithm for early breast cancer (EBC) covering diagnosis, staging, locoregional treatment, and systemic therapy across all subtypes (HR+/HER2-, HER2+, TNBC)."
+  },
+  "tree": {
+    "name": "Early breast cancer: ESMO Clinical Practice Guideline",
+    "nodes": [
+      {
+        "id": "ROOT",
+        "type": "custom",
+        "category": "guideline",
+        "data": {
+          "id": "ROOT",
+          "label": "Early Breast Cancer (EBC)",
+          "sublabel": "ESMO Guideline 2023",
+          "content": "Early breast cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up",
+          "detail": "Comprehensive ESMO recommendations for EBC covering diagnostic work-up, locoregional management (surgery + RT), and systemic therapy stratified by breast cancer subtype (HR+/HER2-, HER2+, TNBC).",
+          "attribute_text": "The guideline provides comprehensive recommendations for the diagnosis, treatment, and follow-up of early breast cancer. Key guidance includes staging, locoregional treatment strategies, and systemic therapies for all major subtypes."
+        }
+      },
+      {
+        "id": "DX",
+        "type": "custom",
+        "category": "diagnosis",
+        "data": {
+          "id": "DX",
+          "label": "Diagnostic Work-up & Staging",
+          "sublabel": "Initial Assessment",
+          "content": "Diagnostic work-up and staging of EBC.",
+          "detail": "Bilateral mammography and ultrasound of breasts and regional lymph nodes. MRI for special cases. Core biopsy for diagnosis and biomarker assessment (ER, PgR, HER2, Ki-67). gBRCA1/2 testing if family history or therapeutic relevance. TNM staging per UICC TNM8.",
+          "attribute_text": "The guideline provides recommendations for diagnosis and staging including bilateral mammography, ultrasound, core biopsy, biomarker assessment, and systemic staging imaging for high-risk cases."
+        }
+      },
+      {
+        "id": "ALN",
+        "type": "custom",
+        "category": "locoregional",
+        "data": {
+          "id": "ALN",
+          "label": "Management of ALN Involvement",
+          "sublabel": "Axillary Lymph Node",
+          "content": "Management of ALN involvement in EBC.",
+          "detail": "For cN0/iN0: SLNB is the standard. If SLN negative → no further locoregional Tx. If SLN positive and ACOSOG-Z0011 / AMAROS criteria met → regional RT; if not met or >2 positive SLNs → ALND. For cN+/iN+: biopsy-confirm then ALND or RT. After neoadjuvant ChT: SLNB feasible if initial cN1 converting to ycN0; persistent nodal disease requires ALND.",
+          "attribute_text": "SLNB is recommended for clinically negative axilla. ALND remains standard for >2 positive SLNs or those not meeting Z0011 / AMAROS criteria."
+        }
+      },
+      {
+        "id": "OVERVIEW",
+        "type": "custom",
+        "category": "overview",
+        "data": {
+          "id": "OVERVIEW",
+          "label": "EBC Treatment Overview",
+          "sublabel": "By Subtype",
+          "content": "EBC treatment overview.",
+          "detail": "HR+: ET ± OFS ± bisphosphonates ± targeted therapy. HR+/HER2-: neoadjuvant or primary surgery ± RT based on tumour size and nodal involvement. HER2+: trastuzumab ± pertuzumab-based regimens. TNBC: neoadjuvant taxane/carboplatin/anthracycline ± pembrolizumab for ≥cT2 or N+.",
+          "attribute_text": "Overview of treatment recommendations for EBC stratified by HR and HER2 status."
+        }
+      },
+      {
+        "id": "HR_SYS",
+        "type": "custom",
+        "category": "subtype",
+        "data": {
+          "id": "HR_SYS",
+          "label": "Systemic Tx: HR+ / HER2-",
+          "sublabel": "Hormone Receptor Positive",
+          "content": "Systemic treatment of HR-positive, HER2-negative EBC.",
+          "detail": "Risk stratification guides systemic therapy selection. Low/intermediate risk: ET alone. Higher risk (luminal B-like, N+): ET + ChT ± CDK4/6 inhibitor (abemaciclib 2y or ribociclib 3y). gBRCA1/2m + high-risk: olaparib 1y + ET. ET is near-universal for all HR+ stages.",
+          "attribute_text": "Treatment is individualised based on tumour stage, biology (subtype, Ki-67, grade), menopausal status, and available therapeutic interventions."
+        }
+      },
+      {
+        "id": "ET_ROOT",
+        "type": "custom",
+        "category": "endocrine",
+        "data": {
+          "id": "ET_ROOT",
+          "label": "Adjuvant Endocrine Therapy in HR+ EBC",
+          "sublabel": "Endocrine Therapy · Root",
+          "content": "Adjuvant endocrine therapy in HR+ EBC",
+          "detail": "ET is recommended for all patients with HR+ invasive breast cancer of any stage and HER2 status. Standard duration is 5 years; extended to 7–10 years further reduces recurrence in higher-stage disease. Choice depends on menopausal status, tumour stage/biology, and tolerance.",
+          "attribute_text": "Adjuvant ET reduces risk of locoregional recurrence, distant metastatic recurrence, and contralateral breast cancer while improving OS. OFS + AI superior to OFS + tamoxifen in premenopausal high-risk patients."
+        }
+      },
+      {
+        "id": "PRE",
+        "type": "custom",
+        "category": "stratification",
+        "data": {
+          "id": "PRE",
+          "label": "Premenopausal",
+          "sublabel": "Menopausal Status",
+          "content": "Premenopausal",
+          "detail": "Premenopausal status at diagnosis. OFS is required for higher-risk disease. Lower-risk patients (Luminal A-like stage I) may be managed with tamoxifen alone.",
+          "attribute_text": "Among premenopausal women with higher-risk HR+ cancers, OFS paired with AI or tamoxifen reduces recurrence and improves OS versus tamoxifen alone."
+        }
+      },
+      {
+        "id": "PRE_LA1",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "PRE_LA1",
+          "label": "Luminal A-like · Stage I",
+          "sublabel": "Premenopausal · Low Risk",
+          "content": "Luminal A-like stage I",
+          "detail": "Luminal A-like: ER+/PgR+, HER2-, low grade (G1–2), low Ki-67 (<20%), stage I (T1 N0). Low recurrence risk — tamoxifen monotherapy is appropriate.",
+          "attribute_text": "Low-risk premenopausal patients with Luminal A-like stage I disease. OFS not routinely required."
+        }
+      },
+      {
+        "id": "TX_PRE_LA1",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TX_PRE_LA1",
+          "label": "Tamoxifen",
+          "sublabel": "[I, A] · 5 years",
+          "content": "Tamoxifen [I, A]",
+          "detail": "Tamoxifen 20 mg/day for 5 years (standard) or extended to 10 years for higher-risk. Well-tolerated in premenopausal women. Reduces recurrence and improves OS in HR+ EBC.",
+          "attribute_text": "Tamoxifen is the standard adjuvant ET for premenopausal Luminal A-like stage I disease. Extended duration (7–10y) considered for higher-risk cases."
+        }
+      },
+      {
+        "id": "PRE_HIGH",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "PRE_HIGH",
+          "label": "Luminal A-like Stage II–III\nLuminal B-like Stage I–III",
+          "sublabel": "Premenopausal · Higher Risk",
+          "content": "Luminal A-like stage II-III\nLuminal B-like stage I-III",
+          "detail": "Higher-risk premenopausal disease: Luminal A-like stage II–III or any Luminal B-like (HER2-, G2–3, Ki-67 ≥20%, or N+). OFS required in combination with AI or tamoxifen.",
+          "attribute_text": "Higher-risk premenopausal patients require OFS. OFS + AI is superior to OFS + tamoxifen for recurrence reduction."
+        }
+      },
+      {
+        "id": "TX_OFS_TAM",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TX_OFS_TAM",
+          "label": "OFS + Tamoxifen",
+          "sublabel": "[I, A]",
+          "content": "OFS-tamoxifen [I, A]",
+          "detail": "Ovarian function suppression (GnRH agonist: goserelin or leuprolide) combined with tamoxifen 20 mg/day. OFS duration typically 5 years; tamoxifen continued for total 5–10 years. Option when AI is not tolerated.",
+          "attribute_text": "OFS + tamoxifen reduces recurrences compared with tamoxifen alone in premenopausal higher-risk patients. [I, A] evidence level."
+        }
+      },
+      {
+        "id": "TX_OFS_AI",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TX_OFS_AI",
+          "label": "OFS + Aromatase Inhibitor (AI)",
+          "sublabel": "[I, A] · Preferred for High Risk",
+          "content": "OFS-AI [I, A]",
+          "detail": "Ovarian function suppression (GnRH agonist) + aromatase inhibitor (exemestane, anastrozole, or letrozole). OFS + AI reduces recurrences compared with OFS + tamoxifen. Preferred for highest-risk premenopausal patients.",
+          "attribute_text": "OFS with AI reduces recurrences compared with OFS with tamoxifen. Preferred regimen for premenopausal Luminal A stage II–III or Luminal B stage I–III. [I, A]."
+        }
+      },
+      {
+        "id": "POST",
+        "type": "custom",
+        "category": "stratification",
+        "data": {
+          "id": "POST",
+          "label": "Postmenopausal",
+          "sublabel": "Menopausal Status",
+          "content": "Postmenopausal",
+          "detail": "Postmenopausal status (natural or treatment-induced). AIs are the preferred ET backbone. OFS not required. AI-based therapy recommended for higher-risk disease.",
+          "attribute_text": "In postmenopausal women, AIs used upfront or sequentially after 2–3 years of tamoxifen offer lower recurrence risk than tamoxifen alone, especially in higher-stage cancers."
+        }
+      },
+      {
+        "id": "TX_TAM_AI",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TX_TAM_AI",
+          "label": "Tamoxifen → AI",
+          "sublabel": "[I, A] · Sequential",
+          "content": "Tamoxifen followed by AI [I, A]",
+          "detail": "Tamoxifen 20 mg/day for 2–3 years followed by aromatase inhibitor (anastrozole, letrozole, or exemestane) to complete 5+ years of ET. Switching strategy improves outcomes over tamoxifen alone.",
+          "attribute_text": "Sequential tamoxifen → AI is a preferred strategy for postmenopausal women, particularly when upfront AI is not tolerated. [I, A]."
+        }
+      },
+      {
+        "id": "TX_AI",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TX_AI",
+          "label": "Aromatase Inhibitor (AI)",
+          "sublabel": "[I, A] · Upfront",
+          "content": "AI [I, A]",
+          "detail": "Upfront aromatase inhibitor (anastrozole, letrozole, or exemestane) for 5 years (standard) or extended to 7–10 years for higher-risk disease. AI preferred over tamoxifen in postmenopausal women with higher-risk disease.",
+          "attribute_text": "AIs reduce recurrence risk compared with tamoxifen in postmenopausal women, especially in higher-stage cancers. Extended AI therapy (7–10y) further improves outcomes. [I, A]."
+        }
+      },
+      {
+        "id": "TX_AI_TAM",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TX_AI_TAM",
+          "label": "AI → Tamoxifen",
+          "sublabel": "[I, A] · Sequential",
+          "content": "AI followed by tamoxifen [I, A]",
+          "detail": "Aromatase inhibitor for 2–3 years followed by tamoxifen to complete 5 years of ET. Alternative sequential strategy when extended AI is not tolerated.",
+          "attribute_text": "AI followed by tamoxifen is an alternative sequential strategy for postmenopausal patients. [I, A]."
+        }
+      },
+      {
+        "id": "TX_TAM_POST",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TX_TAM_POST",
+          "label": "Tamoxifen",
+          "sublabel": "[I, A] · If AI Not Tolerated",
+          "content": "Tamoxifen [I, A]",
+          "detail": "Tamoxifen 20 mg/day for 5 years. Recommended for postmenopausal women when AIs are contraindicated or not tolerated (e.g., severe arthralgias, osteoporosis without adequate bone protection).",
+          "attribute_text": "Tamoxifen is acceptable for postmenopausal patients who cannot tolerate AIs. Extended duration (up to 10y) further reduces recurrence in higher-risk disease. [I, A]."
+        }
+      },
+      {
+        "id": "TNBC_ROOT",
+        "type": "custom",
+        "category": "subtype",
+        "data": {
+          "id": "TNBC_ROOT",
+          "label": "Management of Early TNBC",
+          "sublabel": "Triple-Negative Breast Cancer",
+          "content": "Management of early TNBC.",
+          "detail": "TNBC: ER-/PgR-/HER2-. gBRCA1/2 testing recommended for all. Systemic therapy strategy depends on clinical tumour size and nodal status. Neoadjuvant approach preferred for cT1c or larger / node-positive disease.",
+          "attribute_text": "Treatment for early TNBC is guided by tumour size, nodal status, and germline BRCA status. Neoadjuvant immunochemotherapy (pembrolizumab + ChT) is recommended for ≥cT2 or N+."
+        }
+      },
+      {
+        "id": "TNBC_SMALL",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "TNBC_SMALL",
+          "label": "cT1a / cT1b N0",
+          "sublabel": "TNBC · Small Tumour",
+          "content": "cT1a or cT1b N0",
+          "detail": "Very small TNBC (≤10 mm) without lymph node involvement. Primary surgery followed by whole-breast RT if BCS. Adjuvant systemic therapy depends on pathological stage.",
+          "attribute_text": "For very small TNBC (T1a/T1b N0), primary surgery is the standard approach. Adjuvant ChT may be omitted for pT1a pN0."
+        }
+      },
+      {
+        "id": "TNBC_SMALL_TX",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TNBC_SMALL_TX",
+          "label": "Surgery → RT → ± Adjuvant ChT",
+          "sublabel": "pT1a pN0: Observe · pT1b+: ChT",
+          "content": "Surgery + WBRT if indicated; pT1a pN0: no adjuvant systemic Tx; pT1b pN0 and >pT1b: 6-8 cycles ChT",
+          "detail": "• pT1a pN0: surgery ± RT; no adjuvant systemic therapy recommended\n• pT1b pN0: surgery ± RT; consider 6–8 cycles adjuvant ChT (AC/EC → paclitaxel)\n• >pT1b any pN: surgery ± RT + 6–8 cycles ChT",
+          "attribute_text": "Adjuvant systemic therapy is not recommended for pT1a pN0 TNBC. For pT1b or larger, anthracycline/taxane ChT is recommended."
+        }
+      },
+      {
+        "id": "TNBC_LARGE",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "TNBC_LARGE",
+          "label": "cT1c–T4 or N+",
+          "sublabel": "TNBC · Larger / Node-Positive",
+          "content": "cT1c-T4 or N+",
+          "detail": "Larger TNBC (>10 mm) or lymph node-positive disease. Neoadjuvant immunochemotherapy is the preferred treatment approach to enable pCR assessment and guide post-surgery therapy.",
+          "attribute_text": "For cT1c or larger / N+ TNBC, neoadjuvant therapy is preferred. Pembrolizumab + ChT is recommended for ≥cT2 or N+ to improve pCR and event-free survival."
+        }
+      },
+      {
+        "id": "TNBC_NEOADJ",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "TNBC_NEOADJ",
+          "label": "Neoadjuvant ChT ± Pembrolizumab",
+          "sublabel": "Then Surgery + RT → Post-neoadjuvant Tx",
+          "content": "6-8 cycles taxane-(carbo)platin-AC/EC ± pembrolizumab (≥cT2 or N+) → surgery → RT → post-neoadjuvant therapy",
+          "detail": "Neoadjuvant regimen:\n• 6–8 cycles taxane + (carbo)platin + AC/EC\n• Pembrolizumab added for ≥cT2 or N+ (KEYNOTE-522)\nPost-surgery per pCR status and gBRCA:\n• pCR + gBRCA1/2m → olaparib 1y\n• pCR + no mutation → pembrolizumab continuation\n• Residual disease + gBRCA1/2m → olaparib 1y\n• Residual disease + no mutation → capecitabine 6–8 cycles",
+          "attribute_text": "KEYNOTE-522: pembrolizumab + ChT improved pCR rate and EFS in ≥cT2/N+ TNBC. Olaparib recommended for gBRCA1/2m patients with residual disease (OlympiA trial)."
+        }
+      },
+      {
+        "id": "HER2_ROOT",
+        "type": "custom",
+        "category": "subtype",
+        "data": {
+          "id": "HER2_ROOT",
+          "label": "Management of HER2-Positive EBC",
+          "sublabel": "HER2+ Breast Cancer",
+          "content": "Management of HER2-positive EBC.",
+          "detail": "HER2+: IHC 3+ or ISH amplified. Trastuzumab added to ChT improves OS by ~1/3. Pertuzumab added for N+ or high-risk N0 disease. T-DM1 for residual disease after neoadjuvant HP + ChT. HR+ patients also receive adjuvant ET.",
+          "attribute_text": "Trastuzumab-based therapy is standard for all HER2+ EBC. Dual HER2 blockade (HP) preferred for higher-risk disease. T-DM1 recommended for non-pCR after neoadjuvant HP-ChT."
+        }
+      },
+      {
+        "id": "HER2_SMALL",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "HER2_SMALL",
+          "label": "cT1 cN0",
+          "sublabel": "HER2+ · Small, Node-Negative",
+          "content": "cT1 cN0",
+          "detail": "Small HER2+ tumour (≤2 cm) with clinically negative lymph nodes. Primary surgery is the standard. Tumours <2 cm may also be considered for neoadjuvant therapy. Adjuvant therapy based on final pathological stage.",
+          "attribute_text": "For small HER2+ tumours (cT1 cN0), primary surgery is performed. Adjuvant paclitaxel + trastuzumab (12 weeks) is recommended for pT1 pN0."
+        }
+      },
+      {
+        "id": "HER2_SMALL_TX",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "HER2_SMALL_TX",
+          "label": "Surgery + RT → Adjuvant HER2-Targeted Tx",
+          "sublabel": "pT1pN0: Paclitaxel+T · ≥pT2 or pN+: ChT+HP",
+          "content": "Surgery + RT if indicated → pT1 pN0: paclitaxel × 12w + trastuzumab 18 cycles; ≥pT2 pN0 or pN+: 6-8 cycles ChT + trastuzumab or HP; all complete 1y trastuzumab or HP; HR+: add ET",
+          "detail": "• pT1 pN0: paclitaxel × 12 weeks + trastuzumab (total 18 cycles = 1 year)\n• ≥pT2 pN0: 6–8 cycles ChT + trastuzumab (total 1 year)\n• pN+: 6–8 cycles ChT + HP (total 1 year)\n• All: complete 1 year trastuzumab or HP\n• HR+: adjuvant ET (AI or tamoxifen per menopausal status)",
+          "attribute_text": "Adjuvant paclitaxel + trastuzumab (APT regimen) for pT1 pN0 HER2+ EBC. Anthracycline/taxane + HP for ≥pT2 or N+ disease."
+        }
+      },
+      {
+        "id": "HER2_LARGE",
+        "type": "custom",
+        "category": "stage",
+        "data": {
+          "id": "HER2_LARGE",
+          "label": "≥cT2 or cN+",
+          "sublabel": "HER2+ · Larger / Node-Positive",
+          "content": "≥cT2 or cN+",
+          "detail": "Larger HER2+ tumours (>2 cm) or lymph node-positive disease. Neoadjuvant dual HER2 blockade (trastuzumab + pertuzumab) with ChT is the standard. Post-surgery therapy depends on pCR status.",
+          "attribute_text": "Neoadjuvant HP + ChT is standard for ≥cT2 or cN+ HER2+ EBC. pCR guides post-surgery therapy: T-DM1 for residual disease improves iDFS (KATHERINE trial)."
+        }
+      },
+      {
+        "id": "HER2_NEOADJ",
+        "type": "custom",
+        "category": "treatment",
+        "data": {
+          "id": "HER2_NEOADJ",
+          "label": "Neoadjuvant ChT + HP → Surgery + RT → Post-neoadjuvant Tx",
+          "sublabel": "pCR: 1y T or HP · Residual: T-DM1 ≤14 cycles",
+          "content": "6-8 cycles ChT + HP → surgery → RT if indicated → pCR: 1y trastuzumab or HP; residual disease: T-DM1 ≤14 cycles; HR+: add ET",
+          "detail": "Neoadjuvant: 6–8 cycles anthracycline/taxane + trastuzumab + pertuzumab (HP)\nPost-surgery:\n• pCR (ypT0/is ypN0):\n  - cN0 at diagnosis → 1 year trastuzumab\n  - cN+ at diagnosis → 1 year HP\n• Residual invasive disease (non-pCR):\n  - T-DM1 (trastuzumab emtansine) up to 14 cycles\n  - Neratinib 1 year for HR+ with residual disease (optional)\n• HR+: adjuvant ET regardless of pCR status",
+          "attribute_text": "KATHERINE trial: T-DM1 superior to trastuzumab for non-pCR after neoadjuvant HP + ChT (iDFS HR 0.50). APHINITY: pertuzumab + trastuzumab + ChT improved iDFS for N+ HER2+ EBC."
+        }
+      }
+    ],
+    "edges": [
+      { "id": "e1",  "type": "smoothstep", "source": "ROOT",      "target": "DX",           "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e2",  "type": "smoothstep", "source": "ROOT",      "target": "ALN",          "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e3",  "type": "smoothstep", "source": "ROOT",      "target": "OVERVIEW",     "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e4",  "type": "smoothstep", "source": "ROOT",      "target": "HR_SYS",       "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e5",  "type": "smoothstep", "source": "ROOT",      "target": "TNBC_ROOT",    "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e6",  "type": "smoothstep", "source": "ROOT",      "target": "HER2_ROOT",    "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e7",  "type": "smoothstep", "source": "HR_SYS",    "target": "ET_ROOT",      "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e8",  "type": "smoothstep", "source": "ET_ROOT",   "target": "PRE",          "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e9",  "type": "smoothstep", "source": "ET_ROOT",   "target": "POST",         "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e10", "type": "smoothstep", "source": "PRE",       "target": "PRE_LA1",      "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e11", "type": "smoothstep", "source": "PRE",       "target": "PRE_HIGH",     "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e12", "type": "smoothstep", "source": "PRE_LA1",   "target": "TX_PRE_LA1",   "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e13", "type": "smoothstep", "source": "PRE_HIGH",  "target": "TX_OFS_TAM",   "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e14", "type": "smoothstep", "source": "PRE_HIGH",  "target": "TX_OFS_AI",    "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e15", "type": "smoothstep", "source": "POST",      "target": "TX_TAM_AI",    "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e16", "type": "smoothstep", "source": "POST",      "target": "TX_AI",        "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e17", "type": "smoothstep", "source": "POST",      "target": "TX_AI_TAM",    "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e18", "type": "smoothstep", "source": "POST",      "target": "TX_TAM_POST",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e19", "type": "smoothstep", "source": "TNBC_ROOT", "target": "TNBC_SMALL",   "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e20", "type": "smoothstep", "source": "TNBC_ROOT", "target": "TNBC_LARGE",   "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e21", "type": "smoothstep", "source": "TNBC_SMALL","target": "TNBC_SMALL_TX","markerEnd": { "type": "arrowclosed" } },
+      { "id": "e22", "type": "smoothstep", "source": "TNBC_LARGE","target": "TNBC_NEOADJ",  "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e23", "type": "smoothstep", "source": "HER2_ROOT", "target": "HER2_SMALL",   "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e24", "type": "smoothstep", "source": "HER2_ROOT", "target": "HER2_LARGE",   "markerEnd": { "type": "arrowclosed" } },
+      { "id": "e25", "type": "smoothstep", "source": "HER2_SMALL","target": "HER2_SMALL_TX","markerEnd": { "type": "arrowclosed" } },
+      { "id": "e26", "type": "smoothstep", "source": "HER2_LARGE","target": "HER2_NEOADJ",  "markerEnd": { "type": "arrowclosed" } }
+    ]
+  }
+}
