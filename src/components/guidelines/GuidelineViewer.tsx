@@ -4,6 +4,7 @@ import { useAppStore } from '../../store';
 // @ts-expect-error CervicalCancerTree is JSX, no declaration file
 import CervicalCancerTree from './CervicalCancerTree';
 import cervicalTreeData from '../../data/guidelines/cervical_cancer_tree_complete.json';
+import earlyBreastTreeData from '../../data/guidelines/early_breast_cancer_tree_complete.json';
 import type { LymphomaDoc } from '../../hooks/useGuideline';
 
 interface GuidelineViewerProps {
@@ -27,6 +28,7 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
 
   const currentTocId = activeTocId || 'tumor-cervical';
   const hasCervicalPathway = currentTocId === 'tumor-cervical';
+  const hasEarlyBreastPathway = currentTocId === 'tumor-breast';
 
   const currentLabel = (() => {
     for (const item of doc.toc) {
@@ -68,17 +70,25 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
                 marginTop: 2,
               }}
             >
-              {hasCervicalPathway ? 'ESMO Clinical Practice Guidelines · 2017' : '数据来源'}
+              {hasCervicalPathway
+                ? 'ESMO Clinical Practice Guidelines · 2017'
+                : hasEarlyBreastPathway
+                  ? 'ESMO Clinical Practice Guidelines · 2023'
+                  : '数据来源'}
             </span>
           </div>
           {hasCervicalPathway ? (
             <div style={{ flex: 1, minHeight: 520 }}>
               <CervicalCancerTree treeData={(cervicalTreeData as { tree: unknown }).tree} embedded />
             </div>
+          ) : hasEarlyBreastPathway ? (
+            <div style={{ flex: 1, minHeight: 520 }}>
+              <CervicalCancerTree treeData={(earlyBreastTreeData as { tree: unknown }).tree} embedded />
+            </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0 }}>
               <div className="journey-empty">
-                暂无该疾病的诊疗路径数据，请选择「宫颈癌」或其他已接入疾病。
+                暂无该疾病的诊疗路径数据，请选择「宫颈癌 / 早期乳腺癌」或其他已接入疾病。
               </div>
             </div>
           )}

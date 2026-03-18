@@ -8,7 +8,7 @@
       "label": "肿瘤",
       "children": [
         { "id": "tumor-all", "label": "急性淋巴细胞白血病" },
-        { "id": "tumor-breast", "label": "乳腺癌" },
+        { "id": "tumor-breast", "label": "早期乳腺癌" },
         { "id": "tumor-cervical", "label": "宫颈癌" },
         { "id": "tumor-endometrial", "label": "子宫内膜癌" }
       ]
