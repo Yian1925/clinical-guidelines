@@ -215,9 +215,11 @@ const NODE_H_SELECTOR = 145;
 
 function getNodeSize(node) {
   const isSelector = node.type === "selector" || node.data?.selector;
+  const selectorOnly = node.data?.selectorOnly === true;
+  const height = selectorOnly ? 100 : (isSelector ? NODE_H_SELECTOR : NODE_H_CLINICAL);
   return {
     width: NODE_W_SELECTOR,
-    height: isSelector ? NODE_H_SELECTOR : NODE_H_CLINICAL,
+    height,
   };
 }
 
@@ -320,6 +322,7 @@ function SelectorNode({ id, data, selected }) {
   const selector = data.selector;
   const selectedIds = data.selectedIds ?? [];
   const onToggle = data.onToggle;
+  const selectorOnly = data.selectorOnly === true;
   if (!selector?.options?.length) {
     return <ClinicalNode data={data} selected={selected} />;
   }
@@ -329,9 +332,9 @@ function SelectorNode({ id, data, selected }) {
         background: c.bg,
         border: `2px solid ${selected ? c.text : c.border}`,
         borderRadius: 8,
-        padding: "6px 10px",
+        padding: selectorOnly ? "8px 10px" : "6px 10px",
         width: NODE_W_SELECTOR,
-        minHeight: NODE_H_SELECTOR,
+        minHeight: selectorOnly ? undefined : NODE_H_SELECTOR,
         boxSizing: "border-box",
         boxShadow: selected
           ? `0 0 0 3px ${c.border}44, 0 4px 20px ${c.border}33`
@@ -343,40 +346,44 @@ function SelectorNode({ id, data, selected }) {
       }}
     >
       <Handle type="target" position={Position.Left} style={{ background: c.border, width: 6, height: 6 }} />
-      <div
-        style={{
-          display: "inline-block",
-          background: c.badge,
-          color: c.badgeText,
-          fontSize: 8,
-          fontWeight: 600,
-          letterSpacing: "0.05em",
-          textTransform: "uppercase",
-          padding: "1px 5px",
-          borderRadius: 3,
-          marginBottom: 4,
-        }}
-      >
-        {data.sublabel}
-      </div>
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 6, marginBottom: 0 }}>
-        {data.hasChildren && (
-          <input
-            type="checkbox"
-            className="guideline-option-checkbox"
-            checked={!data.isCollapsed}
-            onChange={(ev) => {
-              ev.stopPropagation();
-              data.onToggleCollapse?.();
+      {!selectorOnly && (
+        <>
+          <div
+            style={{
+              display: "inline-block",
+              background: c.badge,
+              color: c.badgeText,
+              fontSize: 8,
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              padding: "1px 5px",
+              borderRadius: 3,
+              marginBottom: 4,
             }}
-            onClick={(ev) => ev.stopPropagation()}
-            style={{ marginTop: 2, flexShrink: 0 }}
-          />
-        )}
-        <div style={{ fontSize: 11, fontWeight: 600, color: c.text, lineHeight: 1.25, flex: 1 }}>
-          {data.label}
-        </div>
-      </div>
+          >
+            {data.sublabel}
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 6, marginBottom: 0 }}>
+            {data.hasChildren && (
+              <input
+                type="checkbox"
+                className="guideline-option-checkbox"
+                checked={!data.isCollapsed}
+                onChange={(ev) => {
+                  ev.stopPropagation();
+                  data.onToggleCollapse?.();
+                }}
+                onClick={(ev) => ev.stopPropagation()}
+                style={{ marginTop: 2, flexShrink: 0 }}
+              />
+            )}
+            <div style={{ fontSize: 11, fontWeight: 600, color: c.text, lineHeight: 1.25, flex: 1 }}>
+              {data.label}
+            </div>
+          </div>
+        </>
+      )}
       <div style={{ ...OPTION_BOX_STYLE }}>
         {selectedIds.length === 0 && (
           <div style={{ fontSize: 9, color: "#94A3B8", marginBottom: 4 }}>
@@ -467,32 +474,120 @@ function buildGraphFromTree(treeData) {
   return getLayoutedElements(rfNodes, rfEdges);
 }
 
-/** Build full graph with selector and edge conditions (when) for dynamic visibility */
+/**
+ * Build full graph. Parent nodes (e.g. Colposcopy / Biopsy, Early Disease) stay as
+ * standalone clinical cards. When a node has multiple parallel children, we insert
+ * a separate selector node (e.g. 2-sel) so that "clicking" the parent leads to the
+ * next card which is the options-only card (like 图2).
+ */
 function buildFullGraphFromTree(treeData) {
   if (!treeData?.nodes?.length) return null;
-  const nodes = treeData.nodes.map((n) => ({
-    id: n.id,
-    type: n.data?.selector ? "selector" : "clinical",
-    data: {
-      label: n.data?.label ?? n.id,
-      sublabel: n.data?.sublabel ?? "",
-      detail: n.data?.detail ?? "",
-      category: n.category || "treatment",
-      attribute_text: n.data?.attribute_text ?? "",
-      selector: n.data?.selector ?? undefined,
-    },
-    position: { x: 0, y: 0 },
-  }));
-  const edges = (treeData.edges || []).map((e, i) => ({
-    id: e.id || `e${i}`,
-    source: e.source,
-    target: e.target,
-    when: e.when,
-    type: "smoothstep",
-    animated: false,
-    style: { stroke: "#94A3B8", strokeWidth: 1.5 },
-    markerEnd: { type: "arrowclosed", color: "#94A3B8" },
-  }));
+  const nodeMap = new Map(treeData.nodes.map((n) => [n.id, n]));
+  const outEdgesBySource = new Map();
+  for (const e of treeData.edges || []) {
+    const list = outEdgesBySource.get(e.source) || [];
+    list.push(e.target);
+    outEdgesBySource.set(e.source, list);
+  }
+
+  const nodes = [];
+  const selectorNodeIds = new Set();
+
+  for (const n of treeData.nodes) {
+    const childIds = outEdgesBySource.get(n.id) || [];
+    const hasParallelChildren = childIds.length > 1;
+
+    nodes.push({
+      id: n.id,
+      type: "clinical",
+      data: {
+        label: n.data?.label ?? n.id,
+        sublabel: n.data?.sublabel ?? "",
+        detail: n.data?.detail ?? "",
+        category: n.category || "treatment",
+        attribute_text: n.data?.attribute_text ?? "",
+      },
+      position: { x: 0, y: 0 },
+    });
+
+    if (hasParallelChildren) {
+      const parentLabel = (n.data?.label ?? n.id).trim();
+      const options = childIds.map((id) => {
+        const child = nodeMap.get(id);
+        const label = (child?.data?.label ?? id).trim();
+        return { id, label, targets: [id] };
+      }).filter((opt) => opt.label !== parentLabel);
+      if (options.length > 0) {
+        const selId = `${n.id}-sel`;
+        selectorNodeIds.add(selId);
+        nodes.push({
+          id: selId,
+          type: "selector",
+          data: {
+            label: "",
+            sublabel: "",
+            category: n.category || "diagnosis",
+            attribute_text: "",
+            selector: { mode: "multi", options },
+            selectorOnly: true,
+          },
+          position: { x: 0, y: 0 },
+        });
+      }
+    }
+  }
+
+  const edges = [];
+  let ei = 0;
+  for (const e of treeData.edges || []) {
+    const childIds = outEdgesBySource.get(e.source) || [];
+    const hasParallelChildren = childIds.length > 1;
+
+    if (hasParallelChildren) {
+      const selId = `${e.source}-sel`;
+      if (!selectorNodeIds.has(selId)) continue;
+      const fromSel = edges.some((x) => x.source === selId && x.target === e.target);
+      if (!fromSel) {
+        edges.push({
+          id: `e${ei++}`,
+          source: selId,
+          target: e.target,
+          when: { selectorId: selId, optionId: e.target },
+          type: "smoothstep",
+          animated: false,
+          style: { stroke: "#94A3B8", strokeWidth: 1.5 },
+          markerEnd: { type: "arrowclosed", color: "#94A3B8" },
+        });
+      }
+    } else {
+      edges.push({
+        id: e.id || `e${ei++}`,
+        source: e.source,
+        target: e.target,
+        when: e.when,
+        type: "smoothstep",
+        animated: false,
+        style: { stroke: "#94A3B8", strokeWidth: 1.5 },
+        markerEnd: { type: "arrowclosed", color: "#94A3B8" },
+      });
+    }
+  }
+
+  for (const src of selectorNodeIds) {
+    const parentId = src.replace(/-sel$/, "");
+    if (!edges.some((x) => x.source === parentId && x.target === src)) {
+      edges.push({
+        id: `e${ei++}`,
+        source: parentId,
+        target: src,
+        type: "smoothstep",
+        animated: false,
+        style: { stroke: "#94A3B8", strokeWidth: 1.5 },
+        markerEnd: { type: "arrowclosed", color: "#94A3B8" },
+      });
+    }
+  }
+
   return { nodes, edges };
 }
 
@@ -646,7 +741,8 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
     const next = {};
     treeData.nodes.forEach((n) => {
       if (n.data?.selector?.options?.length) {
-        next[n.id] = new Set(n.data.selector.options.map((o) => o.id));
+        const firstId = n.data.selector.options[0].id;
+        next[n.id] = new Set([firstId]);
       }
     });
     return next;
@@ -660,7 +756,8 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
       const next = {};
       fullGraph.nodes.forEach((n) => {
         if (n.data?.selector?.options?.length) {
-          next[n.id] = new Set(n.data.selector.options.map((o) => o.id));
+          const firstId = n.data.selector.options[0]?.id;
+          if (firstId != null) next[n.id] = new Set([firstId]);
         }
       });
       return Object.keys(next).length > 0 ? next : prev;
@@ -672,12 +769,16 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
     setSelectionState((prev) => {
       const next = {};
       for (const k of Object.keys(prev)) next[k] = new Set(prev[k]);
-      if (!next[selectorId]) next[selectorId] = new Set();
-      if (checked) next[selectorId].add(optionId);
-      else next[selectorId].delete(optionId);
+      const opts = fullGraph?.nodes?.find((n) => n.id === selectorId)?.data?.selector?.options;
+      const firstId = opts?.[0]?.id;
+      if (checked) {
+        next[selectorId] = new Set([optionId]);
+      } else {
+        next[selectorId] = firstId != null ? new Set([firstId]) : new Set();
+      }
       return next;
     });
-  }, []);
+  }, [fullGraph]);
 
   const handleToggleCollapse = useCallback((nodeId) => {
     setCollapsedNodes((prev) => {
@@ -729,10 +830,20 @@ export default function CervicalCancerTree({ treeData, embedded = false }) {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const rfInstanceRef = useRef(null);
+  const lastPositionsRef = useRef(new Map());
+  const isFirstLayoutRef = useRef(true);
+
   useEffect(() => {
-    if (fullGraph && visibleGraph) {
-      setNodes(visibleGraph.nodes);
-      setEdges(visibleGraph.edges);
+    if (!fullGraph || !visibleGraph) return;
+    const merged = visibleGraph.nodes.map((n) => {
+      const saved = lastPositionsRef.current.get(n.id);
+      return { ...n, position: saved ?? n.position };
+    });
+    lastPositionsRef.current = new Map(merged.map((n) => [n.id, n.position]));
+    setNodes(merged);
+    setEdges(visibleGraph.edges);
+    if (isFirstLayoutRef.current) {
+      isFirstLayoutRef.current = false;
       const t = setTimeout(() => rfInstanceRef.current?.fitView?.({ padding: 0, duration: 200 }), 50);
       return () => clearTimeout(t);
     }

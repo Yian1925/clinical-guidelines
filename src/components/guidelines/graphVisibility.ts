@@ -25,9 +25,9 @@ function getRootIds(nodes: NodeLike[], edges: EdgeWithCondition[]): string[] {
 }
 
 /**
- * From root node ids, BFS traverse the graph. When leaving a node, follow an edge only if:
- * - the node is not in collapsedNodes (if provided),
- * - the edge has no `when`, or the edge has `when` and selectionState[when.selectorId] contains when.optionId.
+ * From root node ids, BFS traverse the graph.
+ * - Edges with `when` (selector): never add the target; add the target's children (no duplicate card).
+ * - Edges without `when`: add the target as usual.
  */
 export function computeVisibleNodeIds(
   nodes: NodeLike[],
@@ -51,12 +51,24 @@ export function computeVisibleNodeIds(
     const u = queue.shift()!;
     if (collapsedNodes?.has(u)) continue;
     const outgoing = outEdges.get(u) ?? [];
-    for (const e of outgoing) {
-      const canFollow = !e.when || (selectionState[e.when.selectorId]?.has(e.when.optionId) ?? false);
-      if (!canFollow) continue;
-      if (!visible.has(e.target)) {
-        visible.add(e.target);
-        queue.push(e.target);
+    const traversable = outgoing.filter(
+      (e) => !e.when || (selectionState[e.when.selectorId]?.has(e.when.optionId) ?? false)
+    );
+    for (const e of traversable) {
+      if (e.when) {
+        const v = e.target;
+        const childEdges = outEdges.get(v) ?? [];
+        for (const e2 of childEdges) {
+          if (!visible.has(e2.target)) {
+            visible.add(e2.target);
+            queue.push(e2.target);
+          }
+        }
+      } else {
+        if (!visible.has(e.target)) {
+          visible.add(e.target);
+          queue.push(e.target);
+        }
       }
     }
   }
@@ -64,8 +76,8 @@ export function computeVisibleNodeIds(
 }
 
 /**
- * Returns visible nodes and edges: nodes that are reachable under selectionState and collapsedNodes,
- * and edges that are traversable and whose source is reachable and not collapsed.
+ * Returns visible nodes and edges. For edges with `when` we emit virtual edges to grandchildren
+ * so the selector target is never shown as a card (avoids repeating the selected option as a card).
  */
 export function computeVisibleGraph<TNode extends NodeLike>(
   fullNodes: TNode[],
@@ -75,11 +87,34 @@ export function computeVisibleGraph<TNode extends NodeLike>(
 ): { nodes: TNode[]; edges: EdgeWithCondition[] } {
   const visibleIds = computeVisibleNodeIds(fullNodes, fullEdges, selectionState, collapsedNodes);
   const nodes = fullNodes.filter((n) => visibleIds.has(n.id));
-  const edges = fullEdges.filter((e) => {
-    if (!visibleIds.has(e.source)) return false;
-    if (collapsedNodes?.has(e.source)) return false;
-    if (!e.when) return true;
-    return selectionState[e.when.selectorId]?.has(e.when.optionId) ?? false;
-  });
+
+  const outEdges = new Map<string, EdgeWithCondition[]>();
+  for (const e of fullEdges) {
+    const list = outEdges.get(e.source) ?? [];
+    list.push(e);
+    outEdges.set(e.source, list);
+  }
+
+  const edges: EdgeWithCondition[] = [];
+  for (const e of fullEdges) {
+    if (!visibleIds.has(e.source) || collapsedNodes?.has(e.source)) continue;
+    const canFollow = !e.when || (selectionState[e.when.selectorId]?.has(e.when.optionId) ?? false);
+    if (!canFollow) continue;
+    if (e.when) {
+      const childEdges = outEdges.get(e.target) ?? [];
+      for (const e2 of childEdges) {
+        if (visibleIds.has(e2.target)) {
+          edges.push({
+            ...e2,
+            id: `v-${e.source}-${e2.target}`,
+            source: e.source,
+            target: e2.target,
+          });
+        }
+      }
+    } else {
+      if (visibleIds.has(e.target)) edges.push(e);
+    }
+  }
   return { nodes, edges };
 }
