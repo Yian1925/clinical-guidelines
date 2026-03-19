@@ -46,23 +46,40 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
           <button type="button" className="modal-close" onClick={onClose}>×</button>
         </div>
         <div className="modal-body">
-          <input
-            type="text"
-            placeholder="搜索患者姓名、ID..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{
-              width: '100%',
-              marginBottom: 12,
-              padding: '8px 12px',
-              borderRadius: 8,
-              border: '0.5px solid var(--color-border-secondary)',
-              background: 'var(--color-background-secondary)',
-              fontSize: 13,
-              color: 'var(--color-text-primary)',
-              outline: 'none',
-            }}
-          />
+          <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+            <input
+              type="text"
+              placeholder="搜索患者姓名、ID..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                flex: 1,
+                padding: '8px 12px',
+                borderRadius: 8,
+                border: '0.5px solid var(--color-border-secondary)',
+                background: 'var(--color-background-secondary)',
+                fontSize: 13,
+                color: 'var(--color-text-primary)',
+                outline: 'none',
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setSearch((s) => s.trim())}
+              style={{
+                padding: '8px 12px',
+                borderRadius: 8,
+                border: '0.5px solid var(--color-border-secondary)',
+                background: 'var(--color-background-secondary)',
+                fontSize: 13,
+                color: 'var(--color-text-primary)',
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              搜索
+            </button>
+          </div>
           {filtered.map((p) => (
             <div
               key={p.id}

@@ -34,13 +34,32 @@ export default function GuidelineTree({ toc, activeId, onSelect }: GuidelineTree
   return (
     <div className="gl-toc">
       <div className="toc-search-wrap">
-        <input
-          type="text"
-          placeholder="搜索疾病名称…"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          className="toc-search-input"
-        />
+        <div style={{ display: 'flex', gap: 8 }}>
+          <input
+            type="text"
+            placeholder="搜索疾病名称…"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            className="toc-search-input"
+            style={{ flex: 1 }}
+          />
+          <button
+            type="button"
+            onClick={() => setKeyword((k) => k.trim())}
+            style={{
+              padding: '8px 12px',
+              borderRadius: 8,
+              border: '0.5px solid var(--color-border-secondary)',
+              background: 'var(--color-background-secondary)',
+              fontSize: 13,
+              color: 'var(--color-text-primary)',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            搜索
+          </button>
+        </div>
       </div>
       <div className="toc-list-wrap">
         {filtered.map((item) => {
