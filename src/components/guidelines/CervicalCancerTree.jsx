@@ -14,14 +14,14 @@ import { computeVisibleGraph } from "./graphVisibility";
 
 // ─── Color palette by node category ───────────────────────────────────────────
 const CATEGORY = {
-  entry:     { bg: "#EFF6FF", border: "#3B82F6", text: "#1D4ED8", badge: "#DBEAFE", badgeText: "#1E40AF" },
-  diagnosis: { bg: "#F0FDF4", border: "#22C55E", text: "#15803D", badge: "#DCFCE7", badgeText: "#166534" },
-  precancer: { bg: "#FFF7ED", border: "#F97316", text: "#C2410C", badge: "#FFEDD5", badgeText: "#9A3412" },
-  early:     { bg: "#F5F3FF", border: "#8B5CF6", text: "#6D28D9", badge: "#EDE9FE", badgeText: "#5B21B6" },
-  stage:     { bg: "#FDF4FF", border: "#D946EF", text: "#A21CAF", badge: "#FAE8FF", badgeText: "#86198F" },
-  treatment: { bg: "#F8FAFC", border: "#64748B", text: "#334155", badge: "#F1F5F9", badgeText: "#475569" },
-  advanced:  { bg: "#FFF1F2", border: "#F43F5E", text: "#BE123C", badge: "#FFE4E6", badgeText: "#9F1239" },
-  meta:      { bg: "#0F172A", border: "#475569", text: "#F8FAFC", badge: "#1E293B", badgeText: "#94A3B8" },
+  entry:     { bg: "#F6F8FB", border: "#8A9CB3", text: "#3B516B", badge: "#EEF3F9", badgeText: "#3B516B" },
+  diagnosis: { bg: "#F5F8F6", border: "#87A596", text: "#3F6556", badge: "#ECF3EF", badgeText: "#3F6556" },
+  precancer: { bg: "#FBF7F2", border: "#B6A089", text: "#6B533C", badge: "#F4EADF", badgeText: "#6B533C" },
+  early:     { bg: "#F7F6FA", border: "#9B95B1", text: "#595374", badge: "#EFEAF6", badgeText: "#595374" },
+  stage:     { bg: "#F8F5FA", border: "#AE93B2", text: "#6A3F6F", badge: "#F1E8F3", badgeText: "#6A3F6F" },
+  treatment: { bg: "#F6F8FA", border: "#8E99A8", text: "#3A4656", badge: "#EEF2F6", badgeText: "#3A4656" },
+  advanced:  { bg: "#FAF5F6", border: "#B59AA1", text: "#6C3C45", badge: "#F3E8EB", badgeText: "#6C3C45" },
+  meta:      { bg: "#151B24", border: "#6A7688", text: "#F1F5F9", badge: "#1B2430", badgeText: "#B6C0CD" },
 };
 
 // ─── Raw node definitions ──────────────────────────────────────────────────────
