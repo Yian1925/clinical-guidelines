@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Patient } from '../../types';
 import PatientJourneyMap from './PatientJourneyMap';
 import { usePatientTimeline } from '../../hooks/usePatientTimeline';
@@ -7,6 +7,9 @@ export default function PatientsPage() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [search, setSearch] = useState('');
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const [leftWidth, setLeftWidth] = useState(280);
+  const [resizing, setResizing] = useState(false);
+  const layoutRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     import('../../data/emr/patients.json')
@@ -31,13 +34,31 @@ export default function PatientsPage() {
     return 'etag';
   };
 
+  useEffect(() => {
+    if (!resizing) return;
+    const onMove = (e: MouseEvent) => {
+      if (!layoutRef.current) return;
+      const rect = layoutRef.current.getBoundingClientRect();
+      const next = Math.max(240, Math.min(520, e.clientX - rect.left - 4));
+      setLeftWidth(next);
+    };
+    const onUp = () => setResizing(false);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, [resizing]);
+
   return (
     <div className="page patients-page" style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+      <div style={{ display: 'flex', flex: 1, minHeight: 0 }} ref={layoutRef}>
         <div
           className="gl-toc"
           style={{
-            width: 280,
+            width: leftWidth,
+            minWidth: leftWidth,
             // borderRight: '0.5px solid var(--color-border-tertiary)',
             padding: '12px 0',
             display: 'flex',
@@ -101,6 +122,13 @@ export default function PatientsPage() {
             ))}
           </div>
         </div>
+        <div
+          className={`pane-splitter ${resizing ? 'active' : ''}`}
+          onMouseDown={() => setResizing(true)}
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="调整患者列表和画布宽度"
+        />
         <div style={{ flex: 1, overflow: 'auto', padding: 16, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           {selectedPatient ? (
             <>

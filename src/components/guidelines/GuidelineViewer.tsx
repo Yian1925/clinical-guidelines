@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import GuidelineTree from './GuidelineTree';
 import { useAppStore } from '../../store';
 // @ts-expect-error InvasiveBreastCancerNCCN is JSX, no declaration file
@@ -15,6 +15,9 @@ interface GuidelineViewerProps {
 
 export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigateToChat: _onNav }: GuidelineViewerProps) {
   const [activeTocId, setActiveTocId] = useState<string | null>(null);
+  const [tocWidth, setTocWidth] = useState(280);
+  const [resizing, setResizing] = useState(false);
+  const layoutRef = useRef<HTMLDivElement | null>(null);
   const { guidelineTocId, setGuidelineTocId } = useAppStore();
 
   useEffect(() => {
@@ -23,6 +26,23 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
       setGuidelineTocId(null);
     }
   }, [guidelineTocId, setGuidelineTocId]);
+
+  useEffect(() => {
+    if (!resizing) return;
+    const onMove = (e: MouseEvent) => {
+      if (!layoutRef.current) return;
+      const rect = layoutRef.current.getBoundingClientRect();
+      const next = Math.max(240, Math.min(520, e.clientX - rect.left - 4));
+      setTocWidth(next);
+    };
+    const onUp = () => setResizing(false);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, [resizing]);
 
   if (!doc) return <div className="gl-main">加载中...</div>;
 
@@ -40,8 +60,15 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
 
   return (
     <>
-      <div className="gl-layout">
-        <GuidelineTree toc={doc.toc} activeId={currentTocId || undefined} onSelect={setActiveTocId} />
+      <div className="gl-layout" ref={layoutRef}>
+        <GuidelineTree toc={doc.toc} activeId={currentTocId || undefined} onSelect={setActiveTocId} panelWidth={tocWidth} />
+        <div
+          className={`pane-splitter ${resizing ? 'active' : ''}`}
+          onMouseDown={() => setResizing(true)}
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="调整目录和画板宽度"
+        />
         <div className="gl-main" style={{ display: 'flex', flexDirection: 'column', paddingTop: 8 }}>
           <div
             style={{

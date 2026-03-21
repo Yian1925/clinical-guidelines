@@ -5,9 +5,10 @@ interface GuidelineTreeProps {
   toc: TocItem[];
   activeId?: string;
   onSelect?: (id: string) => void;
+  panelWidth?: number;
 }
 
-export default function GuidelineTree({ toc, activeId, onSelect }: GuidelineTreeProps) {
+export default function GuidelineTree({ toc, activeId, onSelect, panelWidth }: GuidelineTreeProps) {
   const [keyword, setKeyword] = useState('');
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
     const init: Record<string, boolean> = {};
@@ -32,7 +33,7 @@ export default function GuidelineTree({ toc, activeId, onSelect }: GuidelineTree
   }, [toc, keyword]);
 
   return (
-    <div className="gl-toc">
+    <div className="gl-toc" style={panelWidth ? { width: panelWidth, minWidth: panelWidth } : undefined}>
       <div className="toc-search-wrap">
         <div style={{ display: 'flex', gap: 8 }}>
           <input

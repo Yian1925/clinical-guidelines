@@ -699,9 +699,9 @@ function Card({col,sel,chk,onSel,onChk,onBinvClick,cardRef,isActive,onActivate,o
         const iscked = checked[item.id]!==false;
         return (
           <div key={item.id} style={{padding:"0 14px"}}>
-            <div onClick={()=>onChk(col.id,item.id,!iscked)} style={{display:"flex",alignItems:"flex-start",gap:8,cursor:"pointer",padding:"3px 4px",borderRadius:5,marginBottom:2}}>
+            <div onClick={()=>onChk(col.id,item.id,!iscked)} style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",padding:"3px 4px",borderRadius:5,marginBottom:2}}>
               {/* Square checkbox (□) */}
-              <div style={{width:14,height:14,borderRadius:3,border:`2px solid ${iscked?"#1A7A52":"#B0C4D8"}`,background:iscked?"#1A7A52":"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1.5,transition:"all 0.12s"}}>
+              <div style={{width:14,height:14,borderRadius:3,border:`2px solid ${iscked?"#1A7A52":"#B0C4D8"}`,background:iscked?"#1A7A52":"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:0,transition:"all 0.12s"}}>
                 {iscked && <span style={{color:"#fff",fontSize:9,fontWeight:700}}>✓</span>}
               </div>
               <div style={{flex:1}}>
@@ -735,8 +735,8 @@ function Card({col,sel,chk,onSel,onChk,onBinvClick,cardRef,isActive,onActivate,o
           {col.options.map(opt=>{
             const isSel=selOpt===opt.id;
             return (
-              <div key={opt.id} onClick={()=>onSel(col.id,opt.id)} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 7px",borderRadius:7,marginBottom:3,cursor:"pointer",background:isSel?`${hdr}12`:"transparent",border:isSel?`1px solid ${hdr}30`:"1px solid transparent",transition:"all 0.12s"}}>
-                <div style={{width:14,height:14,borderRadius:"50%",border:`2px solid ${isSel?hdr:"#B0C4D8"}`,background:isSel?hdr:"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2,transition:"all 0.12s"}}>
+              <div key={opt.id} onClick={()=>onSel(col.id,opt.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 7px",borderRadius:7,marginBottom:3,cursor:"pointer",background:isSel?`${hdr}12`:"transparent",border:isSel?`1px solid ${hdr}30`:"1px solid transparent",transition:"all 0.12s"}}>
+                <div style={{width:14,height:14,borderRadius:"50%",border:`2px solid ${isSel?hdr:"#B0C4D8"}`,background:isSel?hdr:"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:0,transition:"all 0.12s"}}>
                   {isSel&&<div style={{width:5,height:5,borderRadius:"50%",background:"#fff"}}/>}
                 </div>
                 <div>
@@ -771,9 +771,9 @@ function Card({col,sel,chk,onSel,onChk,onBinvClick,cardRef,isActive,onActivate,o
         {col.options.map(opt=>{
           const isSel=selOpt===opt.id;
           return (
-            <div key={opt.id} onClick={()=>onSel(col.id,opt.id)} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"6px 7px",borderRadius:7,marginBottom:4,cursor:"pointer",background:isSel?`${hdr}14`:"transparent",border:isSel?`1px solid ${hdr}30`:"1px solid transparent",transition:"all 0.12s"}}>
+            <div key={opt.id} onClick={()=>onSel(col.id,opt.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 7px",borderRadius:7,marginBottom:4,cursor:"pointer",background:isSel?`${hdr}14`:"transparent",border:isSel?`1px solid ${hdr}30`:"1px solid transparent",transition:"all 0.12s"}}>
               {/* ○ Circle radio — single-select, drives path expansion */}
-              <div style={{width:15,height:15,borderRadius:"50%",border:`2px solid ${isSel?hdr:"#B0C4D8"}`,background:isSel?hdr:"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2,transition:"all 0.12s"}}>
+              <div style={{width:15,height:15,borderRadius:"50%",border:`2px solid ${isSel?hdr:"#B0C4D8"}`,background:isSel?hdr:"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:0,transition:"all 0.12s"}}>
                 {isSel&&<div style={{width:5,height:5,borderRadius:"50%",background:"#fff"}}/>}
               </div>
               <div style={{flex:1}}>

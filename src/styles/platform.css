@@ -50,14 +50,65 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  transition: width 0.2s ease;
+  overflow: hidden;
 }
+.sidebar.collapsed { width: 64px; }
 .sidebar-logo {
   padding: 14px 16px;
   /* border-bottom: 0.5px solid #333; */
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
 }
+.sidebar-toggle {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+}
+.sidebar-toggle:hover { opacity: 1; }
+.sidebar-toggle svg { width: 16px; height: 16px; }
+.sidebar.collapsed .sidebar-logo { padding: 12px 10px; justify-content: center; }
+.sidebar.collapsed .sidebar-logo .logo-text,
+.sidebar.collapsed .sidebar-logo .logo-sub,
+.sidebar.collapsed .nav-section,
+.sidebar.collapsed .nav-item .zh { display: none; }
+.sidebar.collapsed .nav-history-item { display: none; }
+.sidebar.collapsed .logo-ring { display: none; }
+.sidebar.collapsed .sidebar-logo {
+  padding: 9px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+.sidebar.collapsed .sidebar-toggle {
+  position: static;
+  margin-left: 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.sidebar.collapsed .sidebar-toggle svg {
+  transform: translateX(-3px);
+}
+.sidebar.collapsed .sidebar-nav { padding-top: 0; }
+.sidebar.collapsed .nav-item { padding: 9px 0; justify-content: center; }
+.sidebar.collapsed .nav-item { font-size: 0; }
+.sidebar.collapsed .nav-item svg { width: 16px; height: 16px; margin: 0; }
 .logo-ring {
   width: 28px;
   height: 28px;
@@ -459,6 +510,29 @@
 .toc-sub:hover { color: var(--color-text-secondary); }
 .toc-sub.active { color: var(--brand); border: 0; background: transparent; }
 .gl-main { flex: 1; overflow: auto; padding: 20px; }
+
+/* Narrow draggable divider between list/tree and canvas */
+.pane-splitter {
+  width: 6px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  flex-shrink: 0;
+}
+.pane-splitter::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 2px;
+  width: 2px;
+  background: #e7ecef;
+  transition: background 0.15s;
+}
+.pane-splitter:hover::before,
+.pane-splitter.active::before {
+  background: #38c7b8;
+}
 .gl-header { margin-bottom: 16px; }
 .gl-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); }
 .gl-meta { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; }
