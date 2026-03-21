@@ -3,7 +3,7 @@ import GuidelineTree from './GuidelineTree';
 import { useAppStore } from '../../store';
 // @ts-expect-error InvasiveBreastCancerNCCN is JSX, no declaration file
 import InvasiveBreastCancerNCCN from './InvasiveBreastCancerNCCN';
-import cervicalTreeData from '../../data/guidelines/cervical_cancer_tree_complete.json';
+import cervicalTreeData from '../../data/guidelines/CervicalCancerCols.json';
 import invasiveBreast3LayerData from '../../data/guidelines/nccn_invasive_breast_3layer.json';
 import type { LymphomaDoc } from '../../hooks/useGuideline';
 

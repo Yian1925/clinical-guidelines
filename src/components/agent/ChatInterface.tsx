@@ -80,7 +80,7 @@ export default function ChatInterface({
       <div className="chat-area" ref={areaRef}>
         {showWelcome && (
           <div className="chat-welcome">
-            <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'oklab(0.7109 -0.131805 0.0071752 / 0.999953)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+            <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#2A8075', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
               <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 22H8L12 11L17 37L23 20L27 28L34 15L38 29L40 22H44" />
               </svg>

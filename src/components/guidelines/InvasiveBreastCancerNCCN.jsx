@@ -456,7 +456,7 @@ function buildColsFromFlatTreeData(sourceData) {
     });
   });
 
-  return { cols, rootColId: `col_${rootId}` };
+  return { type: "esmo", cols, rootColId: `col_${rootId}` };
 }
 
 function getVisibleDynamic(sel, colMap, rootColId) {
@@ -475,6 +475,54 @@ function getVisibleDynamic(sel, colMap, rootColId) {
     current = nextCol;
   }
   return vis;
+}
+
+/** Serialized COLS JSON (e.g. CervicalCancerCols): follow option.next; checklist-only cards advance to next row in cols[] (workup → stage). */
+function getVisibleSerializedCols(sel, colMap, orderedCols, entryColId) {
+  const vis = ["toc"];
+  const seen = new Set(["toc"]);
+
+  function append(id) {
+    if (!id || !colMap[id] || seen.has(id)) return;
+    seen.add(id);
+    vis.push(id);
+  }
+
+  function walk(id) {
+    if (!id || !colMap[id] || seen.has(id)) return;
+    append(id);
+    const col = colMap[id];
+
+    if (col.options?.length) {
+      const chosen = sel[col.id] || col.options[0].id;
+      const opt = col.options.find((o) => o.id === chosen) || col.options[0];
+      const nexts = opt.next || [];
+      nexts.forEach((nid) => walk(nid));
+      return;
+    }
+
+    if (col.cardType === "checklist" && (!col.options || col.options.length === 0)) {
+      const idx = orderedCols.findIndex((c) => c.id === id);
+      if (idx !== -1 && idx + 1 < orderedCols.length) {
+        const nxtId = orderedCols[idx + 1].id;
+        if (nxtId !== "toc") walk(nxtId);
+      }
+    }
+  }
+
+  walk(entryColId);
+  return vis;
+}
+
+function resolveVisibleIds(sel, pathwayConfig, runtimeColMap, runtimeCols) {
+  if (!pathwayConfig) return getVisible(sel);
+  if (pathwayConfig.type === "esmo") {
+    return getVisibleDynamic(sel, runtimeColMap, pathwayConfig.rootColId);
+  }
+  if (pathwayConfig.type === "cols") {
+    return getVisibleSerializedCols(sel, runtimeColMap, runtimeCols, pathwayConfig.rootColId);
+  }
+  return getVisible(sel);
 }
 
 // ── Footnote text definitions ──────────────────────────────────────────
@@ -528,13 +576,13 @@ const FN = {
 
 // ── Tag chip — BINV/xref tags are clickable (open footnote panel) ─────
 // Letter footnote keys (a,b,c…) are shown as small plain refs, NOT clickable tags
-function Tag({code, onBinvClick}) {
-  const isXref = REF[code]?.startsWith("→");
+function Tag({ code, onBinvClick, refLookup = REF }) {
+  const isXref = refLookup[code]?.startsWith("→");
   const isCat  = code.startsWith("Category");
   // BINV-* and xref tags: clickable, open the footnote/ref panel
   return (
     <span
-      title={REF[code]||code}
+      title={refLookup[code]||code}
       onClick={onBinvClick ? (e=>{e.stopPropagation();onBinvClick(code);}) : undefined}
       style={{
         display:"inline-block",
@@ -552,7 +600,7 @@ function Tag({code, onBinvClick}) {
 }
 
 // ── Ref panel — bottom drawer for BINV tag click ──────────────────────
-function RefPanel({refKey, onClose}) {
+function RefPanel({ refKey, onClose, refLookup = REF, fnLookup = FN }) {
   const [height, setHeight] = useState(DEFAULT_REF_PANEL_HEIGHT);
   const dragging = useRef(false);
   const startY   = useRef(0);
@@ -587,13 +635,13 @@ function RefPanel({refKey, onClose}) {
   }, [onMouseMove, onMouseUp]);
 
   if (!refKey) return null;
-  const isBinv = REF[refKey];
-  const isFn   = FN[refKey];
+  const isBinv = refLookup[refKey];
+  const isFn   = fnLookup[refKey];
   if (!isBinv && !isFn) return null;
 
   const title  = refKey;
-  const text   = isBinv ? REF[refKey] : FN[refKey];
-  const isXref = isBinv && REF[refKey]?.startsWith("→");
+  const text   = isBinv ? refLookup[refKey] : fnLookup[refKey];
+  const isXref = isBinv && refLookup[refKey]?.startsWith("→");
 
   return (
     <>
@@ -637,7 +685,7 @@ function RefPanel({refKey, onClose}) {
 
 
 // ── Card ───────────────────────────────────────────────────────────────
-function Card({col,sel,chk,onSel,onChk,onBinvClick,cardRef,isActive,onActivate,onTextHover,onTextMove,onTextLeave}) {
+function Card({ col, sel, chk, onSel, onChk, onBinvClick, cardRef, isActive, onActivate, onTextHover, onTextMove, onTextLeave, refLookup = REF }) {
   const hdr = PH[col.phase]||"#1A4776";
   const selOpt = sel[col.id];
   const checked = chk[col.id]||{};
@@ -717,7 +765,7 @@ function Card({col,sel,chk,onSel,onChk,onBinvClick,cardRef,isActive,onActivate,o
                 {/* Per-item BINV refs — shown below the item label */}
                 {item.refs?.length>0 && (
                   <div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:3}} onClick={e=>e.stopPropagation()}>
-                    {item.refs.map(r=><Tag key={r} code={r} onBinvClick={onBinvClick}/>)}
+                    {item.refs.map(r=><Tag key={r} code={r} onBinvClick={onBinvClick} refLookup={refLookup}/>)}
                   </div>
                 )}
               </div>
@@ -748,7 +796,7 @@ function Card({col,sel,chk,onSel,onChk,onBinvClick,cardRef,isActive,onActivate,o
                   >
                     {opt.label}
                   </span>
-                  {opt.refs?.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:4}}>{opt.refs.map(r=><Tag key={r} code={r} onBinvClick={onBinvClick}/>)}</div>}
+                  {opt.refs?.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:4}}>{opt.refs.map(r=><Tag key={r} code={r} onBinvClick={onBinvClick} refLookup={refLookup}/>)}</div>}
                 </div>
               </div>
             );
@@ -785,7 +833,7 @@ function Card({col,sel,chk,onSel,onChk,onBinvClick,cardRef,isActive,onActivate,o
                 >
                   {opt.label}
                 </span>
-                {opt.refs?.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:4}}>{opt.refs.map(r=><Tag key={r} code={r} onBinvClick={onBinvClick}/>)}</div>}
+                {opt.refs?.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:4}}>{opt.refs.map(r=><Tag key={r} code={r} onBinvClick={onBinvClick} refLookup={refLookup}/>)}</div>}
               </div>
             </div>
           );
@@ -806,24 +854,47 @@ function ArrowConnector({ active = false, width = 34 }) {
 
 // ── Main App ───────────────────────────────────────────────────────────
 export default function InvasiveBreastCancerNCCN({ sourceData, embedded = false }) {
-  const dynamicTreeConfig = useMemo(() => {
-    if (sourceData?.meta?.source !== "ESMO") return null;
-    return buildColsFromFlatTreeData(sourceData);
+  const pathwayConfig = useMemo(() => {
+    if (sourceData?.meta?.source === "ESMO") {
+      return buildColsFromFlatTreeData(sourceData);
+    }
+    if (Array.isArray(sourceData?.cols) && sourceData.cols.length >= 2) {
+      const cols = sourceData.cols;
+      const rootColId = cols[0]?.id === "toc" ? cols[1].id : cols[0].id;
+      return {
+        type: "cols",
+        cols,
+        rootColId,
+        zones: sourceData.zones || {},
+        refExtra: sourceData.ref_descriptions || {},
+        fnExtra: sourceData.footnote_text || {},
+      };
+    }
+    return null;
   }, [sourceData]);
-  const runtimeCols = dynamicTreeConfig?.cols || COLS;
+  const runtimeCols = pathwayConfig?.cols || COLS;
   const runtimeColMap = useMemo(
     () => Object.fromEntries(runtimeCols.map((c) => [c.id, c])),
     [runtimeCols]
   );
 
-  const [sel, setSel] = useState(defaultSel);
+  const refLookup = useMemo(
+    () => ({ ...REF, ...(pathwayConfig?.type === "cols" ? pathwayConfig.refExtra : {}) }),
+    [pathwayConfig]
+  );
+  const fnLookup = useMemo(
+    () => ({ ...FN, ...(pathwayConfig?.type === "cols" ? pathwayConfig.fnExtra : {}) }),
+    [pathwayConfig]
+  );
+
+  const [sel, setSel] = useState(() => defaultSelForCols(runtimeCols));
   const [chk, setChk] = useState(()=>{
     const s={};
     runtimeCols.forEach(c=>{if(c.checkItems){s[c.id]={};c.checkItems.forEach(i=>{s[c.id][i.id]=true;});}});
     return s;
   });
   const [refKey, setRefKey] = useState(null);
-  const [activeCardId, setActiveCardId] = useState("col_dx");
+  const [activeCardId, setActiveCardId] = useState(() => pathwayConfig?.rootColId || "col_dx");
   const [zoom, setZoom] = useState(1);
   const [pathCollapsed, setPathCollapsed] = useState(false);
   const [tooltip, setTooltip] = useState({ visible: false, text: "", x: 0, y: 0 });
@@ -832,11 +903,8 @@ export default function InvasiveBreastCancerNCCN({ sourceData, embedded = false 
   const pinchRef = useRef({ distance: 0, zoomStart: 1 });
   const dataMeta = useMemo(() => sourceData?.meta || null, [sourceData]);
 
-  const visIds = getVisible(sel);
-  const dynamicVisIds = dynamicTreeConfig
-    ? getVisibleDynamic(sel, runtimeColMap, dynamicTreeConfig.rootColId)
-    : getVisible(sel);
-  const visCols = (dynamicTreeConfig ? dynamicVisIds : visIds).map(id=>runtimeColMap[id]).filter(Boolean);
+  const visibleIds = resolveVisibleIds(sel, pathwayConfig, runtimeColMap, runtimeCols);
+  const visCols = visibleIds.map((id) => runtimeColMap[id]).filter(Boolean);
 
   // Group consecutive same-zone cols
   const zoneGroups = [];
@@ -853,13 +921,11 @@ export default function InvasiveBreastCancerNCCN({ sourceData, embedded = false 
     setSel(prev=>{
       const next={...prev,[colId]:optId};
       // Reset downstream: set newly visible cols to their first option
-      const newVis = dynamicTreeConfig
-        ? getVisibleDynamic(next, runtimeColMap, dynamicTreeConfig.rootColId)
-        : getVisible(next);
+      const newVis = resolveVisibleIds(next, pathwayConfig, runtimeColMap, runtimeCols);
       runtimeCols.forEach(c=>{if(!newVis.includes(c.id)&&c.options?.length>0)next[c.id]=c.options[0].id;});
       return next;
     });
-  },[dynamicTreeConfig, runtimeColMap, runtimeCols]);
+  },[pathwayConfig, runtimeColMap, runtimeCols]);
 
   const handleChk = useCallback((colId,itemId,val)=>{
     setChk(prev=>({...prev,[colId]:{...prev[colId],[itemId]:val}}));
@@ -882,8 +948,8 @@ export default function InvasiveBreastCancerNCCN({ sourceData, embedded = false 
     });
     setSel(initSel);
     setChk(initChk);
-    setActiveCardId(dynamicTreeConfig?.rootColId || "col_dx");
-  }, [runtimeCols, dynamicTreeConfig?.rootColId]);
+    setActiveCardId(pathwayConfig?.rootColId || "col_dx");
+  }, [runtimeCols, pathwayConfig?.rootColId]);
 
   const scrollTo = useCallback((colId)=>{
     cardRefs.current[colId]?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
@@ -962,7 +1028,10 @@ export default function InvasiveBreastCancerNCCN({ sourceData, embedded = false 
         <div style={{width:"max-content",transform:`scale(${zoom * BASE_CANVAS_SCALE})`,transformOrigin:"top left"}}>
           <div style={{display:"flex",alignItems:"center"}}>
             {zoneGroups.map((grp,gi)=>{
-              const zm=ZONES[grp.zone]||ZONES.staging;
+              const zm =
+                pathwayConfig?.type === "cols" && pathwayConfig.zones?.[grp.zone]
+                  ? pathwayConfig.zones[grp.zone]
+                  : ZONES[grp.zone] || ZONES.staging;
               return (
                 <div key={`${grp.zone}-${gi}`} style={{display:"flex",alignItems:"center"}}>
                   <div style={{
@@ -997,6 +1066,7 @@ export default function InvasiveBreastCancerNCCN({ sourceData, embedded = false 
                           onTextHover={showTooltip}
                           onTextMove={moveTooltip}
                           onTextLeave={hideTooltip}
+                          refLookup={refLookup}
                           cardRef={el=>{cardRefs.current[col.id]=el;}}
                         />
                         {ci_idx<grp.cols.length-1&&(
@@ -1062,7 +1132,7 @@ export default function InvasiveBreastCancerNCCN({ sourceData, embedded = false 
         </div>
       </div>
 
-      {refKey&&<RefPanel refKey={refKey} onClose={()=>setRefKey(null)}/>}
+      {refKey&&<RefPanel refKey={refKey} onClose={()=>setRefKey(null)} refLookup={refLookup} fnLookup={fnLookup}/>}
       {tooltip.visible && (
         <div
           style={{

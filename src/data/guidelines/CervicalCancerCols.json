@@ -1,0 +1,1775 @@
+{
+  "meta": {
+    "disease": "Cervical Cancer",
+    "guideline": "NCCN Clinical Practice Guidelines in Oncology — Cervical Cancer",
+    "source_files": [
+      "Workup_and_Staging.json",
+      "Stage_IA1__Fertility_Sparing.json",
+      "Stage_IA1__no_LVSI___Stage_IA2_IB1__no_LVSI___Stage_IA1_IA2__with_LVSI___Non-Fertility_Sparing_.json",
+      "Stage_IB1__IB2__and_Stage_IIA1__Stage_IB3_and_Stage_IIA2__Non-Fertility_Sparing_.json",
+      "Stage_IB3__Stage_IIA2__and_Stages_IIB__III__and_IVA.json",
+      "Stage_IVB_or_Recurrence_with_Distant_Metastases.json",
+      "Small_Cell_Neuroendocrine_Carcinoma_of_the_Cervix.json"
+    ],
+    "schema": "InvasiveBreastCancerNCCN COLS format",
+    "total_cols": 37,
+    "col_ids": [
+      "toc",
+      "col_histology",
+      "col_workup",
+      "col_stage",
+      "col_fert_decision",
+      "col_fert_decision_ib",
+      "col_fs_ia1",
+      "col_fs_ia2_ib1",
+      "col_non_fs_ia1",
+      "col_non_fs_ia2_ib1",
+      "col_non_fs_ia_lvsi",
+      "col_non_fs_ib1",
+      "col_non_fs_ib3",
+      "col_advanced_primary",
+      "col_advanced_imaging_result",
+      "col_advanced_surg_result",
+      "col_advanced_node_pos",
+      "col_ivb",
+      "col_ivb_local",
+      "col_ivb_systemic",
+      "col_incidental",
+      "col_surg_findings",
+      "col_surg_neg_adjuvant",
+      "col_surg_high_risk",
+      "col_surg_para_aortic",
+      "col_surveillance",
+      "col_recurrence_local",
+      "col_recur_no_rt",
+      "col_recur_prior_rt",
+      "col_recur_central",
+      "col_recur_noncentral",
+      "col_recur_further_systemic",
+      "col_necc_workup",
+      "col_necc_size",
+      "col_necc_le4cm",
+      "col_necc_gt4cm",
+      "col_necc_advanced"
+    ]
+  },
+  "zones": {
+    "toc": {
+      "label": "Table of Contents",
+      "color": "#2A7D5E",
+      "bg": "#F0F9F5",
+      "border": "#A4D4BC"
+    },
+    "workup": {
+      "label": "Workup & Staging",
+      "color": "#1A4776",
+      "bg": "#EDF3FB",
+      "border": "#ACC6E8"
+    },
+    "staging": {
+      "label": "Clinical Stage",
+      "color": "#1A4776",
+      "bg": "#EDF3FB",
+      "border": "#ACC6E8"
+    },
+    "fertility_fs": {
+      "label": "Fertility Sparing Treatment",
+      "color": "#0D5C3E",
+      "bg": "#EDF8F3",
+      "border": "#9CCEB4"
+    },
+    "non_fs_ia": {
+      "label": "Non-Fertility Sparing — Stage IA",
+      "color": "#4A2880",
+      "bg": "#F2EDF9",
+      "border": "#BCA8E0"
+    },
+    "non_fs_ib": {
+      "label": "Non-Fertility Sparing — Stage IB/IIA",
+      "color": "#4A2880",
+      "bg": "#F2EDF9",
+      "border": "#BCA8E0"
+    },
+    "advanced": {
+      "label": "Stage IB3–IVA",
+      "color": "#8C4A10",
+      "bg": "#FBF3ED",
+      "border": "#D8B48A"
+    },
+    "surgical": {
+      "label": "Surgical Findings",
+      "color": "#0D5C3E",
+      "bg": "#EDF8F3",
+      "border": "#9CCEB4"
+    },
+    "adjuvant": {
+      "label": "Adjuvant / Post-op Treatment",
+      "color": "#0D5C3E",
+      "bg": "#EDF8F3",
+      "border": "#9CCEB4"
+    },
+    "recurrence": {
+      "label": "Recurrence Management",
+      "color": "#7C1A1A",
+      "bg": "#FBF0F0",
+      "border": "#E8B4B4"
+    },
+    "metastatic": {
+      "label": "Stage IVB / Distant Metastases",
+      "color": "#5C2A0D",
+      "bg": "#F9F0EB",
+      "border": "#D4A88A"
+    },
+    "surveillance": {
+      "label": "Surveillance",
+      "color": "#1A5C7C",
+      "bg": "#EDF5FB",
+      "border": "#9CC4E8"
+    },
+    "necc": {
+      "label": "Small Cell Neuroendocrine (NECC)",
+      "color": "#2A1A7C",
+      "bg": "#F0EDF9",
+      "border": "#B4A8E0"
+    }
+  },
+  "ref_descriptions": {
+    "CERV-A": "Principles of cervical cancer imaging — baseline and staging workup",
+    "CERV-B": "Imaging principles — modality selection and timing (CT/MRI/FDG-PET/CT)",
+    "CERV-C": "Surgical principles — indications, technique, and patient selection",
+    "CERV-D": "Radiation therapy principles — EBRT, brachytherapy, dose, fractionation",
+    "CERV-E": "Chemotherapy principles — regimen selection and dosing",
+    "CERV-F": "Systemic therapy options for recurrent/metastatic cervical cancer",
+    "CERV-F1": "Systemic therapy — first-line options for locally advanced disease",
+    "CERV-2": "→ Page: Fertility Sparing primary treatment algorithm",
+    "CERV-3": "→ Page: Non-Fertility Sparing — Stage IA1/IA2/IB1 algorithm",
+    "CERV-4": "→ Page: Non-Fertility Sparing — Stage IB1/IB2/IIA1/IB3/IIA2 algorithm",
+    "CERV-5": "→ Page: Surgical Findings decision algorithm",
+    "CERV-6": "→ Page: Stage IB3/IIA2 and IIB/III/IVA algorithm",
+    "CERV-7": "→ Page: Para-aortic node imaging results algorithm",
+    "CERV-8": "→ Page: Para-aortic node surgical staging results algorithm",
+    "CERV-9": "→ Page: Incidental invasive cancer at simple hysterectomy algorithm",
+    "CERV-11": "→ Page: Surveillance algorithm (post-treatment follow-up)",
+    "CERV-12": "→ Page: Therapy for Local/Regional Recurrence algorithm",
+    "CERV-13": "→ Page: Stage IVB / Recurrence with Distant Metastases algorithm",
+    "CERV-14": "→ Page: Small Cell NECC primary workup algorithm",
+    "CERV-15": "→ Page: NECC locally advanced disease algorithm"
+  },
+  "footnote_text": {
+    "a": "Principles of survivorship: address long-term and late effects, sexual health, and quality of life.",
+    "b": "Cervical/vaginal cytology: annual after completion of surveillance period; per ASCCP guidelines.",
+    "c": "Imaging: CT chest/abdomen/pelvis or PET/CT as clinically indicated. MRI for local assessment.",
+    "d": "Laboratory: CBC, metabolic panel, tumor markers as clinically indicated.",
+    "e": "Smoking cessation counseling should be offered to all patients who smoke.",
+    "f": "Conservative surgery criteria: lesion ≤2 cm, depth ≤10 mm, no LVSI, negative cone margins.",
+    "g": "Surgical principles. See CERV-C for patient selection, technique, and peri-operative management.",
+    "h": "Cone biopsy with at least 1-mm negative margins (non-fragmented specimen preferred).",
+    "i": "Cone biopsy technique: cold knife or LEEP; specimen orientation and margin assessment mandatory.",
+    "j": "Sentinel lymph node (SLN) mapping is acceptable alternative to full pelvic lymphadenectomy in selected patients.",
+    "k": "Radical trachelectomy: abdominal or vaginal approach; requires intraoperative frozen section of endocervical margin.",
+    "l": "Para-aortic lymphadenectomy: consider for tumors >2 cm or when pelvic nodes are positive on imaging.",
+    "m": "Consider concurrent platinum-containing chemotherapy when EBRT is used as primary treatment for stage IA1–IB1 with LVSI.",
+    "n": "Radiation therapy principles. See CERV-D for EBRT dose/field, brachytherapy technique, and dose-volume constraints.",
+    "o": "Intracavitary brachytherapy ± interstitial brachytherapy depending on tumor geometry.",
+    "p": "Concurrent platinum-containing chemotherapy (cisplatin preferred) with EBRT. See CERV-E for dosing.",
+    "q": "Adjuvant systemic therapy after chemoradiation for high-risk disease.",
+    "r": "Intermediate-risk factors for adjuvant RT after radical hysterectomy (Sedlis criteria): large tumor, >1/3 stromal invasion, LVSI.",
+    "s": "Systemic therapy for recurrent/metastatic disease. See CERV-F: pembrolizumab ± chemotherapy ± bevacizumab for PD-L1+ (CPS ≥1).",
+    "t": "Extended-field EBRT including para-aortic nodes when para-aortic adenopathy is confirmed.",
+    "z": "Surveillance: H&P every 3–6 months for 2 years, every 6–12 months years 3–5, then annually.",
+    "dd": "Patient education: symptoms of recurrence, lifestyle modifications, smoking cessation, reproductive health.",
+    "ee": "Stage IVB = distant metastases beyond the pelvis. Includes visceral, bone, distant nodal metastases.",
+    "ff": "Amenable to local treatment: oligometastatic disease, isolated resectable site, or appropriate for local ablation.",
+    "gg": "Additional imaging for NECC: CT chest/abdomen/pelvis + brain MRI given propensity for early systemic spread.",
+    "hh": "NECC chemotherapy: cisplatin/etoposide or carboplatin/etoposide per CERV-F."
+  },
+  "getVisible_logic": {
+    "description": "Visibility logic: start from ['toc','col_histology'], then branch by selections. See getVisible_paths for the decision tree.",
+    "getVisible_paths": {
+      "hist_necc": [
+        "col_necc_workup",
+        "col_necc_size",
+        "→ necc_le4cm: col_necc_le4cm+col_surveillance",
+        "→ necc_gt4cm: col_necc_gt4cm+col_surveillance",
+        "→ necc_adv_met: col_necc_advanced+col_surveillance"
+      ],
+      "hist_sq": {
+        "→ col_workup → col_stage": {
+          "st_ia1": "col_fert_decision → [ia1_fs: col_fs_ia1] [ia1_nonfs: col_non_fs_ia1] → col_surg_findings* → col_surg_neg_adjuvant*/col_surg_high_risk*/col_surg_para_aortic* → col_surveillance",
+          "st_ia2_ib2": "col_fert_decision_ib → [ib_fs: col_fs_ia2_ib1] [ib_nonfs: col_non_fs_ia2_ib1] → col_surg_findings* → col_surveillance",
+          "st_iia1": "col_non_fs_ib1 → col_surg_findings*/col_surveillance",
+          "st_ib3_iia2": "col_non_fs_ib3 → col_surg_findings*/col_surveillance",
+          "st_iib_iva": "col_advanced_primary → col_advanced_imaging_result|col_advanced_surg_result → col_advanced_node_pos* → col_surveillance",
+          "st_ivb": "col_ivb → col_ivb_local|col_ivb_systemic",
+          "st_incidental": "col_incidental (terminal)"
+        }
+      }
+    }
+  },
+  "cols": [
+    {
+      "id": "toc",
+      "zone": "toc",
+      "cardType": "toc",
+      "phase": "TABLE OF CONTENTS",
+      "title": "Table of Contents",
+      "notes": "NCCN Cervical Cancer guidelines cover squamous cell carcinoma, adenocarcinoma, adenosquamous carcinoma, and small cell neuroendocrine carcinoma of the cervix (NECC). Select a histology to enter the algorithm.",
+      "tocEntries": [
+        {
+          "id": "cervical",
+          "label": "Cervical Cancer"
+        }
+      ],
+      "attrs": [],
+      "xrefs": [],
+      "footnotes": []
+    },
+    {
+      "id": "col_histology",
+      "zone": "workup",
+      "cardType": "decision",
+      "phase": "DIAGNOSIS",
+      "title": "Histology",
+      "notes": "Histological classification determines the primary treatment algorithm. Squamous cell carcinoma, adenocarcinoma, and adenosquamous carcinoma share the main staging-based pathway. Small cell neuroendocrine carcinoma of the cervix (NECC) follows a separate aggressive-disease protocol.",
+      "options": [
+        {
+          "id": "hist_sq",
+          "label": "Squamous cell cancer, adenocarcinoma, or adenosquamous carcinoma",
+          "refs": [],
+          "next": [
+            "col_workup"
+          ]
+        },
+        {
+          "id": "hist_necc",
+          "label": "Small cell neuroendocrine carcinoma of the cervix (NECC)",
+          "refs": [
+            "CERV-14"
+          ],
+          "next": [
+            "col_necc_workup"
+          ]
+        }
+      ],
+      "attrs": [],
+      "xrefs": [],
+      "footnotes": []
+    },
+    {
+      "id": "col_workup",
+      "zone": "workup",
+      "cardType": "checklist",
+      "phase": "WORKUP",
+      "title": "Workup & Staging",
+      "notes": "Complete workup before staging and treatment selection. Cone biopsy is indicated when invasive disease is confirmed on cervical biopsy and depth of invasion must be determined. Fertility preservation counseling should occur early.",
+      "checkItems": [
+        {
+          "id": "w_hp",
+          "label": "History and physical (H&P)",
+          "refs": []
+        },
+        {
+          "id": "w_cbc",
+          "label": "Complete blood count (CBC) including platelets",
+          "refs": []
+        },
+        {
+          "id": "w_bx",
+          "label": "Cervical biopsy with pathologic review; cone biopsy as indicated",
+          "refs": []
+        },
+        {
+          "id": "w_lft",
+          "label": "Liver function test (LFT) / renal function studies",
+          "refs": []
+        },
+        {
+          "id": "w_img",
+          "label": "Imaging (CT chest/abdomen/pelvis and/or MRI pelvis; consider FDG-PET/CT)",
+          "refs": [
+            "CERV-B"
+          ]
+        },
+        {
+          "id": "w_smk",
+          "label": "Smoking cessation and counseling intervention, if indicated",
+          "refs": []
+        },
+        {
+          "id": "w_hiv",
+          "label": "Consider HIV testing",
+          "refs": []
+        },
+        {
+          "id": "w_eua",
+          "label": "Consider EUA / cystoscopy / proctoscopy (≥ stage IB3)",
+          "refs": []
+        },
+        {
+          "id": "w_fert",
+          "label": "Consider fertility sparing options or referral to REI specialist",
+          "refs": []
+        }
+      ],
+      "attrs": [
+        "CERV-A",
+        "CERV-B"
+      ],
+      "xrefs": [],
+      "footnotes": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e"
+      ]
+    },
+    {
+      "id": "col_stage",
+      "zone": "staging",
+      "cardType": "decision",
+      "phase": "CLINICAL STAGE",
+      "title": "Clinical Stage (FIGO 2018)",
+      "notes": "FIGO 2018 staging incorporates imaging and pathological findings. Stage IA1–IB2 tumors are generally amenable to surgical management. Stage IB3 and above typically require chemoradiation. Fertility sparing is possible for selected Stage IA1–IB2 patients.",
+      "options": [
+        {
+          "id": "st_ia1",
+          "label": "Stage IA1",
+          "refs": [],
+          "next": [
+            "col_fert_decision"
+          ]
+        },
+        {
+          "id": "st_ia2_ib2",
+          "label": "Stage IA2 / IB1 / IB2",
+          "refs": [],
+          "next": [
+            "col_fert_decision_ib"
+          ]
+        },
+        {
+          "id": "st_iia1",
+          "label": "Stage IIA1",
+          "refs": [],
+          "next": [
+            "col_non_fs_ib1"
+          ]
+        },
+        {
+          "id": "st_ib3_iia2",
+          "label": "Stage IB3 / Stage IIA2",
+          "refs": [
+            "CERV-4",
+            "CERV-6"
+          ],
+          "next": [
+            "col_non_fs_ib3"
+          ]
+        },
+        {
+          "id": "st_iib_iva",
+          "label": "Stage IIB / Stage III / Stage IVA",
+          "refs": [
+            "CERV-6"
+          ],
+          "next": [
+            "col_advanced_primary"
+          ]
+        },
+        {
+          "id": "st_ivb",
+          "label": "Stage IVB",
+          "refs": [
+            "CERV-13"
+          ],
+          "next": [
+            "col_ivb"
+          ]
+        },
+        {
+          "id": "st_incidental",
+          "label": "Incidental invasive cancer at simple (extrafascial) hysterectomy",
+          "refs": [
+            "CERV-9"
+          ],
+          "next": [
+            "col_incidental"
+          ]
+        }
+      ],
+      "attrs": [],
+      "xrefs": [],
+      "footnotes": []
+    },
+    {
+      "id": "col_fert_decision",
+      "zone": "staging",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "Fertility Sparing Intent — Stage IA1",
+      "notes": "Fertility sparing is appropriate for carefully selected Stage IA1 patients. Non-fertility sparing approaches may be preferred for older patients or those with contraindications.",
+      "options": [
+        {
+          "id": "ia1_fs",
+          "label": "Fertility Sparing (CERV-2)",
+          "refs": [
+            "CERV-2"
+          ],
+          "next": [
+            "col_fs_ia1"
+          ]
+        },
+        {
+          "id": "ia1_nonfs",
+          "label": "Non-Fertility Sparing (CERV-3)",
+          "refs": [
+            "CERV-3"
+          ],
+          "next": [
+            "col_non_fs_ia1"
+          ]
+        }
+      ],
+      "attrs": [],
+      "xrefs": [],
+      "footnotes": []
+    },
+    {
+      "id": "col_fert_decision_ib",
+      "zone": "staging",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "Fertility Sparing Intent — Stage IA2/IB1/IB2",
+      "notes": "Fertility sparing for Stage IA2–IB1 is limited to patients meeting all conservative surgery criteria (tumor ≤2 cm, depth ≤10 mm, no LVSI, negative cone margins). Stage IB2 fertility sparing is reserved for highly selected cases.",
+      "options": [
+        {
+          "id": "ib_fs",
+          "label": "Fertility Sparing (CERV-2)",
+          "refs": [
+            "CERV-2"
+          ],
+          "next": [
+            "col_fs_ia2_ib1"
+          ]
+        },
+        {
+          "id": "ib_nonfs",
+          "label": "Non-Fertility Sparing (CERV-3 and CERV-4)",
+          "refs": [
+            "CERV-3",
+            "CERV-4"
+          ],
+          "next": [
+            "col_non_fs_ia1"
+          ]
+        }
+      ],
+      "attrs": [],
+      "xrefs": [],
+      "footnotes": []
+    },
+    {
+      "id": "col_fs_ia1",
+      "zone": "fertility_fs",
+      "cardType": "decision",
+      "phase": "SURGERY",
+      "title": "Stage IA1 no LVSI — Fertility Sparing",
+      "notes": "Cone biopsy with negative margins (≥1 mm, non-fragmented specimen preferred) is the standard fertility-sparing treatment for Stage IA1 without LVSI. Trachelectomy is reserved for positive margins after repeat cone.",
+      "options": [
+        {
+          "id": "fs_ia1_cone_neg",
+          "label": "Cone biopsy — negative margins",
+          "refs": [
+            "CERV-B"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "fs_ia1_cone_pos",
+          "label": "Cone biopsy — positive margins → Repeat cone or simple trachelectomy",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-C"
+      ],
+      "xrefs": [
+        "CERV-11"
+      ],
+      "footnotes": [
+        "c",
+        "h",
+        "i",
+        "j",
+        "k"
+      ]
+    },
+    {
+      "id": "col_fs_ia2_ib1",
+      "zone": "fertility_fs",
+      "cardType": "decision",
+      "phase": "SURGERY",
+      "title": "Stage IA2–IB1 — Fertility Sparing (Conservative Surgery Criteria Met)",
+      "notes": "Radical trachelectomy + pelvic lymphadenectomy (with SLN mapping) is preferred. Cone biopsy + lymphadenectomy is acceptable for Stage IA2–IB1 meeting all conservative criteria. Intraoperative frozen section of the endocervical margin is required.",
+      "options": [
+        {
+          "id": "fs_ia2_cone_ln",
+          "label": "Cone biopsy + pelvic lymphadenectomy or SLN mapping — Stage IA2–IB1 meeting all criteria",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "fs_ia2_trach",
+          "label": "Radical trachelectomy + pelvic lymphadenectomy ± para-aortic lymphadenectomy — Stage IB1 or selected IB2",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_surg_findings"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C"
+      ],
+      "xrefs": [
+        "CERV-5",
+        "CERV-11"
+      ],
+      "footnotes": [
+        "f",
+        "g",
+        "j",
+        "k",
+        "l"
+      ]
+    },
+    {
+      "id": "col_non_fs_ia1",
+      "zone": "non_fs_ia",
+      "cardType": "decision",
+      "phase": "SURGERY",
+      "title": "Stage IA1 no LVSI — Non-Fertility Sparing",
+      "notes": "Cone biopsy is the initial procedure. Margin status and operability determine subsequent management. Medically inoperable patients may be observed (negative margins) or treated with brachytherapy (positive margins).",
+      "options": [
+        {
+          "id": "ia1_cone_neg_inop",
+          "label": "Cone biopsy — negative margins + medically inoperable → Observe",
+          "refs": [],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "ia1_cone_neg_op",
+          "label": "Cone biopsy — negative margins + medically operable → Extrafascial hysterectomy",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "ia1_cone_pos_inop",
+          "label": "Cone biopsy — positive margins + medically inoperable → Brachytherapy ± pelvic EBRT",
+          "refs": [
+            "CERV-D"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "ia1_cone_pos_op",
+          "label": "Cone biopsy — positive margins + medically operable → Consider repeat cone or extrafascial hysterectomy",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_surg_findings"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-C",
+        "CERV-D"
+      ],
+      "xrefs": [
+        "CERV-5",
+        "CERV-11"
+      ],
+      "footnotes": [
+        "c",
+        "g",
+        "i",
+        "n"
+      ]
+    },
+    {
+      "id": "col_non_fs_ia2_ib1",
+      "zone": "non_fs_ia",
+      "cardType": "decision",
+      "phase": "SURGERY",
+      "title": "Stage IA2–IB1 — Non-Fertility Sparing (Conservative Surgery Criteria Met)",
+      "notes": "Extrafascial hysterectomy + pelvic lymphadenectomy (or SLN mapping) is appropriate when Stage IA2–IB1 meets all conservative criteria. Surgical findings determine need for adjuvant therapy.",
+      "options": [
+        {
+          "id": "ia2_ib1_ext_hyst",
+          "label": "Extrafascial hysterectomy + pelvic lymphadenectomy (or SLN mapping)",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_surg_findings"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-C"
+      ],
+      "xrefs": [
+        "CERV-5"
+      ],
+      "footnotes": [
+        "c",
+        "g"
+      ]
+    },
+    {
+      "id": "col_non_fs_ia_lvsi",
+      "zone": "non_fs_ia",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "Stage IA1–IA2 with LVSI — Non-Fertility Sparing",
+      "notes": "LVSI indicates need for more aggressive local therapy. Both surgery and primary chemoradiation are acceptable. Surgical approach proceeds to Surgical Findings (CERV-5) algorithm.",
+      "options": [
+        {
+          "id": "ia_lvsi_surg",
+          "label": "Modified radical hysterectomy + pelvic lymphadenectomy ± SLN mapping ± para-aortic lymphadenectomy",
+          "refs": [
+            "CERV-C",
+            "CERV-D",
+            "CERV-F"
+          ],
+          "next": [
+            "col_surg_findings"
+          ]
+        },
+        {
+          "id": "ia_lvsi_ebrt",
+          "label": "Pelvic EBRT + brachytherapy (± concurrent platinum-containing chemotherapy)",
+          "refs": [
+            "CERV-D",
+            "CERV-F"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-C",
+        "CERV-D"
+      ],
+      "xrefs": [
+        "CERV-5",
+        "CERV-11"
+      ],
+      "footnotes": [
+        "c",
+        "g",
+        "m",
+        "n",
+        "o"
+      ]
+    },
+    {
+      "id": "col_non_fs_ib1",
+      "zone": "non_fs_ib",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "Stage IB1 (not meeting conservative criteria) / IB2 / IIA1 — Non-Fertility Sparing",
+      "notes": "Both radical surgery and primary chemoradiation are appropriate standard options. Radical hysterectomy is preferred when surgical expertise is available and patient is a good surgical candidate. Concurrent platinum is standard with EBRT.",
+      "options": [
+        {
+          "id": "ib1_rad_hyst",
+          "label": "Radical hysterectomy + pelvic lymphadenectomy ± para-aortic lymphadenectomy",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_surg_findings"
+          ]
+        },
+        {
+          "id": "ib1_ebrt_brachy",
+          "label": "Pelvic EBRT + brachytherapy ± concurrent platinum-containing chemotherapy",
+          "refs": [
+            "CERV-D",
+            "CERV-F1"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D",
+        "CERV-F1"
+      ],
+      "xrefs": [
+        "CERV-5",
+        "CERV-11"
+      ],
+      "footnotes": [
+        "g",
+        "m",
+        "n",
+        "p"
+      ]
+    },
+    {
+      "id": "col_non_fs_ib3",
+      "zone": "non_fs_ib",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "Stage IB3 / Stage IIA2 — Non-Fertility Sparing",
+      "notes": "Concurrent chemoradiation (CCRT) is the preferred primary treatment for Stage IB3/IIA2. Radical hysterectomy is an option for carefully selected patients at high-volume centers. Para-aortic lymph node status must be determined before RT field planning.",
+      "options": [
+        {
+          "id": "ib3_ccrt",
+          "label": "Pelvic EBRT + concurrent platinum-containing chemotherapy + brachytherapy (preferred)",
+          "refs": [
+            "CERV-D",
+            "CERV-F1"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "ib3_rad_hyst",
+          "label": "Radical hysterectomy + pelvic lymphadenectomy ± para-aortic lymphadenectomy (selected patients)",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_surg_findings"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D",
+        "CERV-F1"
+      ],
+      "xrefs": [
+        "CERV-5",
+        "CERV-6",
+        "CERV-11"
+      ],
+      "footnotes": [
+        "g",
+        "n",
+        "p",
+        "q"
+      ]
+    },
+    {
+      "id": "col_advanced_primary",
+      "zone": "advanced",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "Stage IB3/IIA2/IIB/III/IVA — Nodal Assessment Before Treatment",
+      "notes": "Para-aortic nodal status is critical for radiation field planning. Surgical staging (laparoscopic para-aortic ± pelvic lymphadenectomy) provides the most accurate assessment but is category 2B. Radiologic imaging is the standard non-invasive approach. Extended-field RT is added when para-aortic disease is confirmed.",
+      "options": [
+        {
+          "id": "adv_imaging",
+          "label": "Radiologic imaging only (CT/MRI/FDG-PET/CT) — assess adenopathy",
+          "refs": [
+            "CERV-B"
+          ],
+          "next": [
+            "col_advanced_imaging_result"
+          ]
+        },
+        {
+          "id": "adv_surgical_staging",
+          "label": "Surgical staging (category 2B) — para-aortic ± pelvic lymphadenectomy",
+          "refs": [
+            "CERV-C"
+          ],
+          "next": [
+            "col_advanced_surg_result"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-C"
+      ],
+      "xrefs": [
+        "CERV-4",
+        "CERV-7",
+        "CERV-8"
+      ],
+      "footnotes": [
+        "c",
+        "g"
+      ]
+    },
+    {
+      "id": "col_advanced_imaging_result",
+      "zone": "advanced",
+      "cardType": "decision",
+      "phase": "TREATMENT",
+      "title": "Imaging Adenopathy Result",
+      "notes": "FDG-PET/CT is the preferred imaging modality for nodal assessment in locally advanced cervical cancer. Positive adenopathy on imaging requires histologic confirmation when feasible before extending the radiation field.",
+      "options": [
+        {
+          "id": "img_neg_adeno",
+          "label": "Negative adenopathy → Pelvic EBRT + concurrent platinum + brachytherapy",
+          "refs": [
+            "CERV-D",
+            "CERV-F"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "img_pos_adeno",
+          "label": "Positive adenopathy → Additional node status evaluation (CERV-7)",
+          "refs": [
+            "CERV-B"
+          ],
+          "next": [
+            "col_advanced_node_pos"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-D"
+      ],
+      "xrefs": [
+        "CERV-7"
+      ],
+      "footnotes": [
+        "c",
+        "n",
+        "t"
+      ]
+    },
+    {
+      "id": "col_advanced_surg_result",
+      "zone": "advanced",
+      "cardType": "decision",
+      "phase": "TREATMENT",
+      "title": "Surgical Staging Result",
+      "notes": "Surgical staging provides definitive nodal pathology. Negative para-aortic nodes allow standard pelvic EBRT field. Positive para-aortic nodes require extended-field EBRT.",
+      "options": [
+        {
+          "id": "surg_neg_nodes",
+          "label": "Negative para-aortic nodes → Pelvic EBRT + concurrent platinum + brachytherapy",
+          "refs": [
+            "CERV-D",
+            "CERV-F"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "surg_pos_nodes",
+          "label": "Positive para-aortic nodes → Node Status assessment (CERV-8)",
+          "refs": [],
+          "next": [
+            "col_advanced_node_pos"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D"
+      ],
+      "xrefs": [
+        "CERV-8"
+      ],
+      "footnotes": [
+        "g",
+        "n",
+        "t"
+      ]
+    },
+    {
+      "id": "col_advanced_node_pos",
+      "zone": "advanced",
+      "cardType": "checklist",
+      "phase": "TREATMENT",
+      "title": "Extended-Field Treatment — Positive Para-Aortic or Pelvic Nodes",
+      "notes": "Extended-field EBRT (para-aortic ± pelvic) + concurrent platinum-containing chemotherapy + brachytherapy is standard for confirmed nodal disease. Close attention to bowel and renal dose constraints is mandatory with extended fields.",
+      "checkItems": [
+        {
+          "id": "ef_ebrt",
+          "label": "Extended-field EBRT (para-aortic ± pelvic) + concurrent platinum-containing chemotherapy",
+          "refs": [
+            "CERV-D",
+            "CERV-F"
+          ]
+        },
+        {
+          "id": "ef_brachy",
+          "label": "Intracavitary brachytherapy ± interstitial (after EBRT completion)",
+          "refs": [
+            "CERV-D"
+          ]
+        },
+        {
+          "id": "ef_sys",
+          "label": "Consider adjuvant systemic therapy for distant risk",
+          "refs": [
+            "CERV-F"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [
+        "CERV-11"
+      ],
+      "footnotes": [
+        "n",
+        "p",
+        "t"
+      ]
+    },
+    {
+      "id": "col_ivb",
+      "zone": "metastatic",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "Stage IVB or Recurrence with Distant Metastases",
+      "notes": "Stage IVB = distant metastases (visceral, bone, or distant nodal sites). Both local and systemic approaches should be considered in a multidisciplinary setting. Palliative intent is primary, but oligometastatic disease may be amenable to curative-intent local therapy.",
+      "options": [
+        {
+          "id": "ivb_local",
+          "label": "Amenable to local treatment (oligometastatic / isolated resectable site)",
+          "refs": [],
+          "next": [
+            "col_ivb_local"
+          ]
+        },
+        {
+          "id": "ivb_not_local",
+          "label": "Not amenable to local treatment",
+          "refs": [],
+          "next": [
+            "col_ivb_systemic"
+          ]
+        }
+      ],
+      "attrs": [],
+      "xrefs": [
+        "CERV-13"
+      ],
+      "footnotes": [
+        "ee"
+      ]
+    },
+    {
+      "id": "col_ivb_local",
+      "zone": "metastatic",
+      "cardType": "checklist",
+      "phase": "TREATMENT",
+      "title": "Stage IVB — Amenable to Local Treatment",
+      "notes": "Local treatment for oligometastatic disease: resection, local ablative therapies (RFA/SBRT), or individualized EBRT ± concurrent platinum. Adjuvant systemic therapy is strongly recommended after local treatment.",
+      "checkItems": [
+        {
+          "id": "ivb_res",
+          "label": "Local treatment: Resection ± individualized EBRT, or Local ablative therapies ± individualized EBRT, or Individualized EBRT ± concurrent platinum-containing chemotherapy",
+          "refs": [
+            "CERV-D",
+            "CERV-F"
+          ]
+        },
+        {
+          "id": "ivb_adj",
+          "label": "Consider adjuvant systemic therapy",
+          "refs": [
+            "CERV-F"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [
+        "CERV-11"
+      ],
+      "footnotes": [
+        "n",
+        "p",
+        "s"
+      ]
+    },
+    {
+      "id": "col_ivb_systemic",
+      "zone": "metastatic",
+      "cardType": "checklist",
+      "phase": "TREATMENT",
+      "title": "Stage IVB — Not Amenable to Local Treatment",
+      "notes": "Systemic therapy is the primary treatment. Pembrolizumab + chemotherapy (± bevacizumab) is the standard first-line regimen for PD-L1 positive (CPS ≥1) disease. Best supportive care / palliative care should be integrated from initial diagnosis.",
+      "checkItems": [
+        {
+          "id": "ivb_sys",
+          "label": "Systemic therapy — see CERV-F for preferred regimens (pembrolizumab ± chemo ± bevacizumab)",
+          "refs": [
+            "CERV-F"
+          ]
+        },
+        {
+          "id": "ivb_bsc",
+          "label": "Best supportive care (See NCCN Guidelines for Palliative Care)",
+          "refs": []
+        }
+      ],
+      "attrs": [
+        "CERV-F"
+      ],
+      "xrefs": [],
+      "footnotes": [
+        "s"
+      ]
+    },
+    {
+      "id": "col_incidental",
+      "zone": "non_fs_ib",
+      "cardType": "info",
+      "phase": "REFERENCE",
+      "title": "Incidental Invasive Cancer at Simple Hysterectomy — See CERV-9",
+      "notes": "Incidental discovery of invasive cervical cancer after extrafascial hysterectomy requires re-staging and individualized treatment planning. Management depends on margin status, LVSI, nodal risk, and residual parametrial tissue. See CERV-9.",
+      "attrs": [],
+      "xrefs": [
+        "CERV-9"
+      ],
+      "footnotes": []
+    },
+    {
+      "id": "col_surg_findings",
+      "zone": "surgical",
+      "cardType": "decision",
+      "phase": "SURGICAL FINDINGS",
+      "title": "Surgical Findings (CERV-5)",
+      "notes": "Post-surgical pathology determines need for adjuvant therapy. Intermediate-risk features (Sedlis criteria: large tumor size, >1/3 stromal invasion, LVSI) warrant adjuvant pelvic EBRT (GOG 92). High-risk features (positive pelvic nodes, positive margins, positive parametria) require concurrent chemoradiation (GOG 109/SWOG 8797).",
+      "options": [
+        {
+          "id": "surg_neg_all",
+          "label": "Negative nodes, negative margins, negative parametria",
+          "refs": [],
+          "next": [
+            "col_surg_neg_adjuvant"
+          ]
+        },
+        {
+          "id": "surg_pos_pelvic",
+          "label": "Positive pelvic nodes and/or positive surgical margin and/or positive parametria",
+          "refs": [
+            "CERV-B"
+          ],
+          "next": [
+            "col_surg_high_risk"
+          ]
+        },
+        {
+          "id": "surg_pos_para_aortic",
+          "label": "Para-aortic lymph node positive by surgical staging",
+          "refs": [
+            "CERV-B"
+          ],
+          "next": [
+            "col_surg_para_aortic"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B"
+      ],
+      "xrefs": [
+        "CERV-5"
+      ],
+      "footnotes": [
+        "c"
+      ]
+    },
+    {
+      "id": "col_surg_neg_adjuvant",
+      "zone": "adjuvant",
+      "cardType": "decision",
+      "phase": "ADJUVANT TREATMENT",
+      "title": "Post-Surgery — Negative Nodes / Margins / Parametria",
+      "notes": "Low-risk surgical findings: observation alone is appropriate. Intermediate-risk (Sedlis criteria): adjuvant pelvic EBRT reduces recurrence risk. Risk factors include primary tumor size >4 cm, >1/3 stromal invasion, and LVSI.",
+      "options": [
+        {
+          "id": "surg_neg_observe",
+          "label": "Observe (low-risk — no intermediate or high-risk features)",
+          "refs": [],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "surg_neg_ebrt",
+          "label": "Pelvic EBRT — if combination of intermediate risk factors (tumor size, stromal invasion, LVSI)",
+          "refs": [
+            "CERV-D",
+            "CERV-F",
+            "CERV-E"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-D",
+        "CERV-E",
+        "CERV-F"
+      ],
+      "xrefs": [
+        "CERV-11"
+      ],
+      "footnotes": [
+        "n",
+        "p",
+        "r"
+      ]
+    },
+    {
+      "id": "col_surg_high_risk",
+      "zone": "adjuvant",
+      "cardType": "checklist",
+      "phase": "ADJUVANT TREATMENT",
+      "title": "Post-Surgery — High-Risk Features (Positive Nodes/Margins/Parametria)",
+      "notes": "High-risk surgical findings require concurrent chemoradiation. Imaging workup for distant metastatic disease is performed before initiating adjuvant treatment to assess for para-aortic or distant spread that would change field size or treatment intent.",
+      "checkItems": [
+        {
+          "id": "hr_img",
+          "label": "Imaging workup for metastatic disease (CT/PET/CT)",
+          "refs": [
+            "CERV-B"
+          ]
+        },
+        {
+          "id": "hr_ccrt",
+          "label": "Pelvic EBRT + concurrent platinum-containing chemotherapy ± brachytherapy (if parametrial/vaginal involvement)",
+          "refs": [
+            "CERV-D",
+            "CERV-F1"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-D",
+        "CERV-F1"
+      ],
+      "xrefs": [
+        "CERV-11"
+      ],
+      "footnotes": [
+        "c",
+        "n",
+        "p"
+      ]
+    },
+    {
+      "id": "col_surg_para_aortic",
+      "zone": "adjuvant",
+      "cardType": "checklist",
+      "phase": "ADJUVANT TREATMENT",
+      "title": "Post-Surgery — Para-Aortic Node Positive",
+      "notes": "Positive para-aortic nodes require extended-field EBRT. Imaging workup is mandatory to exclude distant (visceral) metastases. If distant metastases are confirmed, management shifts to Stage IVB protocol.",
+      "checkItems": [
+        {
+          "id": "pa_img",
+          "label": "Imaging workup for distant metastatic disease (CT/PET/CT)",
+          "refs": [
+            "CERV-B"
+          ]
+        },
+        {
+          "id": "pa_efebrt",
+          "label": "Extended-field EBRT (para-aortic + pelvic) + concurrent platinum-containing chemotherapy ± brachytherapy",
+          "refs": [
+            "CERV-D",
+            "CERV-F"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [
+        "CERV-11"
+      ],
+      "footnotes": [
+        "c",
+        "n",
+        "t"
+      ]
+    },
+    {
+      "id": "col_surveillance",
+      "zone": "surveillance",
+      "cardType": "checklist",
+      "phase": "SURVEILLANCE",
+      "title": "Surveillance (CERV-11)",
+      "notes": "Surveillance schedule: H&P every 3–6 months for 2 years, every 6–12 months for years 3–5, then annually. Annual cervical/vaginal cytology. Imaging only if clinically indicated (not routine). Patient education on signs of recurrence is essential.",
+      "checkItems": [
+        {
+          "id": "surv_hp",
+          "label": "Interval H&P every 3–6 mo (yr 1–2) → every 6–12 mo (yr 3–5) → annually",
+          "refs": [
+            "CERV-B"
+          ]
+        },
+        {
+          "id": "surv_cyto",
+          "label": "Annual cervical/vaginal cytology screening",
+          "refs": []
+        },
+        {
+          "id": "surv_img",
+          "label": "Stage-dependent imaging as clinically indicated (not routine CT/PET)",
+          "refs": [
+            "CERV-B"
+          ]
+        },
+        {
+          "id": "surv_labs",
+          "label": "Laboratory assessment based on recurrence risk and prior treatment",
+          "refs": []
+        },
+        {
+          "id": "surv_edu",
+          "label": "Patient education: signs of recurrence, lifestyle modifications, smoking cessation",
+          "refs": []
+        }
+      ],
+      "options": [
+        {
+          "id": "surv_recur_local",
+          "label": "Workup for persistent/recurrent disease → Therapy for Local/Regional Recurrence (CERV-12)",
+          "refs": [
+            "CERV-12"
+          ],
+          "next": [
+            "col_recurrence_local"
+          ]
+        },
+        {
+          "id": "surv_recur_distant",
+          "label": "Workup for persistent/recurrent disease → Therapy for Distant Metastases (CERV-13)",
+          "refs": [
+            "CERV-13"
+          ],
+          "next": [
+            "col_ivb"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-A",
+        "CERV-B"
+      ],
+      "xrefs": [
+        "CERV-11",
+        "CERV-12",
+        "CERV-13"
+      ],
+      "footnotes": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "z",
+        "dd"
+      ]
+    },
+    {
+      "id": "col_recurrence_local",
+      "zone": "recurrence",
+      "cardType": "decision",
+      "phase": "RECURRENCE",
+      "title": "Local/Regional Recurrence — Prior RT Status (CERV-12)",
+      "notes": "Management of recurrence depends critically on prior radiation therapy history. Patients without prior RT can receive curative-intent chemoradiation. Patients with prior RT have limited options: pelvic exenteration for central disease, or individualized re-irradiation/systemic therapy for non-central disease.",
+      "options": [
+        {
+          "id": "recur_no_prior_rt",
+          "label": "No prior RT or failure outside previously treated field",
+          "refs": [],
+          "next": [
+            "col_recur_no_rt"
+          ]
+        },
+        {
+          "id": "recur_prior_rt",
+          "label": "Prior RT",
+          "refs": [],
+          "next": [
+            "col_recur_prior_rt"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-C",
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [
+        "CERV-12"
+      ],
+      "footnotes": [
+        "c"
+      ]
+    },
+    {
+      "id": "col_recur_no_rt",
+      "zone": "recurrence",
+      "cardType": "checklist",
+      "phase": "TREATMENT",
+      "title": "Local/Regional Recurrence — No Prior RT",
+      "notes": "Curative-intent treatment is possible for patients without prior pelvic radiation. Surgical resection followed by chemoradiation is the preferred approach when feasible.",
+      "checkItems": [
+        {
+          "id": "nort_surg",
+          "label": "Consider surgical resection if feasible",
+          "refs": [
+            "CERV-C"
+          ]
+        },
+        {
+          "id": "nort_ccrt",
+          "label": "Individualized EBRT + concurrent platinum-containing chemotherapy ± brachytherapy",
+          "refs": [
+            "CERV-D"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D"
+      ],
+      "xrefs": [],
+      "footnotes": [
+        "g",
+        "n",
+        "p"
+      ]
+    },
+    {
+      "id": "col_recur_prior_rt",
+      "zone": "recurrence",
+      "cardType": "decision",
+      "phase": "TREATMENT",
+      "title": "Local/Regional Recurrence — Prior RT: Central vs Noncentral Disease",
+      "notes": "Prior RT limits repeat irradiation options. Central pelvic recurrence may be amenable to pelvic exenteration with curative intent. Noncentral disease is generally treated with individualized EBRT ± chemotherapy or resection when feasible.",
+      "options": [
+        {
+          "id": "prior_rt_central",
+          "label": "Central disease — pelvic sidewall not involved",
+          "refs": [],
+          "next": [
+            "col_recur_central"
+          ]
+        },
+        {
+          "id": "prior_rt_noncentral",
+          "label": "Noncentral disease — pelvic sidewall or para-aortic involvement",
+          "refs": [],
+          "next": [
+            "col_recur_noncentral"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [],
+      "footnotes": [
+        "g",
+        "n",
+        "s"
+      ]
+    },
+    {
+      "id": "col_recur_central",
+      "zone": "recurrence",
+      "cardType": "decision",
+      "phase": "TREATMENT",
+      "title": "Prior RT — Central Recurrence",
+      "notes": "Pelvic exenteration (anterior, posterior, or total) ± IORT is the standard curative-intent option for central pelvic recurrence after prior RT. In carefully selected patients, radical hysterectomy, brachytherapy, or re-irradiation may be alternatives.",
+      "options": [
+        {
+          "id": "central_exent",
+          "label": "Pelvic exenteration ± intraoperative RT (IORT) (category 3 for IORT)",
+          "refs": [
+            "CERV-C",
+            "CERV-D"
+          ],
+          "next": [
+            "col_recur_further_systemic"
+          ]
+        },
+        {
+          "id": "central_selected",
+          "label": "In carefully selected patients: Radical hysterectomy or Brachytherapy or Individualized EBRT ± concurrent platinum",
+          "refs": [
+            "CERV-C",
+            "CERV-D"
+          ],
+          "next": [
+            "col_recur_further_systemic"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D"
+      ],
+      "xrefs": [],
+      "footnotes": [
+        "g",
+        "n",
+        "p"
+      ]
+    },
+    {
+      "id": "col_recur_noncentral",
+      "zone": "recurrence",
+      "cardType": "checklist",
+      "phase": "TREATMENT",
+      "title": "Prior RT — Noncentral Recurrence",
+      "notes": "Noncentral recurrence may be amenable to individualized EBRT ± concurrent platinum (outside prior field) or resection for isolated resectable sites. Systemic therapy is the primary treatment when local options are exhausted.",
+      "checkItems": [
+        {
+          "id": "noncent_ebrt",
+          "label": "Individualized EBRT ± concurrent platinum-containing chemotherapy (if outside prior field)",
+          "refs": [
+            "CERV-D",
+            "CERV-F"
+          ]
+        },
+        {
+          "id": "noncent_res",
+          "label": "Resection ± individualized EBRT (if isolated resectable site)",
+          "refs": [
+            "CERV-C",
+            "CERV-D"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [],
+      "footnotes": [
+        "g",
+        "n",
+        "p",
+        "s"
+      ]
+    },
+    {
+      "id": "col_recur_further_systemic",
+      "zone": "recurrence",
+      "cardType": "checklist",
+      "phase": "TREATMENT",
+      "title": "Further Recurrence After Treatment",
+      "notes": "Systemic therapy is the primary option after surgical or radiation treatment of recurrence. Pembrolizumab-based regimens are preferred first-line for PD-L1 positive (CPS ≥1) recurrent/metastatic disease.",
+      "checkItems": [
+        {
+          "id": "furt_sys",
+          "label": "Systemic therapy — see CERV-F for preferred regimens",
+          "refs": [
+            "CERV-F"
+          ]
+        },
+        {
+          "id": "furt_bsc",
+          "label": "Best supportive care (See NCCN Guidelines for Palliative Care)",
+          "refs": []
+        }
+      ],
+      "attrs": [
+        "CERV-F"
+      ],
+      "xrefs": [],
+      "footnotes": [
+        "s"
+      ]
+    },
+    {
+      "id": "col_necc_workup",
+      "zone": "necc",
+      "cardType": "checklist",
+      "phase": "NECC WORKUP",
+      "title": "Small Cell NECC — Primary Workup (CERV-14)",
+      "notes": "NECC is a highly aggressive histological subtype requiring intensive workup including brain MRI (propensity for CNS metastases) and comprehensive systemic staging. Treatment is stage- and tumor-size dependent.",
+      "checkItems": [
+        {
+          "id": "necc_hp",
+          "label": "History and physical; complete blood count; metabolic panel",
+          "refs": []
+        },
+        {
+          "id": "necc_img",
+          "label": "CT chest/abdomen/pelvis + MRI pelvis; FDG-PET/CT; Brain MRI (additional imaging)",
+          "refs": [
+            "CERV-B"
+          ]
+        },
+        {
+          "id": "necc_bx",
+          "label": "Pathologic confirmation of NECC (IHC: synaptophysin, chromogranin A, CD56)",
+          "refs": []
+        },
+        {
+          "id": "necc_fert",
+          "label": "Fertility counseling (fertility sparing is rarely appropriate for NECC)",
+          "refs": []
+        }
+      ],
+      "attrs": [
+        "CERV-B"
+      ],
+      "xrefs": [
+        "CERV-14"
+      ],
+      "footnotes": [
+        "c",
+        "gg"
+      ]
+    },
+    {
+      "id": "col_necc_size",
+      "zone": "necc",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "NECC — Tumor Size and Extent",
+      "notes": "Tumor size and extent of disease determine primary treatment approach. Tumors ≤4 cm confined to cervix are typically treated with radical hysterectomy + adjuvant chemotherapy. Larger tumors require chemoradiation ± systemic chemotherapy.",
+      "options": [
+        {
+          "id": "necc_le4cm",
+          "label": "Tumor ≤4 cm — disease confined to the cervix",
+          "refs": [],
+          "next": [
+            "col_necc_le4cm"
+          ]
+        },
+        {
+          "id": "necc_gt4cm",
+          "label": "Tumor >4 cm",
+          "refs": [],
+          "next": [
+            "col_necc_gt4cm"
+          ]
+        },
+        {
+          "id": "necc_adv_met",
+          "label": "Locally advanced (IB3–IVA) or Metastatic disease",
+          "refs": [
+            "CERV-15",
+            "CERV-13"
+          ],
+          "next": [
+            "col_necc_advanced"
+          ]
+        }
+      ],
+      "attrs": [],
+      "xrefs": [
+        "CERV-13",
+        "CERV-15"
+      ],
+      "footnotes": [
+        "gg"
+      ]
+    },
+    {
+      "id": "col_necc_le4cm",
+      "zone": "necc",
+      "cardType": "checklist",
+      "phase": "TREATMENT",
+      "title": "NECC — Tumor ≤4 cm, Disease Confined to Cervix",
+      "notes": "Radical hysterectomy + pelvic lymphadenectomy is the preferred initial treatment. Adjuvant chemotherapy (cisplatin/etoposide or carboplatin/etoposide) ± RT is standard. Adjuvant chemoradiation is considered for high-risk pathological features.",
+      "checkItems": [
+        {
+          "id": "necc_rh",
+          "label": "Radical hysterectomy + pelvic lymphadenectomy (preferred if suitable for primary surgery)",
+          "refs": [
+            "CERV-C",
+            "CERV-D"
+          ]
+        },
+        {
+          "id": "necc_adj",
+          "label": "Adjuvant chemotherapy: cisplatin/etoposide or carboplatin/etoposide ± RT",
+          "refs": [
+            "CERV-F",
+            "CERV-D"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [
+        "CERV-11"
+      ],
+      "footnotes": [
+        "g",
+        "n",
+        "s",
+        "hh"
+      ]
+    },
+    {
+      "id": "col_necc_gt4cm",
+      "zone": "necc",
+      "cardType": "decision",
+      "phase": "TREATMENT DECISION",
+      "title": "NECC — Tumor >4 cm",
+      "notes": "For NECC tumors >4 cm, both radical hysterectomy (if feasible) and primary chemoradiation/neoadjuvant chemotherapy are options. Adjuvant chemotherapy is always added given the aggressive biology of NECC.",
+      "options": [
+        {
+          "id": "necc_gt4_hyst",
+          "label": "Consider radical hysterectomy → Adjuvant RT or chemoradiation",
+          "refs": [
+            "CERV-C",
+            "CERV-D"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        },
+        {
+          "id": "necc_gt4_ccrt",
+          "label": "Chemoradiation + brachytherapy or Neoadjuvant chemotherapy (cisplatin/etoposide) → surgery → adjuvant chemo",
+          "refs": [
+            "CERV-D",
+            "CERV-F"
+          ],
+          "next": [
+            "col_surveillance"
+          ]
+        }
+      ],
+      "attrs": [
+        "CERV-C",
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [
+        "CERV-11"
+      ],
+      "footnotes": [
+        "g",
+        "n",
+        "s",
+        "hh"
+      ]
+    },
+    {
+      "id": "col_necc_advanced",
+      "zone": "necc",
+      "cardType": "checklist",
+      "phase": "TREATMENT",
+      "title": "NECC — Locally Advanced (IB3–IVA) or Metastatic Disease (CERV-15)",
+      "notes": "Locally advanced NECC is treated with concurrent chemoradiation (EBRT + brachytherapy) combined with NECC-specific chemotherapy (cisplatin/etoposide or carboplatin/etoposide). Response is assessed after treatment. Persistent or recurrent local disease: systemic therapy, exenteration, or Stage IVB algorithm.",
+      "checkItems": [
+        {
+          "id": "necc_adv_ccrt",
+          "label": "Chemoradiation (EBRT + brachytherapy) ± NECC chemotherapy (cisplatin/etoposide or carboplatin/etoposide)",
+          "refs": [
+            "CERV-D"
+          ]
+        },
+        {
+          "id": "necc_adv_assess",
+          "label": "Assess treatment response after chemoradiation",
+          "refs": [
+            "CERV-B"
+          ]
+        },
+        {
+          "id": "necc_adv_resp",
+          "label": "Response → Surveillance (CERV-11)",
+          "refs": [
+            "CERV-B"
+          ]
+        },
+        {
+          "id": "necc_adv_persist",
+          "label": "Persistent/recurrent local disease → Systemic therapy or Best supportive care or Consider pelvic exenteration",
+          "refs": [
+            "CERV-F",
+            "CERV-C"
+          ]
+        },
+        {
+          "id": "necc_adv_distant",
+          "label": "Distant metastatic disease → Stage IVB algorithm (CERV-13)",
+          "refs": []
+        }
+      ],
+      "attrs": [
+        "CERV-B",
+        "CERV-D",
+        "CERV-F"
+      ],
+      "xrefs": [
+        "CERV-11",
+        "CERV-13",
+        "CERV-15"
+      ],
+      "footnotes": [
+        "c",
+        "n",
+        "s",
+        "hh"
+      ]
+    }
+  ]
+}
