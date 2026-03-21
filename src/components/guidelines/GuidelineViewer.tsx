@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import GuidelineTree from './GuidelineTree';
 import { useAppStore } from '../../store';
-// @ts-expect-error CervicalCancerTree is JSX, no declaration file
-import CervicalCancerTree from './CervicalCancerTree';
+// @ts-expect-error InvasiveBreastCancerNCCN is JSX, no declaration file
+import InvasiveBreastCancerNCCN from './InvasiveBreastCancerNCCN';
 import cervicalTreeData from '../../data/guidelines/cervical_cancer_tree_complete.json';
-import earlyBreastTreeData from '../../data/guidelines/early_breast_cancer_tree_complete.json';
+import invasiveBreast3LayerData from '../../data/guidelines/nccn_invasive_breast_3layer.json';
 import type { LymphomaDoc } from '../../hooks/useGuideline';
 
 interface GuidelineViewerProps {
@@ -26,7 +26,7 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
 
   if (!doc) return <div className="gl-main">加载中...</div>;
 
-  const currentTocId = activeTocId || 'tumor-cervical';
+  const currentTocId = activeTocId || 'tumor-breast';
   const hasCervicalPathway = currentTocId === 'tumor-cervical';
   const hasEarlyBreastPathway = currentTocId === 'tumor-breast';
 
@@ -73,22 +73,22 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
               {hasCervicalPathway
                 ? 'ESMO Clinical Practice Guidelines · 2017'
                 : hasEarlyBreastPathway
-                  ? 'ESMO Clinical Practice Guidelines · 2023'
+                  ? 'NCCN Clinical Practice Guidelines in Oncology · Invasive Breast Cancer (M0)'
                   : '数据来源'}
             </span>
           </div>
           {hasCervicalPathway ? (
             <div style={{ flex: 1, minHeight: 520 }}>
-              <CervicalCancerTree treeData={(cervicalTreeData as { tree: unknown }).tree} embedded />
+              <InvasiveBreastCancerNCCN sourceData={cervicalTreeData} embedded />
             </div>
           ) : hasEarlyBreastPathway ? (
             <div style={{ flex: 1, minHeight: 520 }}>
-              <CervicalCancerTree treeData={(earlyBreastTreeData as { tree: unknown }).tree} embedded />
+              <InvasiveBreastCancerNCCN sourceData={invasiveBreast3LayerData} embedded />
             </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0 }}>
               <div className="journey-empty">
-                暂无该疾病的诊疗路径数据，请选择「宫颈癌 / 早期乳腺癌」或其他已接入疾病。
+                暂无该疾病的诊疗路径数据，请选择「宫颈癌 / 浸润性乳腺癌」或其他已接入疾病。
               </div>
             </div>
           )}

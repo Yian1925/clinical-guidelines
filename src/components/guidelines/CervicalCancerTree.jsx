@@ -14,14 +14,15 @@ import { computeVisibleGraph } from "./graphVisibility";
 
 // ─── Color palette by node category ───────────────────────────────────────────
 const CATEGORY = {
-  entry:     { bg: "#F6F8FB", border: "#8A9CB3", text: "#3B516B", badge: "#EEF3F9", badgeText: "#3B516B" },
-  diagnosis: { bg: "#F5F8F6", border: "#87A596", text: "#3F6556", badge: "#ECF3EF", badgeText: "#3F6556" },
-  precancer: { bg: "#FBF7F2", border: "#B6A089", text: "#6B533C", badge: "#F4EADF", badgeText: "#6B533C" },
-  early:     { bg: "#F7F6FA", border: "#9B95B1", text: "#595374", badge: "#EFEAF6", badgeText: "#595374" },
-  stage:     { bg: "#F8F5FA", border: "#AE93B2", text: "#6A3F6F", badge: "#F1E8F3", badgeText: "#6A3F6F" },
-  treatment: { bg: "#F6F8FA", border: "#8E99A8", text: "#3A4656", badge: "#EEF2F6", badgeText: "#3A4656" },
-  advanced:  { bg: "#FAF5F6", border: "#B59AA1", text: "#6C3C45", badge: "#F3E8EB", badgeText: "#6C3C45" },
-  meta:      { bg: "#151B24", border: "#6A7688", text: "#F1F5F9", badge: "#1B2430", badgeText: "#B6C0CD" },
+  guideline: { bg: "#EEF5FA", border: "#0B3B60", text: "#0B3B60", badge: "#DCEAF7", badgeText: "#0B3B60" },
+  entry:     { bg: "#EEF5FA", border: "#0B3B60", text: "#0B3B60", badge: "#DCEAF7", badgeText: "#0B3B60" },
+  diagnosis: { bg: "#EEF5FA", border: "#0B3B60", text: "#0B3B60", badge: "#DCEAF7", badgeText: "#0B3B60" },
+  precancer: { bg: "#EEF5FA", border: "#0B3B60", text: "#0B3B60", badge: "#DCEAF7", badgeText: "#0B3B60" },
+  early:     { bg: "#EEF5FA", border: "#0B3B60", text: "#0B3B60", badge: "#DCEAF7", badgeText: "#0B3B60" },
+  stage:     { bg: "#EEF5FA", border: "#0B3B60", text: "#0B3B60", badge: "#DCEAF7", badgeText: "#0B3B60" },
+  treatment: { bg: "#EEF5FA", border: "#0B3B60", text: "#0B3B60", badge: "#DCEAF7", badgeText: "#0B3B60" },
+  advanced:  { bg: "#EEF5FA", border: "#0B3B60", text: "#0B3B60", badge: "#DCEAF7", badgeText: "#0B3B60" },
+  meta:      { bg: "#0B3B60", border: "#0B3B60", text: "#FFFFFF", badge: "#0B3B60", badgeText: "#FFFFFF" },
 };
 
 // ─── Raw node definitions ──────────────────────────────────────────────────────
@@ -450,6 +451,156 @@ function buildGraph() {
   return getLayoutedElements(rfNodes, rfEdges);
 }
 
+// ─── NCCN nested tree → flat { nodes, edges } (early_breast_cancer_tree_complete.json) ─
+const PHASE_TO_CATEGORY = {
+  screening_detection: "entry",
+  diagnosis: "diagnosis",
+  workup_staging: "diagnosis",
+  risk_stratification: "early",
+  treatment: "treatment",
+  response_evaluation: "stage",
+  follow_up: "treatment",
+  recurrence_management: "advanced",
+  other: "treatment",
+};
+
+const PHASE_SUBLABEL = {
+  screening_detection: "Screening / Detection",
+  diagnosis: "Diagnosis",
+  workup_staging: "Workup / Staging",
+  risk_stratification: "Risk stratification / Subtyping",
+  treatment: "Treatment",
+  response_evaluation: "Response evaluation",
+  follow_up: "Follow-up / Surveillance",
+  recurrence_management: "Recurrence management",
+  other: "General / Other",
+};
+
+function formatChecklistItems(items) {
+  if (!Array.isArray(items) || items.length === 0) return "";
+  return items
+    .map((it) => {
+      const text = (it && it.text) || "";
+      const subs = Array.isArray(it?.sub_items) ? it.sub_items : [];
+      if (!subs.length) return `• ${text}`;
+      const subLines = subs.map((s) => `  • ${s}`).join("\n");
+      return `• ${text}\n${subLines}`;
+    })
+    .join("\n");
+}
+
+function buildNccnAttributeText(node) {
+  const parts = [];
+  if (node.nccn_attribute_refs?.length) {
+    parts.push(`NCCN: ${node.nccn_attribute_refs.join(", ")}`);
+  }
+  if (node.nccn_cross_references?.length) {
+    parts.push(`Cross-ref: ${node.nccn_cross_references.join(", ")}`);
+  }
+  if (node.nccn_footnote_letters?.length) {
+    parts.push(`Footnotes: ${node.nccn_footnote_letters.join("")}`);
+  }
+  return parts.join(" · ");
+}
+
+function flattenNestedNccnTreeToFlatGraph(root) {
+  const nodes = [];
+  const edges = [];
+  const seen = new Set();
+
+  function visit(node, parentId) {
+    if (node == null || node.id == null) return;
+    const id = String(node.id);
+    if (seen.has(id)) return;
+    seen.add(id);
+
+    const phase = node.phase || "other";
+    const category = PHASE_TO_CATEGORY[phase] || "treatment";
+    const phaseName = PHASE_SUBLABEL[phase] || phase;
+    const page =
+      node.nccn_page != null && node.nccn_page !== ""
+        ? ` · p.${node.nccn_page}`
+        : "";
+    const label =
+      (node.section_label && String(node.section_label).trim()) ||
+      (node.raw_text && String(node.raw_text).split(/\n|•/)[0].trim()) ||
+      id;
+    const fromItems = formatChecklistItems(node.items);
+    const detail =
+      (node.raw_text && String(node.raw_text).trim()) ||
+      fromItems ||
+      label;
+    const attribute_text = buildNccnAttributeText(node);
+
+    nodes.push({
+      id,
+      type: "custom",
+      category,
+      data: {
+        label,
+        sublabel: `${phaseName}${page}`,
+        detail,
+        attribute_text,
+      },
+    });
+
+    if (parentId != null) {
+      edges.push({
+        id: `e-${parentId}-${id}`,
+        source: String(parentId),
+        target: id,
+      });
+    }
+
+    const children = Array.isArray(node.children) ? node.children : [];
+    for (const ch of children) {
+      visit(ch, node.id);
+    }
+
+    // option_list: parallel choices as strings → synthetic leaf nodes (if no children)
+    const opts = Array.isArray(node.options) ? node.options : [];
+    if (opts.length > 0 && children.length === 0) {
+      opts.forEach((optText, i) => {
+        const synId = `${id}-opt-${i}`;
+        if (seen.has(synId)) return;
+        seen.add(synId);
+        const text = String(optText || "").trim() || `Option ${i + 1}`;
+        nodes.push({
+          id: synId,
+          type: "custom",
+          category,
+          data: {
+            label: text,
+            sublabel: `${phaseName}${page}`,
+            detail: text,
+            attribute_text: "",
+          },
+        });
+        edges.push({
+          id: `e-${id}-${synId}`,
+          source: id,
+          target: synId,
+        });
+      });
+    }
+  }
+
+  visit(root, null);
+  return { nodes, edges };
+}
+
+/** Accept cervical flat tree or NCCN nested root node */
+function normalizeGuidelineTreeInput(treeData) {
+  if (!treeData) return null;
+  if (Array.isArray(treeData.nodes) && treeData.nodes.length > 0) {
+    return { nodes: treeData.nodes, edges: treeData.edges || [] };
+  }
+  if (treeData.id != null && Array.isArray(treeData.children)) {
+    return flattenNestedNccnTreeToFlatGraph(treeData);
+  }
+  return null;
+}
+
 /** Build graph from JSON tree data (cervical_cancer_tree_complete.json) */
 function buildGraphFromTree(treeData) {
   if (!treeData?.nodes?.length) return buildGraph();
@@ -484,7 +635,9 @@ function buildGraphFromTree(treeData) {
  * next card which is the options-only card (like 图2).
  */
 function buildFullGraphFromTree(treeData) {
-  if (!treeData?.nodes?.length) return null;
+  const flat = normalizeGuidelineTreeInput(treeData);
+  if (!flat?.nodes?.length) return null;
+  treeData = flat;
   const nodeMap = new Map(treeData.nodes.map((n) => [n.id, n]));
   const outEdgesBySource = new Map();
   for (const e of treeData.edges || []) {
