@@ -1,15 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Patient } from '../../types';
-import PatientJourneyMap from './PatientJourneyMap';
+import PatientJourneyV4 from './PatientJourneyV4';
 import { usePatientTimeline } from '../../hooks/usePatientTimeline';
+import { useAppStore } from '../../store';
+import '../../styles/patients-list.css';
+
+type ViewMode = 'list' | 'journey';
 
 export default function PatientsPage() {
+  const { setPatientsJourneyTopBar } = useAppStore();
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [search, setSearch] = useState('');
+  const [view, setView] = useState<ViewMode>('list');
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const [leftWidth, setLeftWidth] = useState(280);
-  const [resizing, setResizing] = useState(false);
-  const layoutRef = useRef<HTMLDivElement | null>(null);
+
+  const [visitType, setVisitType] = useState('');
+  const [dateStart, setDateStart] = useState('');
+  const [dateEnd, setDateEnd] = useState('');
+  const [dept, setDept] = useState('');
+  const [risk, setRisk] = useState('');
+  const [searchQ, setSearchQ] = useState('');
 
   useEffect(() => {
     import('../../data/emr/patients.json')
@@ -17,140 +26,207 @@ export default function PatientsPage() {
       .catch(() => setPatients([]));
   }, []);
 
-  const filtered = patients.filter(
-    (p) =>
-      !search.trim() ||
-      p.name.includes(search) ||
-      p.admissionId.includes(search) ||
-      p.diagnosis.includes(search)
-  );
+  const deptOptions = useMemo(() => {
+    const s = new Set<string>();
+    patients.forEach((p) => {
+      if (p.dept) s.add(p.dept);
+    });
+    return Array.from(s).sort();
+  }, [patients]);
 
-  const timelineId = selectedPatient?.timelineId ?? selectedPatient?.id ?? null;
+  const filtered = useMemo(() => {
+    const q = searchQ.trim().toLowerCase();
+    return patients.filter((p) => {
+      if (
+        q &&
+        !p.name.toLowerCase().includes(q) &&
+        !p.admissionId.toLowerCase().includes(q) &&
+        !p.diagnosis.toLowerCase().includes(q)
+      )
+        return false;
+      if (dept && p.dept !== dept) return false;
+      if (risk && p.riskLevel !== risk) return false;
+      if (dateStart && p.visitTime && p.visitTime < dateStart) return false;
+      if (dateEnd && p.visitTime && p.visitTime > dateEnd) return false;
+      if (visitType) {
+        /* 预留：数据中有 visitType 字段时再过滤 */
+      }
+      return true;
+    });
+  }, [patients, searchQ, dept, risk, dateStart, dateEnd, visitType]);
+
+  const timelineId =
+    selectedPatient == null
+      ? null
+      : selectedPatient.hasTimeline === false
+        ? null
+        : selectedPatient.timelineId ?? selectedPatient.admissionId ?? null;
+
   const { data: timelineData, loading } = usePatientTimeline(timelineId);
 
-  const tagClass = (tag: string) => {
-    if (tag === '高危' || tag === '中高危') return 'etag r';
-    if (tag === '低危') return 'etag green';
-    return 'etag';
+  const riskBadgeClass = (level?: Patient['riskLevel']) => {
+    if (level === 'high') return 'patients-risk-badge patients-risk-high';
+    if (level === 'medium') return 'patients-risk-badge patients-risk-medium';
+    return 'patients-risk-badge patients-risk-low';
   };
 
+  const riskLabel = (level?: Patient['riskLevel']) => {
+    const m = { high: '高危', medium: '中危', low: '低危' };
+    return level ? m[level] : '—';
+  };
+
+  const openJourney = (p: Patient) => {
+    setSelectedPatient(p);
+    setView('journey');
+  };
+
+  const backToList = useCallback(() => {
+    setView('list');
+    setSelectedPatient(null);
+  }, []);
+
   useEffect(() => {
-    if (!resizing) return;
-    const onMove = (e: MouseEvent) => {
-      if (!layoutRef.current) return;
-      const rect = layoutRef.current.getBoundingClientRect();
-      const next = Math.max(240, Math.min(520, e.clientX - rect.left - 4));
-      setLeftWidth(next);
-    };
-    const onUp = () => setResizing(false);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
-    };
-  }, [resizing]);
+    if (view === 'journey' && selectedPatient) {
+      setPatientsJourneyTopBar({
+        patientName: selectedPatient.name,
+        onBack: backToList,
+      });
+      return () => setPatientsJourneyTopBar(null);
+    }
+    setPatientsJourneyTopBar(null);
+  }, [view, selectedPatient, backToList, setPatientsJourneyTopBar]);
+
+  const applySearch = () => {
+    setSearchQ((s) => s.trim());
+  };
+
+  if (view === 'journey' && selectedPatient) {
+    return (
+      <div className="page patients-page" style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
+        <div className="patients-journey-body" style={{ display: 'flex', flex: 1, flexDirection: 'column', minHeight: 0 }}>
+          <PatientJourneyV4 listPatient={selectedPatient} data={timelineData} loading={loading} />
+        </div>
+        <div className="page-footnote">
+          患者旅程数据来源于病例数据库，经结构化处理后生成，用于展示患者诊疗时间线。
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page patients-page" style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flex: 1, minHeight: 0 }} ref={layoutRef}>
-        <div
-          className="gl-toc"
-          style={{
-            width: leftWidth,
-            minWidth: leftWidth,
-            // borderRight: '0.5px solid var(--color-border-tertiary)',
-            padding: '12px 0',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{ display: 'flex', gap: 8, margin: '8px 14px' }}>
+      <div className="patients-list-root">
+        <div className="patients-list-filters">
+          <div className="patients-list-f-group">
+            <span className="patients-list-f-label">就诊类型</span>
+            <select className="patients-list-f-select" value={visitType} onChange={(e) => setVisitType(e.target.value)}>
+              <option value="">请选择就诊类型</option>
+              <option value="门诊">门诊</option>
+              <option value="住院">住院</option>
+              <option value="急诊">急诊</option>
+            </select>
+          </div>
+          <div className="patients-list-f-group">
+            <span className="patients-list-f-label">就诊时间</span>
             <input
+              className="patients-list-f-input"
               type="text"
-              placeholder="搜索患者姓名、ID、诊断..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={{
-                flex: 1,
-                padding: '8px 12px',
-                borderRadius: 8,
-                border: '0.5px solid var(--color-border-secondary)',
-                background: 'var(--color-background-secondary)',
-                fontSize: 13,
-                color: 'var(--color-text-primary)',
-                outline: 'none',
-              }}
+              placeholder="开始时间"
+              value={dateStart}
+              onChange={(e) => setDateStart(e.target.value)}
             />
-            <button
-              type="button"
-              onClick={() => setSearch((s) => s.trim())}
-              style={{
-                padding: '8px 12px',
-                borderRadius: 8,
-                border: '0.5px solid var(--color-border-secondary)',
-                background: 'var(--color-background-secondary)',
-                fontSize: 13,
-                color: 'var(--color-text-primary)',
-                cursor: 'pointer',
-                flexShrink: 0,
-              }}
-            >
+            <span className="patients-list-f-sep">至</span>
+            <input
+              className="patients-list-f-input"
+              type="text"
+              placeholder="结束时间"
+              value={dateEnd}
+              onChange={(e) => setDateEnd(e.target.value)}
+            />
+          </div>
+          <div className="patients-list-f-group">
+            <span className="patients-list-f-label">科室选择</span>
+            <select className="patients-list-f-select" value={dept} onChange={(e) => setDept(e.target.value)}>
+              <option value="">请选择科室</option>
+              {deptOptions.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="patients-list-f-group">
+            <span className="patients-list-f-label">风险等级</span>
+            <select className="patients-list-f-select" value={risk} onChange={(e) => setRisk(e.target.value)}>
+              <option value="">全部风险</option>
+              <option value="high">高危</option>
+              <option value="medium">中危</option>
+              <option value="low">低危</option>
+            </select>
+          </div>
+          <div className="patients-list-f-spacer" />
+          <div className="patients-list-search-wrap">
+            <input
+              type="search"
+              placeholder="搜索姓名、编号、诊断…"
+              value={searchQ}
+              onChange={(e) => setSearchQ(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && applySearch()}
+            />
+            <button type="button" className="patients-list-search-btn" onClick={applySearch}>
               搜索
             </button>
           </div>
-          <div style={{ flex: 1, overflowY: 'auto', padding: '14px 14px 0 14px' }}>
-            {filtered.map((p) => (
-              <div
-                key={p.id}
-                className={`emr-patient ${selectedPatient?.id === p.id ? 'active' : ''}`}
-                onClick={() => setSelectedPatient(p)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && setSelectedPatient(p)}
-              >
-                <div className="emr-info">
-                  <p>{p.name}</p>
-                  <span>{p.gender} · {p.age}岁 · ID {p.admissionId}</span>
-                  <div className="emr-tags">
-                    {p.tags.map((t) => (
-                      <span key={t} className={tagClass(t)}>{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
-        <div
-          className={`pane-splitter ${resizing ? 'active' : ''}`}
-          onMouseDown={() => setResizing(true)}
-          role="separator"
-          aria-orientation="vertical"
-          aria-label="调整患者列表和画布宽度"
-        />
-        <div style={{ flex: 1, overflow: 'auto', padding: 16, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          {selectedPatient ? (
-            <>
-              <div style={{ marginBottom: 12, fontSize: 13, color: 'var(--color-text-secondary)', flexShrink: 0 }}>
-                当前查看：<strong style={{ color: 'var(--color-text-primary)' }}>{selectedPatient.name}</strong>
-              </div>
-              <div style={{ flex: 1, minHeight: 0 }}>
-                <PatientJourneyMap data={timelineData} loading={loading} />
-              </div>
-            </>
+
+        <div className="patients-list-table-wrap">
+          {filtered.length === 0 ? (
+            <div className="patients-list-empty">未找到匹配患者</div>
           ) : (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0 }}>
-              <div className="journey-empty">
-                请从左侧选择或搜索患者，点击即可查看该患者的旅程图。
-              </div>
-            </div>
+            <table className="patients-data-table">
+              <thead>
+                <tr>
+                  <th>患者编号</th>
+                  <th>姓名</th>
+                  <th>性别</th>
+                  <th>年龄</th>
+                  <th>诊断</th>
+                  <th>科室</th>
+                  <th>就诊时间</th>
+                  <th>风险</th>
+                  <th>医院</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((p) => (
+                  <tr
+                    key={p.id}
+                    onClick={() => openJourney(p)}
+                    onKeyDown={(e) => e.key === 'Enter' && openJourney(p)}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <td className="patients-td-num">{p.admissionId}</td>
+                    <td style={{ fontWeight: 600 }}>{p.name}</td>
+                    <td>{p.gender}</td>
+                    <td>{p.age}岁</td>
+                    <td style={{ maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.diagnosis}>
+                      {p.diagnosis}
+                    </td>
+                    <td>{p.dept ?? '—'}</td>
+                    <td>{p.visitTime ?? '—'}</td>
+                    <td>
+                      <span className={riskBadgeClass(p.riskLevel)}>{riskLabel(p.riskLevel)}</span>
+                    </td>
+                    <td>{p.hospital ?? '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       </div>
-      <div className="page-footnote">
-        患者旅程数据来源于病例数据库，经结构化处理后生成，用于展示患者诊疗时间线。
-      </div>
+      <div className="page-footnote">点击表格行进入患者旅程图；当前仅部分患者接入完整病程数据。</div>
     </div>
   );
 }

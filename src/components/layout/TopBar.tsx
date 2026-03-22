@@ -1,10 +1,23 @@
+import type { PatientsJourneyTopBar } from '../../store';
+
 interface TopBarProps {
   title: string;
   badge?: string;
   onNewChat?: () => void;
+  /** 替换顶栏主标题区（与「病例库」同一位） */
+  patientsJourney?: PatientsJourneyTopBar | null;
 }
 
-export default function TopBar({ title, badge, onNewChat }: TopBarProps) {
+export default function TopBar({ title, badge, onNewChat, patientsJourney }: TopBarProps) {
+  if (patientsJourney) {
+    return (
+      <header className="topbar topbar--patients-journey">
+        <button type="button" className="topbar-back-btn" onClick={patientsJourney.onBack}>
+          ← 返回列表
+        </button>
+      </header>
+    );
+  }
   return (
     <header className="topbar">
       <span className="topbar-title">{title}</span>

@@ -12,7 +12,7 @@ import PatientsPage from './components/emr/PatientsPage';
 import './styles/platform.css';
 
 function AppContent() {
-  const { page, setPage, patient, setPatient } = useAppStore();
+  const { page, setPage, patient, setPatient, patientsJourneyTopBar } = useAppStore();
   const { messages, loading, sendMessage, askQuestion } = useAgent();
   const { doc } = useGuideline();
   const [emrModalOpen, setEmrModalOpen] = useState(false);
@@ -74,6 +74,7 @@ function AppContent() {
           title={pageConfig.title}
           badge={pageConfig.badge}
           onNewChat={undefined}
+          patientsJourney={page === 'patients' ? patientsJourneyTopBar : null}
         />
         <div className={`page ${page === 'chat' ? 'active' : ''}`} id="page-chat">
           <ChatInterface

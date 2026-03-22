@@ -1,0 +1,261 @@
+/* 患者旅程页：与左侧 sidebar 留出间距 */
+#page-patients.page {
+  padding-left: 24px;
+  box-sizing: border-box;
+}
+
+/* 患者列表（图1）— 与项目主色 #2A8075 一致 */
+.patients-list-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: #f7f9fb;
+  font-size: 13px;
+  color: #1a1a1a;
+}
+
+.patients-list-filters {
+  background: #fff;
+  border-bottom: 1px solid #e0e7ed;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.patients-list-f-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.patients-list-f-label {
+  font-size: 12px;
+  color: #444;
+  white-space: nowrap;
+}
+
+.patients-list-f-select,
+.patients-list-f-input {
+  border: 1px solid #e0e7ed;
+  border-radius: 4px;
+  color: #1a1a1a;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 5px 9px;
+  outline: none;
+  background: #fff;
+}
+
+.patients-list-f-select {
+  min-width: 120px;
+}
+
+.patients-list-f-input {
+  width: 108px;
+}
+
+.patients-list-f-select:focus,
+.patients-list-f-input:focus {
+  border-color: #2a8075;
+}
+
+.patients-list-f-sep {
+  font-size: 12px;
+  color: #888;
+}
+
+.patients-list-f-spacer {
+  flex: 1;
+  min-width: 8px;
+}
+
+.patients-list-search-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e7ed;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.patients-list-search-wrap:focus-within {
+  border-color: #2a8075;
+}
+
+.patients-list-search-wrap input {
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 12px;
+  color: #1a1a1a;
+  padding: 5px 10px;
+  width: min(220px, 28vw);
+  background: transparent;
+}
+
+.patients-list-search-wrap input::placeholder {
+  color: #888;
+}
+
+.patients-list-search-btn {
+  background: #0b3b60;
+  color: #fff;
+  border: none;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.patients-list-search-btn:hover {
+  background: #1a5a8a;
+}
+
+.patients-list-table-wrap {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+.patients-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.patients-data-table thead th {
+  background: #f0f4f8;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 12px;
+  color: #444;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e7ed;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.patients-data-table tbody tr {
+  border-bottom: 1px solid #eef3f7;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.patients-data-table tbody tr:nth-child(even) {
+  background: #f7fafc;
+}
+
+.patients-data-table tbody tr:hover {
+  background: #e8f4f8;
+}
+
+.patients-data-table tbody td {
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #1a1a1a;
+}
+
+.patients-td-num {
+  color: #0b3b60;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.patients-risk-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.patients-risk-high {
+  background: #fdecea;
+  color: #c0392b;
+}
+
+.patients-risk-medium {
+  background: #fef3e2;
+  color: #b45309;
+}
+
+.patients-risk-low {
+  background: #e5f5f2;
+  color: #1e7d6b;
+}
+
+.patients-tag-pill {
+  display: inline-block;
+  font-size: 10px;
+  background: #e8f4f8;
+  color: #0b3b60;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-right: 3px;
+}
+
+.patients-row-chev {
+  color: #888;
+  font-size: 15px;
+  text-align: right;
+}
+
+.patients-list-empty {
+  padding: 48px 20px;
+  text-align: center;
+  color: #888;
+}
+
+/* 旅程全屏顶栏 */
+.patients-journey-topbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e0e7ed;
+}
+
+.patients-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #e0e7ed;
+  background: #fff;
+  color: #444;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.patients-back-btn:hover {
+  border-color: #2a8075;
+  color: #2a8075;
+}
+
+.patients-journey-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.patients-journey-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}

@@ -168,6 +168,40 @@
   background: var(--color-background-primary);
 }
 .topbar-title { font-size: var(--font-title-md); font-weight: 500; color: var(--color-text-primary); flex: 1; }
+
+.topbar--patients-journey {
+  gap: 16px;
+  padding: 0 calc(var(--layout-margin) - 2px);
+}
+
+.topbar-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--color-border-tertiary);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.topbar-back-btn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.topbar-journey-title {
+  font-size: var(--font-title-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  flex: 1;
+  min-width: 0;
+}
 .topbar-badge {
   background: var(--brand-bg);
   color: var(--brand);
@@ -470,7 +504,7 @@
 .gl-toc {
   width: 280px;
   min-width: 280px;
-  border-right: 1px solid var(--color-border-tertiary);
+  /* border-right: 1px solid var(--color-border-tertiary); */
   padding: 12px 0;
   flex-shrink: 0;
   display: flex;
@@ -692,7 +726,7 @@
 .journey-header-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 18px;
   padding: 0 0 16px 0;
   border-bottom: 0.5px solid var(--color-border-tertiary);
   margin-bottom: 20px;

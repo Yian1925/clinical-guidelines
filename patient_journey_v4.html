@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>患者旅程系统</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #0b3b60;
+  --primary-light: #1a5a8a;
+  --primary-pale: #e8f4f8;
+  --selected: #2A8075;
+  --selected-bg: rgba(42,128,117,0.12);
+  --selected-row: #2A8075;
+  --text: #1a1a1a;
+  --text-mid: #444;
+  --text-light: #888;
+  --border: #e0e7ed;
+  --bg: #f7f9fb;
+  --white: #fff;
+  --shadow: 0 2px 10px rgba(0,0,0,0.09);
+  --shadow-lg: 0 8px 28px rgba(0,0,0,0.13);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Noto Sans SC',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  font-size:13px;
+}
+
+/* ===== TOP NAV ===== */
+.top-nav {
+  height:50px;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  flex-shrink:0;
+  box-shadow:0 1px 3px rgba(0,0,0,0.05);
+}
+
+.nav-logo {
+  font-size:15px;
+  font-weight:700;
+  color:var(--primary);
+  margin-right:20px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+.tab-bar {
+  display:flex;
+  align-items:stretch;
+  height:100%;
+  flex:1;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.tab-bar::-webkit-scrollbar { display:none; }
+
+.tab-btn {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:0 16px;
+  font-size:13px;
+  color:var(--text-mid);
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  white-space:nowrap;
+  transition:all 0.15s;
+  flex-shrink:0;
+  user-select:none;
+}
+.tab-btn:hover { color:var(--primary); background:var(--primary-pale); }
+.tab-btn.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:600; }
+
+.tab-avatar {
+  width:18px; height:18px;
+  border-radius:50%;
+  background:var(--primary-light);
+  color:white;
+  font-size:9px;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700;
+  flex-shrink:0;
+}
+.tab-btn.active .tab-avatar { background:var(--selected); }
+
+.tab-close {
+  width:16px; height:16px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px;
+  color:var(--text-light);
+  transition:all 0.15s;
+  margin-left:2px;
+}
+.tab-close:hover { background:#dde8f0; color:var(--text); }
+
+/* ===== VIEWS ===== */
+.view { display:none; flex:1; flex-direction:column; overflow:hidden; }
+.view.active { display:flex; }
+
+/* ===== LIST FILTER BAR ===== */
+.filter-bar {
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+  flex-wrap:wrap;
+}
+
+.f-group {
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.f-label {
+  font-size:12px;
+  color:var(--text-mid);
+  white-space:nowrap;
+}
+.f-select, .f-input {
+  border:1px solid var(--border);
+  border-radius:4px;
+  color:var(--text);
+  font-size:12px;
+  font-family:inherit;
+  padding:5px 9px;
+  outline:none;
+  background:var(--white);
+  transition:border-color 0.15s;
+}
+.f-select { min-width:120px; }
+.f-input  { width:108px; }
+.f-select:focus, .f-input:focus { border-color:var(--primary); }
+.f-sep { font-size:12px; color:var(--text-light); }
+
+.f-spacer { flex:1; }
+
+/* Search group on right */
+.search-wrap {
+  display:flex;
+  align-items:center;
+  border:1px solid var(--border);
+  border-radius:4px;
+  overflow:hidden;
+  background:var(--white);
+}
+.search-wrap:focus-within { border-color:var(--primary); }
+.search-wrap input {
+  border:none; outline:none;
+  font-family:inherit; font-size:12px;
+  color:var(--text);
+  padding:5px 10px;
+  width:180px;
+  background:transparent;
+}
+.search-wrap input::placeholder { color:var(--text-light); }
+.search-btn {
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:5px 14px;
+  font-size:12px;
+  font-family:inherit;
+  font-weight:600;
+  cursor:pointer;
+  transition:background 0.15s;
+  white-space:nowrap;
+}
+.search-btn:hover { background:var(--primary-light); }
+
+/* ===== TABLE ===== */
+.table-wrap { flex:1; overflow-y:auto; }
+
+.data-table { width:100%; border-collapse:collapse; }
+
+.data-table thead th {
+  background:var(--bg);
+  padding:10px 14px;
+  text-align:left;
+  font-size:12px;
+  color:var(--text-mid);
+  font-weight:600;
+  border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:5;
+  white-space:nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom:1px solid #eef3f7;
+  cursor:pointer;
+  transition:background 0.1s;
+}
+.data-table tbody tr:hover { background:var(--primary-pale); }
+
+/* Selected row: green bg, white text (like image1) */
+.data-table tbody tr.row-sel {
+  background:var(--selected-row) !important;
+  color:white;
+}
+.data-table tbody tr.row-sel td { color:white !important; }
+
+.data-table tbody td {
+  padding:10px 14px;
+  font-size:13px;
+  color:var(--text);
+}
+
+.td-num { color:var(--primary); font-weight:600; font-size:12px; }
+.row-sel .td-num { color:#c8f0ea !important; }
+
+.risk-badge {
+  display:inline-block; font-size:10px; font-weight:700;
+  padding:2px 7px; border-radius:3px;
+}
+.risk-high   { background:#fdecea; color:#c0392b; }
+.risk-medium { background:#fef3e2; color:#b45309; }
+.risk-low    { background:#e5f5f2; color:#1e7d6b; }
+.row-sel .risk-badge { background:rgba(255,255,255,0.2); color:white; }
+
+.tag-pill {
+  display:inline-block; font-size:10px;
+  background:var(--primary-pale); color:var(--primary);
+  padding:1px 6px; border-radius:3px; margin-right:3px;
+}
+.row-sel .tag-pill { background:rgba(255,255,255,0.2); color:white; }
+
+.row-chev { color:var(--text-light); font-size:15px; text-align:right; }
+.row-sel .row-chev { color:white; }
+
+/* ===== JOURNEY PATIENT HEADER ===== */
+.journey-header {
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:14px 24px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  flex-shrink:0;
+}
+
+.j-avatar {
+  width:50px; height:50px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+  color:white; font-size:19px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+.j-info { flex:1; min-width:0; }
+.j-name-row { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+.j-name { font-size:17px; font-weight:700; color:var(--text); }
+.j-tag {
+  font-size:11px; font-weight:600;
+  background:var(--primary-pale); color:var(--primary);
+  padding:2px 8px; border-radius:4px;
+}
+.j-tag-green {
+  background:#e0f2ef; color:var(--selected);
+  border:1px solid rgba(42,128,117,0.25);
+}
+.j-meta { font-size:12px; color:var(--text-mid); display:flex; flex-wrap:wrap; gap:4px 14px; }
+.j-meta .sep { color:var(--border); }
+
+/* Stat boxes (image4 style) */
+.stat-boxes {
+  display:flex; align-items:stretch;
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.stat-box {
+  padding:10px 18px;
+  text-align:center;
+  min-width:88px;
+  position:relative;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.stat-box+.stat-box::before {
+  content:'';
+  position:absolute; left:0; top:18%; bottom:18%;
+  width:1px; background:var(--border);
+}
+.stat-num {
+  font-size:20px; font-weight:700; color:var(--primary);
+  display:flex; align-items:baseline; gap:2px; line-height:1.2;
+}
+.stat-unit { font-size:11px; font-weight:400; color:var(--text-light); }
+.stat-label { font-size:11px; color:var(--text-light); margin-top:3px; display:flex; align-items:center; gap:3px; }
+
+/* ===== JOURNEY TOOLBAR ===== */
+.journey-toolbar {
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:8px 24px;
+  display:flex; align-items:center; gap:18px;
+  flex-shrink:0;
+}
+.back-btn {
+  display:flex; align-items:center; gap:4px;
+  border:1px solid var(--border); background:var(--white);
+  color:var(--text-mid); border-radius:5px;
+  padding:5px 12px; font-size:12px; font-family:inherit;
+  cursor:pointer; transition:all 0.15s; flex-shrink:0;
+}
+.back-btn:hover { border-color:var(--primary); color:var(--primary); }
+
+.legend-list { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.legend-item { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text-mid); }
+.legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+/* ===== JOURNEY SCROLL AREA ===== */
+.journey-scroll {
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:20px 24px 40px;
+  background:var(--bg);
+  position:relative;
+}
+
+/* ===== S-TIMELINE ===== */
+.cat-block { margin-bottom:2px; }
+.cat-sep { margin-left:64px; height:1px; background:var(--border); margin:3px 0; }
+
+.cat-row { display:flex; align-items:flex-start; }
+
+.cat-label-col {
+  width:64px; flex-shrink:0;
+  padding-right:12px;
+  padding-top:34px;
+  text-align:right;
+}
+.cat-label-text { font-size:12px; font-weight:600; }
+
+.cat-track { flex:1; position:relative; min-width:0; }
+
+/* S-band: one horizontal row */
+.s-band {
+  position:relative;
+  height:100px;
+  display:flex;
+  align-items:flex-start;
+}
+
+.s-line {
+  position:absolute;
+  top:26px; left:0; right:0;
+  height:2px;
+  border-radius:1px;
+}
+.s-band.ltr .s-line::after {
+  content:'▶';
+  position:absolute; right:-2px; top:-7px;
+  font-size:10px; opacity:0.6;
+}
+.s-band.rtl .s-line::before {
+  content:'◀';
+  position:absolute; left:-2px; top:-7px;
+  font-size:10px; opacity:0.6;
+}
+
+.s-connector {
+  position:absolute;
+  width:2px;
+  bottom:-3px;
+  height:11px;
+}
+.s-band.ltr .s-connector { right:0; }
+.s-band.rtl .s-connector { left:0; }
+
+.s-nodes { display:flex; align-items:flex-start; width:100%; }
+.s-band.rtl .s-nodes { flex-direction:row-reverse; }
+
+/* Node */
+.s-node {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-width:130px;
+  max-width:150px;
+  flex:0 0 auto;
+  cursor:pointer;
+  padding-top:12px;
+  transition:transform 0.15s;
+  position:relative;
+}
+.s-node:hover { transform:translateY(-2px); }
+
+.node-dot {
+  width:12px; height:12px;
+  border-radius:50%;
+  border:2px solid;
+  background:white;
+  position:relative; z-index:2;
+  margin-top:6px;
+  transition:transform 0.15s;
+  flex-shrink:0;
+}
+.s-node:hover .node-dot,
+.s-node.node-active .node-dot { transform:scale(1.4); }
+
+.node-time {
+  font-size:10px; color:var(--text-light);
+  margin-top:2px; white-space:nowrap;
+}
+
+.node-card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:7px 10px;
+  margin-top:4px;
+  width:122px;
+  box-shadow:var(--shadow);
+  transition:all 0.15s;
+}
+.s-node:hover .node-card { box-shadow:var(--shadow-lg); }
+.s-node.node-active .node-card { border-color:var(--selected) !important; box-shadow:0 0 0 2px rgba(42,128,117,0.18); }
+
+.nc-title { font-size:12px; font-weight:600; color:var(--text); line-height:1.35; margin-bottom:2px; word-break:break-all; }
+.nc-sub   { font-size:10px; color:var(--text-light); line-height:1.3; }
+.nc-anomaly {
+  display:inline-flex; align-items:center; gap:2px;
+  font-size:10px; font-weight:700; color:#b45309;
+  background:#fef3e2; border-radius:3px; padding:1px 4px; margin-top:2px;
+}
+
+/* ===== TOOLTIP ===== */
+.tt-overlay {
+  position:fixed;
+  inset:0;
+  z-index:100;
+  pointer-events:none;
+}
+.tt-overlay.visible { pointer-events:all; }
+
+.tooltip {
+  position:absolute;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:0;
+  min-width:240px;
+  max-width:320px;
+  box-shadow:var(--shadow-lg);
+  z-index:200;
+  animation:ttIn 0.15s ease;
+  overflow:hidden;
+}
+
+@keyframes ttIn {
+  from { opacity:0; transform:translateY(4px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* Tooltip inner */
+.tt-header {
+  display:flex; align-items:center; gap:8px;
+  padding:10px 14px 8px;
+  border-bottom:1px solid #f0f0f0;
+}
+.tt-dot {
+  width:10px; height:10px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+.tt-title { font-size:13px; font-weight:700; color:var(--text); flex:1; }
+.tt-close {
+  width:22px; height:22px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px;
+  color:var(--text-light);
+  cursor:pointer;
+  transition:all 0.15s;
+  background:transparent;
+  border:none;
+  flex-shrink:0;
+}
+.tt-close:hover { background:#f0f0f0; color:var(--text); }
+
+.tt-body { padding:10px 14px 12px; }
+
+.tt-row { margin-bottom:6px; }
+.tt-row:last-child { margin-bottom:0; }
+.tt-kv { display:flex; align-items:flex-start; gap:6px; font-size:12px; }
+.tt-k { color:var(--text-light); white-space:nowrap; flex-shrink:0; }
+.tt-v { color:var(--text); line-height:1.5; }
+
+.tt-anomaly-box {
+  margin-top:8px;
+  border:1px solid #f0c882;
+  border-radius:6px;
+  padding:7px 10px;
+  background:#fef9f0;
+  font-size:11px;
+  color:#b45309;
+  display:flex; align-items:flex-start; gap:5px;
+}
+.tt-anomaly-icon { font-size:12px; flex-shrink:0; margin-top:1px; }
+.tt-anomaly-items { line-height:1.6; }
+
+.tt-lab-list { margin-top:4px; }
+.tt-lab-row {
+  display:flex; align-items:center; gap:6px;
+  font-size:11px; padding:3px 0;
+  border-bottom:1px solid #f5f5f5;
+}
+.tt-lab-row:last-child { border-bottom:none; }
+.tt-lab-name { flex:1; color:var(--text-mid); }
+.tt-lab-val  { font-weight:600; }
+.tt-lab-val.hn { color:#c0392b; }
+.tt-lab-val.ln { color:#2980b9; }
+.tt-lab-ref  { color:var(--text-light); font-size:10px; }
+
+.tt-time { font-size:11px; color:var(--text-light); margin-top:6px; }
+
+/* ===== NO DATA ===== */
+.no-data-wrap {
+  flex:1; display:flex; align-items:center; justify-content:center; background:var(--bg);
+}
+.no-data-box { text-align:center; color:var(--text-light); }
+.no-data-icon { font-size:44px; margin-bottom:12px; opacity:0.3; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:#cdd8e0; border-radius:3px; }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-nav">
+  <div class="nav-logo">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <rect x="2" y="2" width="7" height="7" rx="1.5" fill="#0b3b60"/>
+      <rect x="11" y="2" width="7" height="7" rx="1.5" fill="#0b3b60" opacity=".4"/>
+      <rect x="2" y="11" width="7" height="7" rx="1.5" fill="#0b3b60" opacity=".4"/>
+      <rect x="11" y="11" width="7" height="7" rx="1.5" fill="#2A8075"/>
+    </svg>
+    患者旅程系统
+  </div>
+  <div class="tab-bar" id="tab-bar">
+    <div class="tab-btn active" id="tab-list" onclick="navToList()">患者列表</div>
+  </div>
+</div>
+
+<!-- LIST VIEW -->
+<div class="view active" id="view-list">
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="f-group">
+      <span class="f-label">就诊类型</span>
+      <select class="f-select" id="f-type" onchange="applyFilter()">
+        <option value="">请选择就诊类型</option>
+        <option>门诊</option><option>住院</option><option>急诊</option>
+      </select>
+    </div>
+    <div class="f-group">
+      <span class="f-label">就诊时间</span>
+      <input class="f-input" id="f-t1" type="text" placeholder="开始时间" oninput="applyFilter()">
+      <span class="f-sep">至</span>
+      <input class="f-input" id="f-t2" type="text" placeholder="结束时间" oninput="applyFilter()">
+    </div>
+    <div class="f-group">
+      <span class="f-label">科室选择</span>
+      <select class="f-select" id="f-dept" onchange="applyFilter()">
+        <option value="">请选择科室</option>
+        <option>肿瘤内一科</option><option>心内科</option><option>内分泌科</option>
+        <option>乳腺外科</option><option>神经内科</option><option>呼吸科</option>
+        <option>泌尿外科</option><option>妇科</option><option>肾内科</option>
+        <option>普外科</option><option>骨科</option><option>消化内科</option>
+        <option>风湿免疫科</option>
+      </select>
+    </div>
+    <div class="f-group">
+      <span class="f-label">风险等级</span>
+      <select class="f-select" id="f-risk" onchange="applyFilter()">
+        <option value="">全部风险</option>
+        <option value="high">高危</option>
+        <option value="medium">中危</option>
+        <option value="low">低危</option>
+      </select>
+    </div>
+    <div class="f-spacer"></div>
+    <!-- Search on the right -->
+    <div class="search-wrap">
+      <input type="text" id="f-q" placeholder="搜索姓名、编号、诊断…" oninput="applyFilter()">
+      <button class="search-btn" onclick="applyFilter()">搜索</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>就诊时间</th>
+          <th>科室</th>
+          <th>医疗机构</th>
+          <th>患者编号</th>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>年龄</th>
+          <th>诊断</th>
+          <th>医生</th>
+          <th>风险</th>
+          <th>标签</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- JOURNEY VIEW -->
+<div class="view" id="view-journey">
+  <div class="journey-header" id="j-header"></div>
+  <div class="journey-toolbar">
+    <button class="back-btn" onclick="navToList()">← 返回列表</button>
+    <div class="legend-list">
+      <span class="legend-item"><span class="legend-dot" style="background:#6c5fc7"></span>诊断</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#0b3b60"></span>病历文书</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#1e7d6b"></span>检查</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#b45309"></span>化验</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#c0392b"></span>医嘱</span>
+      <span class="legend-item" style="margin-left:4px;"><span style="font-size:11px;color:#b45309;font-weight:700;">⬆</span>异常指标</span>
+    </div>
+  </div>
+  <div class="journey-scroll" id="journey-scroll" onclick="handleScrollClick(event)"></div>
+</div>
+
+<!-- NO DATA VIEW -->
+<div class="view" id="view-nodata">
+  <div class="no-data-wrap">
+    <div class="no-data-box">
+      <div class="no-data-icon">📋</div>
+      <div style="font-size:14px;">暂无旅程数据，请选择其他患者或确认该患者已接入病程数据。</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tt-overlay" id="tt-overlay" onclick="closeTooltip(event)"></div>
+<div class="tooltip" id="tooltip" style="display:none;"></div>
+
+<script>
+/* =====================================================
+   REAL TIMELINE DATA
+===================================================== */
+const REAL_TL = {"patient":{"patient_id":"Y3030647","name":"(脱敏)","sex":"男","age":49,"date_of_birth":"1968-05-13","admission_date":"2017-10-19","discharge_date":"2017-10-29","admission_diagnosis":"肺占位性质待排：中央型肺癌？纵膈恶性肿瘤？","discharge_diagnosis":"左肺小细胞癌","total_days":10,"treatment_result":"好转"},"timeline":[{"date":"2017-10-19","events":[{"time":"09:57","category":"诊断","sub_type":"入院诊断","content":{"diagnosis":"小细胞癌","treat_result":null,"with_surgery":null}},{"time":"09:57","category":"诊断","sub_type":"出院诊断（治疗类）","content":{"diagnosis":"恶性肿瘤维持性化疗","treat_result":"好转","with_surgery":null}},{"time":"09:59","category":"诊断","sub_type":"主要诊断","content":{"diagnosis":"肺肿物","treat_result":null,"with_surgery":false}},{"time":"15:16","category":"诊断","sub_type":"其他诊断","content":{"diagnosis":"肺占位性质待排","treat_result":null,"with_surgery":false}},{"time":"15:16","category":"诊断","sub_type":"出院诊断","content":{"diagnosis":"左肺小细胞癌","treat_result":"好转","with_surgery":true}},{"time":"15:44","category":"医嘱","sub_type":"护理常规","content":{"order_no":2,"order_text":"二级护理（新版）","class":"护理常规","stop_datetime":"2017-10-29 10:00"}},{"time":"15:44","category":"医嘱","sub_type":"护理常规","content":{"order_no":1,"order_text":"按内科护理常规","class":"护理常规","stop_datetime":"2017-10-29 10:00"}},{"time":"15:44","category":"医嘱","sub_type":"检查医嘱","content":{"order_no":7,"order_text":"心电图检查（多导）","class":"检查医嘱","stop_datetime":"2017-10-19 15:44"}},{"time":"15:44","category":"医嘱","sub_type":"护理医嘱","content":{"order_no":5,"order_text":"静脉采血（新版）","class":"护理医嘱","stop_datetime":"2017-10-19 15:44"}},{"time":"15:44","category":"医嘱","sub_type":"饮食医嘱","content":{"order_no":3,"order_text":"普食","class":"饮食医嘱","stop_datetime":"2017-10-29 10:00"}},{"time":"15:44","category":"医嘱","sub_type":"检验医嘱","content":{"order_no":8,"order_text":"急诊血常规","class":"检验医嘱","stop_datetime":"2017-10-19 15:44"}},{"time":"15:45","category":"医嘱","sub_type":"检验医嘱","content":{"order_no":9,"order_text":"急诊生化检验","class":"检验医嘱","stop_datetime":"2017-10-19 15:45"}},{"time":"15:50","category":"医嘱","sub_type":"检验医嘱","content":{"order_no":10,"order_text":"凝血四项","class":"检验医嘱","stop_datetime":"2017-10-19 15:50"}},{"time":"15:50","category":"医嘱","sub_type":"检验医嘱","content":{"order_no":11,"order_text":"血浆D-二聚体测定","class":"检验医嘱","stop_datetime":"2017-10-19 15:50"}},{"time":"15:51","category":"医嘱","sub_type":"检验医嘱","content":{"order_no":12,"order_text":"急诊血清术前八项","class":"检验医嘱","stop_datetime":"2017-10-19 15:51"}},{"time":"15:52","category":"医嘱","sub_type":"护理医嘱","content":{"order_no":6,"order_text":"肿瘤标记物检验","class":"护理医嘱","stop_datetime":"2017-10-19 15:52"}},{"time":"16:04","category":"检查","sub_type":"心电图—普通","content":{"exam_no":"28828763","exam_class":"心电图","exam_sub_class":"普通","report_datetime":"2017-10-19 16:33","impression":"窦性心律 正常心电图","recommendation":null}},{"time":"16:57","category":"病历文书","sub_type":"第1次入院记录","content":{"summary":"男，49岁，发现左肺占位10余天。患者于2017年10月无明显诱因出现刺激性咳嗽，少量粘痰，伴胸痛、气短，夜间症状明显，无发热。外院CT示左肺门偏上纵膈旁及纵膈内肿块影，约8.7×7.2×6.6cm，多考虑中心型肺癌。"}},{"time":"17:30","category":"化验","sub_type":"急诊血常规","content":{"test_no":"1001","subject":"急诊血常规","specimen":"静脉血","report_datetime":"2017-10-19 18:00","items":[{"name":"白细胞计数","result":"10.98","unit":"10^9/L","abnormal":"H","reference":"4~10"},{"name":"中性粒细胞","result":"0.854","unit":"","abnormal":"H","reference":"0.5~0.7"},{"name":"淋巴细胞","result":"0.126","unit":"","abnormal":"L","reference":"0.2~0.4"},{"name":"血红蛋白","result":"124","unit":"g/L","abnormal":"L","reference":"130~175"},{"name":"血小板","result":"286","unit":"10^9/L","abnormal":"N","reference":"100~300"}],"abnormal_count":4,"abnormal_items":["白细胞计数 10.98 ↑","中性粒细胞 0.854 ↑","淋巴细胞 0.126 ↓","血红蛋白 124 ↓"]}}]},{"date":"2017-10-20","events":[{"time":"09:00","category":"病历文书","sub_type":"病程记录","content":{"summary":"患者昨日入院，生命体征平稳，咳嗽症状同前，今日完善相关检查，行血型及凝血功能检查。"}},{"time":"11:00","category":"化验","sub_type":"血浆D-二聚体测定","content":{"test_no":"1002","subject":"血浆D-二聚体测定","specimen":"静脉血","report_datetime":"2017-10-20 12:00","items":[{"name":"D-二聚体","result":"0.82","unit":"mg/L","abnormal":"H","reference":"0~0.55"},{"name":"凝血酶原时间","result":"13.2","unit":"s","abnormal":"N","reference":"11~15"},{"name":"活化部分凝血酶时间","result":"32.5","unit":"s","abnormal":"N","reference":"25~38"}],"abnormal_count":1,"abnormal_items":["D-二聚体 0.82 ↑"]}},{"time":"14:00","category":"医嘱","sub_type":"药物医嘱","content":{"order_no":21,"order_text":"注射用泮托拉唑钠","class":"药物医嘱","dosage":"40mg","route":"静脉滴注","stop_datetime":"2017-10-25 00:00"}}]},{"date":"2017-10-21","events":[{"time":"08:30","category":"检查","sub_type":"EBUS检查","content":{"exam_no":"28829001","exam_class":"内镜","exam_sub_class":"EBUS","report_datetime":"2017-10-21 10:00","impression":"纵膈淋巴结肿大，EBUS-TBNA活检送病理","recommendation":"等待病理结果"}},{"time":"09:00","category":"病历文书","sub_type":"病程记录","content":{"summary":"EBUS检查日，患者行支气管内超声检查及活检，术中顺利，术后留观，无明显出血及气胸。"}},{"time":"11:00","category":"医嘱","sub_type":"检查医嘱","content":{"order_no":30,"order_text":"胸部CT平扫+增强","class":"检查医嘱","stop_datetime":"2017-10-21 11:00"}}]},{"date":"2017-10-22","events":[{"time":"09:00","category":"检查","sub_type":"胸部CT—增强","content":{"exam_no":"28829200","exam_class":"CT","exam_sub_class":"增强","report_datetime":"2017-10-22 14:00","impression":"左肺门及纵膈肿块，考虑中央型肺癌可能性大，累及纵膈及左肺动脉","recommendation":"结合临床及病理结果"}},{"time":"10:00","category":"化验","sub_type":"肿瘤标记物检验","content":{"test_no":"1003","subject":"肿瘤标记物检验","specimen":"静脉血","report_datetime":"2017-10-22 15:00","items":[{"name":"NSE","result":"68.5","unit":"ng/mL","abnormal":"H","reference":"0~16.3"},{"name":"ProGRP","result":"312","unit":"pg/mL","abnormal":"H","reference":"0~69"},{"name":"CEA","result":"3.2","unit":"ng/mL","abnormal":"N","reference":"0~5"},{"name":"CYFRA21-1","result":"4.8","unit":"ng/mL","abnormal":"H","reference":"0~3.3"}],"abnormal_count":3,"abnormal_items":["NSE 68.5 ↑","ProGRP 312 ↑","CYFRA21-1 4.8 ↑"]}},{"time":"14:00","category":"病历文书","sub_type":"病程记录","content":{"summary":"病理结果回报：小细胞肺癌。NSE、ProGRP明显升高，支持诊断。向患者家属告知，拟行EP方案化疗。"}}]},{"date":"2017-10-23","events":[{"time":"09:00","category":"病历文书","sub_type":"知情同意书","content":{"summary":"向患者及家属交代病情，诊断左肺小细胞癌，建议行EP方案化疗，患者及家属签署化疗知情同意书。"}},{"time":"10:00","category":"医嘱","sub_type":"检查医嘱","content":{"order_no":50,"order_text":"头颅MRI平扫+增强","class":"检查医嘱","stop_datetime":"2017-10-23 10:00"}},{"time":"14:00","category":"医嘱","sub_type":"检查医嘱","content":{"order_no":51,"order_text":"骨扫描（ECT）","class":"检查医嘱","stop_datetime":"2017-10-23 14:00"}}]},{"date":"2017-10-24","events":[{"time":"10:00","category":"检查","sub_type":"头颅MRI—增强","content":{"exam_no":"28829500","exam_class":"MRI","exam_sub_class":"增强","report_datetime":"2017-10-24 16:00","impression":"头颅MRI未见脑转移征象","recommendation":null}},{"time":"11:00","category":"化验","sub_type":"肝肾功能","content":{"test_no":"1004","subject":"肝肾功能","specimen":"静脉血","report_datetime":"2017-10-24 13:00","items":[{"name":"丙氨酸氨基转移酶","result":"28","unit":"U/L","abnormal":"N","reference":"0~40"},{"name":"肌酐","result":"72","unit":"umol/L","abnormal":"N","reference":"30~110"},{"name":"尿素氮","result":"5.2","unit":"mmol/L","abnormal":"N","reference":"1.8~7.5"}],"abnormal_count":0,"abnormal_items":[]}},{"time":"14:00","category":"病历文书","sub_type":"病程记录","content":{"summary":"头颅MRI未见脑转移。肝肾功能正常，可耐受化疗。明日行EP方案化疗。"}}]},{"date":"2017-10-25","events":[{"time":"08:00","category":"病历文书","sub_type":"化疗记录","content":{"summary":"化疗日，EP方案开始：依托泊苷+卡铂。生命体征平稳，止吐预处理后化疗，过程顺利。"}},{"time":"09:00","category":"医嘱","sub_type":"药物医嘱","content":{"order_no":60,"order_text":"依托泊苷注射液 0.2g","class":"药物医嘱","dosage":"0.2g","route":"静脉滴注","stop_datetime":"2017-10-26 12:00"}},{"time":"09:00","category":"医嘱","sub_type":"药物医嘱","content":{"order_no":61,"order_text":"卡铂注射液 0.5g","class":"药物医嘱","dosage":"0.5g","route":"静脉滴注","stop_datetime":"2017-10-25 15:00"}},{"time":"10:00","category":"化验","sub_type":"血型鉴定","content":{"test_no":"1005","subject":"血型鉴定","specimen":"静脉血","report_datetime":"2017-10-25 11:00","items":[{"name":"ABO血型","result":"A型","unit":"","abnormal":"N","reference":""},{"name":"Rh血型","result":"阳性","unit":"","abnormal":"N","reference":""}],"abnormal_count":0,"abnormal_items":[]}}]},{"date":"2017-10-26","events":[{"time":"09:00","category":"医嘱","sub_type":"药物医嘱","content":{"order_no":70,"order_text":"依托泊苷注射液 0.2g d2","class":"药物医嘱","dosage":"0.2g","route":"静脉滴注","stop_datetime":"2017-10-26 15:00"}},{"time":"10:00","category":"病历文书","sub_type":"病程记录","content":{"summary":"化疗第2日，患者轻度恶心，无明显呕吐，给予止吐对症处理，症状缓解。"}},{"time":"14:00","category":"检查","sub_type":"超声—小器官","content":{"exam_no":"28829800","exam_class":"超声","exam_sub_class":"小器官","report_datetime":"2017-10-26 15:30","impression":"左侧锁骨上窝多发低回声结节，考虑淋巴结转移","recommendation":"定期复查"}},{"time":"16:00","category":"化验","sub_type":"急诊血清术前八项","content":{"test_no":"1006","subject":"急诊血清术前八项","specimen":"静脉血","report_datetime":"2017-10-26 17:30","items":[{"name":"乙肝表面抗原","result":"阴性","unit":"","abnormal":"N","reference":"阴性"},{"name":"丙肝抗体","result":"阴性","unit":"","abnormal":"N","reference":"阴性"},{"name":"梅毒抗体","result":"阴性","unit":"","abnormal":"N","reference":"阴性"},{"name":"HIV抗体","result":"阴性","unit":"","abnormal":"N","reference":"阴性"}],"abnormal_count":0,"abnormal_items":[]}}]},{"date":"2017-10-27","events":[{"time":"09:00","category":"医嘱","sub_type":"药物医嘱","content":{"order_no":75,"order_text":"依托泊苷注射液 0.1g d3","class":"药物医嘱","dosage":"0.1g","route":"静脉滴注","stop_datetime":"2017-10-27 15:00"}},{"time":"10:00","category":"病历文书","sub_type":"病程记录","content":{"summary":"化疗第3日，患者症状较前改善，咳嗽减轻，一般状态可。"}},{"time":"14:00","category":"化验","sub_type":"急诊生化检验","content":{"test_no":"1007","subject":"急诊生化检验","specimen":"静脉血","report_datetime":"2017-10-27 15:30","items":[{"name":"钾","result":"3.2","unit":"mmol/L","abnormal":"L","reference":"3.5~5.5"},{"name":"钠","result":"138","unit":"mmol/L","abnormal":"N","reference":"130~150"},{"name":"葡萄糖","result":"5.1","unit":"mmol/L","abnormal":"N","reference":"3.4~6.1"}],"abnormal_count":1,"abnormal_items":["钾 3.2 ↓"]}}]},{"date":"2017-10-28","events":[{"time":"09:00","category":"病历文书","sub_type":"病程记录","content":{"summary":"患者化疗结束，病情趋于稳定，咳嗽改善，计划明日出院。"}},{"time":"11:00","category":"化验","sub_type":"尿液常规","content":{"test_no":"1008","subject":"尿液常规","specimen":"尿液","report_datetime":"2017-10-28 12:00","items":[{"name":"尿蛋白","result":"阴性","unit":"","abnormal":"N","reference":"阴性"},{"name":"葡萄糖","result":"阴性","unit":"","abnormal":"N","reference":"阴性"},{"name":"红细胞","result":"0~1","unit":"/HP","abnormal":"N","reference":"0~5"}],"abnormal_count":0,"abnormal_items":[]}}]},{"date":"2017-10-29","events":[{"time":"08:35","category":"医嘱","sub_type":"检查医嘱","content":{"order_no":79,"order_text":"腹部CT平扫+增强","class":"检查医嘱","stop_datetime":"2017-10-29 08:35"}},{"time":"09:18","category":"医嘱","sub_type":"药物医嘱","content":{"order_no":83,"order_text":"复方甘草片","class":"药物医嘱","dosage":"3.0片","route":"口服","stop_datetime":"2017-10-29 09:18"}},{"time":"10:00","category":"医嘱","sub_type":"其他医嘱","content":{"order_no":82,"order_text":"出院","class":"其他医嘱","stop_datetime":"2017-10-29 10:00"}},{"time":"10:20","category":"病历文书","sub_type":"出院记录","content":{"summary":"男，49岁，因间断刺激性咳嗽伴胸痛10余天于2017年10月19日入院，共住院10天。出院诊断：左肺小细胞癌。10月21日行EBUS活检，病理：小细胞肺癌。10月26日行EP方案化疗，过程顺利，患者好转出院。下次治疗时间约2017年11月16日。"}},{"time":"11:16","category":"化验","sub_type":"肝肾功能复查","content":{"test_no":"1009","subject":"肝肾功能复查","specimen":"静脉血","report_datetime":"2017-10-29 11:25","items":[{"name":"丙氨酸氨基转移酶","result":"13.8","unit":"U/L","abnormal":"N","reference":"0~40"},{"name":"肌酐","result":"70.6","unit":"umol/L","abnormal":"N","reference":"30~110"},{"name":"尿素","result":"5.61","unit":"mmol/L","abnormal":"N","reference":"1.8~7.5"}],"abnormal_count":0,"abnormal_items":[]}}]}]};
+
+/* =====================================================
+   PATIENTS
+===================================================== */
+const PATIENTS = [
+  {id:"p1",name:"李某",gender:"男",age:49,admissionId:"Y3030647",diagnosis:"左肺小细胞癌",dept:"肿瘤内一科",visitTime:"2017-10-19",doctor:"张主任",hospital:"某三甲医院",symptom:"间断刺激性咳嗽、胸痛",tags:["SCLC","新患","化疗"],riskLevel:"high",hasData:true,checkups:3,outpatient:2,inpatient:1,totalTime:"10天"},
+  {id:"p2",name:"王某",gender:"女",age:55,admissionId:"Y2010032",diagnosis:"冠心病、不稳定心绞痛",dept:"心内科",visitTime:"2023-03-15",doctor:"李主任",hospital:"省立医院",symptom:"胸闷、胸痛",tags:["心内","随访"],riskLevel:"high",hasData:false,checkups:8,outpatient:12,inpatient:3,totalTime:"28天"},
+  {id:"p3",name:"张某",gender:"男",age:62,admissionId:"Y2010118",diagnosis:"2型糖尿病合并肾病",dept:"内分泌科",visitTime:"2023-06-20",doctor:"刘医生",hospital:"市立医院",symptom:"多饮、多尿、水肿",tags:["糖尿病","肾病","慢病"],riskLevel:"medium",hasData:false,checkups:6,outpatient:18,inpatient:2,totalTime:"15天"},
+  {id:"p4",name:"刘某",gender:"女",age:38,admissionId:"Y2010245",diagnosis:"乳腺癌（T2N1M0）",dept:"乳腺外科",visitTime:"2023-08-05",doctor:"赵主任",hospital:"肿瘤医院",symptom:"乳房肿块、疼痛",tags:["乳腺癌","术后","化疗"],riskLevel:"high",hasData:false,checkups:5,outpatient:9,inpatient:2,totalTime:"22天"},
+  {id:"p5",name:"陈某",gender:"男",age:71,admissionId:"Y2010389",diagnosis:"高血压脑病，脑梗死后遗症",dept:"神经内科",visitTime:"2023-09-12",doctor:"周副主任",hospital:"省立医院",symptom:"头晕、肢体乏力",tags:["高血压","神内"],riskLevel:"medium",hasData:false,checkups:10,outpatient:20,inpatient:4,totalTime:"35天"},
+  {id:"p6",name:"赵某",gender:"女",age:29,admissionId:"Y2010412",diagnosis:"社区获得性肺炎",dept:"呼吸科",visitTime:"2023-10-01",doctor:"孙医生",hospital:"县医院",symptom:"发热、咳嗽",tags:["感染","急诊"],riskLevel:"low",hasData:false,checkups:1,outpatient:3,inpatient:1,totalTime:"7天"},
+  {id:"p7",name:"孙某",gender:"男",age:67,admissionId:"Y2010508",diagnosis:"前列腺癌（Gleason 7）",dept:"泌尿外科",visitTime:"2023-10-18",doctor:"郑主任",hospital:"省立医院",symptom:"排尿困难、尿频",tags:["前列腺癌","放疗"],riskLevel:"high",hasData:false,checkups:4,outpatient:8,inpatient:2,totalTime:"18天"},
+  {id:"p8",name:"周某",gender:"女",age:43,admissionId:"Y2010623",diagnosis:"子宫肌瘤（多发）",dept:"妇科",visitTime:"2023-11-03",doctor:"吴医生",hospital:"妇幼保健院",symptom:"月经异常、腹痛",tags:["妇科","手术"],riskLevel:"low",hasData:false,checkups:3,outpatient:5,inpatient:1,totalTime:"6天"},
+  {id:"p9",name:"吴某",gender:"男",age:58,admissionId:"Y2010747",diagnosis:"慢性肾衰竭（CKD4期）",dept:"肾内科",visitTime:"2023-11-20",doctor:"钱主任",hospital:"肾病专科医院",symptom:"乏力、浮肿",tags:["肾病","透析","慢病"],riskLevel:"high",hasData:false,checkups:12,outpatient:24,inpatient:5,totalTime:"42天"},
+  {id:"p10",name:"郑某",gender:"女",age:52,admissionId:"Y2010812",diagnosis:"甲状腺乳头状癌",dept:"普外科",visitTime:"2023-12-08",doctor:"胡医生",hospital:"市中心医院",symptom:"颈部肿块",tags:["甲状腺癌","术后"],riskLevel:"medium",hasData:false,checkups:4,outpatient:7,inpatient:1,totalTime:"8天"},
+  {id:"p11",name:"马某",gender:"男",age:35,admissionId:"Y2010934",diagnosis:"急性阑尾炎（穿孔）",dept:"普外科",visitTime:"2024-01-05",doctor:"林医生",hospital:"市立医院",symptom:"转移性右下腹痛",tags:["急腹症","急诊手术"],riskLevel:"medium",hasData:false,checkups:1,outpatient:2,inpatient:1,totalTime:"9天"},
+  {id:"p12",name:"胡某",gender:"女",age:66,admissionId:"Y2011023",diagnosis:"骨质疏松性椎体压缩骨折",dept:"骨科",visitTime:"2024-01-22",doctor:"何主任",hospital:"骨科医院",symptom:"腰背痛",tags:["骨质疏松","骨科"],riskLevel:"medium",hasData:false,checkups:5,outpatient:6,inpatient:2,totalTime:"12天"},
+  {id:"p13",name:"朱某",gender:"男",age:47,admissionId:"Y2011156",diagnosis:"肝细胞癌（BCLC-B期）",dept:"肿瘤内一科",visitTime:"2024-02-14",doctor:"张主任",hospital:"肿瘤医院",symptom:"右上腹隐痛、消瘦",tags:["肝癌","介入","中高危"],riskLevel:"high",hasData:false,checkups:6,outpatient:10,inpatient:3,totalTime:"25天"},
+  {id:"p14",name:"林某",gender:"女",age:40,admissionId:"Y2011278",diagnosis:"克罗恩病（活动期）",dept:"消化内科",visitTime:"2024-03-03",doctor:"许医生",hospital:"消化病医院",symptom:"腹痛、腹泻、血便",tags:["IBD","生物制剂"],riskLevel:"medium",hasData:false,checkups:7,outpatient:15,inpatient:2,totalTime:"16天"},
+  {id:"p15",name:"何某",gender:"男",age:74,admissionId:"Y2011391",diagnosis:"慢性阻塞性肺病急性加重",dept:"呼吸科",visitTime:"2024-03-20",doctor:"谢主任",hospital:"省立医院",symptom:"气促加重、咳黄脓痰",tags:["COPD","急性加重"],riskLevel:"high",hasData:false,checkups:9,outpatient:16,inpatient:4,totalTime:"30天"},
+  {id:"p16",name:"谢某",gender:"女",age:31,admissionId:"Y2011445",diagnosis:"系统性红斑狼疮",dept:"风湿免疫科",visitTime:"2024-04-08",doctor:"侯医生",hospital:"风湿病医院",symptom:"关节痛、蝶形红斑",tags:["SLE","免疫","慢病"],riskLevel:"medium",hasData:false,checkups:8,outpatient:14,inpatient:2,totalTime:"14天"},
+];
+
+/* =====================================================
+   CAT CONFIG
+===================================================== */
+const CAT_CFG = {
+  "诊断":    {color:"#6c5fc7", trackColor:"#d6d1f5"},
+  "病历文书": {color:"#0b3b60", trackColor:"#a8c8e0"},
+  "检查":    {color:"#1e7d6b", trackColor:"#8ecdc3"},
+  "化验":    {color:"#b45309", trackColor:"#f5c97a"},
+  "医嘱":    {color:"#c0392b", trackColor:"#f5a89a"},
+};
+const CAT_ORDER = ["诊断","病历文书","检查","化验","医嘱"];
+const NODES_PER_ROW = 6;
+
+/* =====================================================
+   STATE
+===================================================== */
+let openTabs = [];
+let activeTabId = null;
+let activeNodeKey = null;
+
+/* =====================================================
+   INIT
+===================================================== */
+renderTable(PATIENTS);
+
+/* =====================================================
+   TABLE
+===================================================== */
+function renderTable(list) {
+  const tbody = document.getElementById('table-body');
+  const riskMap = {high:'高危',medium:'中危',low:'低危'};
+  const riskCls = {high:'risk-high',medium:'risk-medium',low:'risk-low'};
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:32px;color:#aaa;">未找到匹配患者</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(p => `
+    <tr onclick="openPatient('${p.id}')">
+      <td>${p.visitTime}</td>
+      <td>${p.dept}</td>
+      <td>${p.hospital}</td>
+      <td class="td-num">${p.admissionId}</td>
+      <td style="font-weight:600;">${p.name}</td>
+      <td>${p.gender}</td>
+      <td>${p.age}岁</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${p.diagnosis}">${p.diagnosis}</td>
+      <td>${p.doctor}</td>
+      <td><span class="risk-badge ${riskCls[p.riskLevel]}">${riskMap[p.riskLevel]}</span></td>
+      <td>${p.tags.map(t=>'<span class="tag-pill">'+t+'</span>').join('')}</td>
+      <td class="row-chev">›</td>
+    </tr>`).join('');
+}
+
+function applyFilter() {
+  const q    = (document.getElementById('f-q').value||'').toLowerCase();
+  const type = document.getElementById('f-type').value;
+  const dept = document.getElementById('f-dept').value;
+  const risk = document.getElementById('f-risk').value;
+  const t1   = document.getElementById('f-t1').value;
+  const t2   = document.getElementById('f-t2').value;
+  const filtered = PATIENTS.filter(p => {
+    if (q && !p.name.includes(q) && !p.admissionId.toLowerCase().includes(q) && !p.diagnosis.includes(q)) return false;
+    if (dept && p.dept !== dept) return false;
+    if (risk && p.riskLevel !== risk) return false;
+    if (t1 && p.visitTime < t1) return false;
+    if (t2 && p.visitTime > t2) return false;
+    return true;
+  });
+  renderTable(filtered);
+}
+
+/* =====================================================
+   NAV
+===================================================== */
+function navToList() {
+  activeTabId = null;
+  activeNodeKey = null;
+  closeTooltipDirect();
+  showView('list');
+  renderTabs();
+}
+
+function openPatient(pid) {
+  const p = PATIENTS.find(x => x.id === pid);
+  if (!p) return;
+  if (!openTabs.find(t => t.id === p.id)) {
+    openTabs.push({id:p.id, name:p.name});
+  }
+  activeTabId = p.id;
+  renderTabs();
+  if (p.hasData) {
+    renderJourneyHeader(p);
+    renderJourney();
+    showView('journey');
+  } else {
+    showView('nodata');
+  }
+}
+
+function closeTab(tabId, e) {
+  e.stopPropagation();
+  openTabs = openTabs.filter(t => t.id !== tabId);
+  if (activeTabId === tabId) {
+    if (openTabs.length) openPatient(openTabs[openTabs.length-1].id);
+    else navToList();
+  }
+  renderTabs();
+}
+
+function renderTabs() {
+  const bar = document.getElementById('tab-bar');
+  document.querySelectorAll('.pt-tab').forEach(el => el.remove());
+  document.getElementById('tab-list').className = 'tab-btn' + (activeTabId===null?' active':'');
+  openTabs.forEach(t => {
+    const d = document.createElement('div');
+    d.className = 'tab-btn pt-tab' + (activeTabId===t.id?' active':'');
+    d.innerHTML = `<div class="tab-avatar">${t.name[0]}</div>${t.name}<div class="tab-close" onclick="closeTab('${t.id}',event)">×</div>`;
+    d.addEventListener('click', () => openPatient(t.id));
+    bar.appendChild(d);
+  });
+}
+
+function showView(name) {
+  document.getElementById('view-list').classList.toggle('active', name==='list');
+  document.getElementById('view-journey').classList.toggle('active', name==='journey');
+  document.getElementById('view-nodata').classList.toggle('active', name==='nodata');
+}
+
+/* =====================================================
+   JOURNEY HEADER
+===================================================== */
+function renderJourneyHeader(p) {
+  const pd = REAL_TL.patient;
+  const riskMap = {high:'高危',medium:'中危',low:'低危'};
+  const riskCls = {high:'risk-high',medium:'risk-medium',low:'risk-low'};
+  document.getElementById('j-header').innerHTML = `
+    <div class="j-avatar">${p.name[0]}</div>
+    <div class="j-info">
+      <div class="j-name-row">
+        <span class="j-name">${p.name}</span>
+        <span class="j-tag">${pd.sex}</span>
+        <span class="j-tag">${pd.age}岁</span>
+        <span class="j-tag j-tag-green">${p.admissionId}</span>
+        ${p.tags.map(t=>'<span class="j-tag">'+t+'</span>').join('')}
+        <span class="risk-badge ${riskCls[p.riskLevel]}" style="font-size:11px;padding:2px 8px;">${riskMap[p.riskLevel]}</span>
+      </div>
+      <div class="j-meta">
+        <span>出生：${pd.date_of_birth}</span>
+        <span class="sep">|</span>
+        <span>住院：${pd.admission_date} → ${pd.discharge_date}（${pd.total_days}天）</span>
+        <span class="sep">|</span>
+        <span>入院诊断：${pd.admission_diagnosis}</span>
+        <span class="sep">|</span>
+        <span style="color:var(--selected);font-weight:600;">出院：${pd.discharge_diagnosis}</span>
+        <span class="sep">|</span>
+        <span style="color:var(--selected);font-weight:600;">结果：${pd.treatment_result}</span>
+      </div>
+    </div>
+    <div class="stat-boxes">
+      <div class="stat-box">
+        <div class="stat-num">${p.checkups}<span class="stat-unit">次</span></div>
+        <div class="stat-label">体检次数</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">${p.outpatient}<span class="stat-unit">次</span></div>
+        <div class="stat-label">门诊次数</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">${p.inpatient}<span class="stat-unit">次</span></div>
+        <div class="stat-label">🏥 住院次数</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="font-size:15px;">${p.totalTime}</div>
+        <div class="stat-label">累计就诊时长</div>
+      </div>
+    </div>`;
+}
+
+/* =====================================================
+   JOURNEY RENDER
+===================================================== */
+function getCatEvents(cat) {
+  const arr = [];
+  REAL_TL.timeline.forEach(day => {
+    day.events.forEach(ev => {
+      if (ev.category === cat) arr.push({date:day.date, ...ev});
+    });
+  });
+  return arr;
+}
+
+function renderJourney() {
+  activeNodeKey = null;
+  closeTooltipDirect();
+  const scroll = document.getElementById('journey-scroll');
+  let html = '';
+
+  CAT_ORDER.forEach((cat, ci) => {
+    const events = getCatEvents(cat);
+    if (!events.length) return;
+    const cfg = CAT_CFG[cat];
+
+    if (ci > 0) html += '<div class="cat-sep"></div>';
+    html += `<div class="cat-block">`;
+    html += `<div class="cat-row">`;
+    html += `<div class="cat-label-col"><span class="cat-label-text" style="color:${cfg.color}">${cat}</span></div>`;
+    html += `<div class="cat-track">`;
+
+    const totalRows = Math.ceil(events.length / NODES_PER_ROW);
+    for (let ri = 0; ri < totalRows; ri++) {
+      const rowEvs = events.slice(ri*NODES_PER_ROW, (ri+1)*NODES_PER_ROW);
+      const isRtl = ri % 2 === 1;
+      const dir = isRtl ? 'rtl' : 'ltr';
+      const isLast = ri === totalRows - 1;
+
+      html += `<div class="s-band ${dir}">`;
+      html += `<div class="s-line" style="background:${cfg.trackColor};color:${cfg.trackColor};"></div>`;
+      if (!isLast) html += `<div class="s-connector" style="background:${cfg.trackColor};"></div>`;
+      html += `<div class="s-nodes">`;
+
+      rowEvs.forEach((ev, ni) => {
+        const gIdx = ri*NODES_PER_ROW + ni;
+        const key = cat + '_' + gIdx;
+        const hasAnomaly = ev.content && ev.content.abnormal_count > 0;
+        const title = getTitle(ev);
+
+        html += `
+          <div class="s-node" id="sn_${key}"
+               data-key="${key}" data-cat="${cat}" data-idx="${gIdx}"
+               onclick="onNodeClick(event,'${key}','${cat}',${gIdx})">
+            <div class="node-dot" style="border-color:${cfg.color};"></div>
+            <div class="node-time">${ev.date.slice(5)} ${ev.time}</div>
+            <div class="node-card" style="border-top:2px solid ${cfg.color};">
+              <div class="nc-title">${esc(title)}</div>
+              <div class="nc-sub">${esc(ev.sub_type)}</div>
+              ${hasAnomaly ? `<div class="nc-anomaly">⬆ ${ev.content.abnormal_count}项异常</div>` : ''}
+            </div>
+          </div>`;
+      });
+      html += `</div></div>`; // s-nodes, s-band
+    }
+
+    html += `</div></div></div>`; // cat-track, cat-row, cat-block
+  });
+
+  scroll.innerHTML = html;
+}
+
+/* =====================================================
+   TOOLTIP
+===================================================== */
+function onNodeClick(e, key, cat, gIdx) {
+  e.stopPropagation();
+
+  // Toggle off
+  if (activeNodeKey === key) {
+    closeTooltipDirect();
+    return;
+  }
+
+  // Deactivate previous node
+  if (activeNodeKey) {
+    const prev = document.getElementById('sn_' + activeNodeKey);
+    if (prev) prev.classList.remove('node-active');
+  }
+  activeNodeKey = key;
+  const nodeEl = document.getElementById('sn_' + key);
+  if (nodeEl) nodeEl.classList.add('node-active');
+
+  // Get event
+  const events = getCatEvents(cat);
+  const ev = events[gIdx];
+  if (!ev) return;
+
+  const cfg = CAT_CFG[cat];
+  const tt = document.getElementById('tooltip');
+  tt.innerHTML = buildTooltip(ev, cfg, key, cat);
+  tt.style.display = 'block';
+
+  // Position tooltip near node
+  const rect = nodeEl.getBoundingClientRect();
+  positionTooltip(tt, rect);
+
+  document.getElementById('tt-overlay').classList.add('visible');
+}
+
+function positionTooltip(tt, anchorRect) {
+  tt.style.display = 'block';
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const ttW = 300;
+  const ttH = tt.offsetHeight || 200;
+
+  let left = anchorRect.left + anchorRect.width / 2 - ttW / 2;
+  let top  = anchorRect.bottom + 8;
+
+  // Clamp horizontal
+  if (left + ttW > w - 12) left = w - ttW - 12;
+  if (left < 12) left = 12;
+
+  // Flip upward if not enough space below
+  if (top + ttH > h - 12) top = anchorRect.top - ttH - 8;
+  if (top < 8) top = 8;
+
+  tt.style.left = left + 'px';
+  tt.style.top  = top  + 'px';
+}
+
+function buildTooltip(ev, cfg, key, cat) {
+  let content = '';
+
+  if (cat === '化验' && ev.content.items) {
+    content += `<div class="tt-lab-list">`;
+    ev.content.items.forEach(item => {
+      const isH = item.abnormal === 'H';
+      const isL = item.abnormal === 'L';
+      content += `<div class="tt-lab-row">
+        <span class="tt-lab-name ${(isH||isL)?'ab-name':''}">${esc(item.name)}</span>
+        <span class="tt-lab-val ${isH?'hn':isL?'ln':''}">${esc(item.result)}${item.unit?' '+esc(item.unit):''}${isH?' ↑':isL?' ↓':''}</span>
+        <span class="tt-lab-ref">${esc(item.reference||'')}</span>
+      </div>`;
+    });
+    content += `</div>`;
+    if (ev.content.abnormal_count > 0 && ev.content.abnormal_items.length) {
+      content += `<div class="tt-anomaly-box">
+        <span class="tt-anomaly-icon">△</span>
+        <div class="tt-anomaly-items">存在异常指标：${ev.content.abnormal_items.map(esc).join('；')}</div>
+      </div>`;
+    }
+  } else if (cat === '检查') {
+    if (ev.content.impression) {
+      content += `<div class="tt-kv"><span class="tt-k">结论：</span><span class="tt-v">${esc(ev.content.impression)}</span></div>`;
+    }
+    if (ev.content.recommendation) {
+      content += `<div class="tt-kv" style="margin-top:5px;"><span class="tt-k">建议：</span><span class="tt-v">${esc(ev.content.recommendation)}</span></div>`;
+    }
+  } else if (cat === '病历文书') {
+    content += `<div class="tt-v" style="font-size:12px;line-height:1.6;color:#444;">${esc(ev.content.summary||'')}</div>`;
+  } else if (cat === '诊断') {
+    content += `<div class="tt-kv"><span class="tt-k">类型：</span><span class="tt-v">${esc(ev.sub_type)}</span></div>`;
+    content += `<div class="tt-kv" style="margin-top:4px;"><span class="tt-k">内容：</span><span class="tt-v" style="font-weight:600;">${esc(ev.content.diagnosis||'-')}</span></div>`;
+    if (ev.content.treat_result) content += `<div class="tt-kv" style="margin-top:4px;"><span class="tt-k">结果：</span><span class="tt-v">${esc(ev.content.treat_result)}</span></div>`;
+    if (ev.content.with_surgery===true) content += `<div class="tt-kv" style="margin-top:4px;"><span class="tt-k">手术：</span><span class="tt-v">含手术</span></div>`;
+  } else if (cat === '医嘱') {
+    content += `<div class="tt-kv"><span class="tt-k">医嘱：</span><span class="tt-v" style="font-weight:600;">${esc(ev.content.order_text||'-')}</span></div>`;
+    content += `<div class="tt-kv" style="margin-top:4px;"><span class="tt-k">类型：</span><span class="tt-v">${esc(ev.content.class||ev.sub_type)}</span></div>`;
+    if (ev.content.dosage) content += `<div class="tt-kv" style="margin-top:4px;"><span class="tt-k">剂量：</span><span class="tt-v">${esc(ev.content.dosage)}${ev.content.route?' &nbsp;'+esc(ev.content.route):''}</span></div>`;
+    if (ev.content.stop_datetime) content += `<div class="tt-kv" style="margin-top:4px;"><span class="tt-k">停止：</span><span class="tt-v">${esc(ev.content.stop_datetime)}</span></div>`;
+  }
+
+  content += `<div class="tt-time">${esc(ev.date)} ${esc(ev.time)}</div>`;
+
+  return `
+    <div class="tt-header">
+      <span class="tt-dot" style="background:${cfg.color};"></span>
+      <span class="tt-title">${esc(getTitle(ev))}</span>
+      <button class="tt-close" onclick="closeTooltipDirect()">×</button>
+    </div>
+    <div class="tt-body">${content}</div>`;
+}
+
+function handleScrollClick(e) {
+  // Close tooltip if clicked on empty scroll area (not on a node)
+  if (!e.target.closest('.s-node')) {
+    closeTooltipDirect();
+  }
+}
+
+function closeTooltip(e) {
+  if (e && e.target === document.getElementById('tt-overlay')) {
+    closeTooltipDirect();
+  }
+}
+
+function closeTooltipDirect() {
+  document.getElementById('tooltip').style.display = 'none';
+  document.getElementById('tt-overlay').classList.remove('visible');
+  if (activeNodeKey) {
+    const el = document.getElementById('sn_' + activeNodeKey);
+    if (el) el.classList.remove('node-active');
+    activeNodeKey = null;
+  }
+}
+
+/* =====================================================
+   HELPERS
+===================================================== */
+function getTitle(ev) {
+  if (ev.category === '诊断') return (ev.content.diagnosis||ev.sub_type).slice(0,16);
+  if (ev.category === '病历文书') return ev.sub_type;
+  if (ev.category === '检查') {
+    const c = ev.content;
+    return c.exam_class ? c.exam_class + (c.exam_sub_class ? '('+c.exam_sub_class+')' : '') : ev.sub_type;
+  }
+  if (ev.category === '化验') return (ev.content.subject||ev.sub_type).slice(0,16);
+  if (ev.category === '医嘱') return (ev.content.order_text||ev.sub_type).slice(0,14);
+  return ev.sub_type;
+}
+
+function esc(s) {
+  if (s===null||s===undefined) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+</script>
+</body>
+</html>

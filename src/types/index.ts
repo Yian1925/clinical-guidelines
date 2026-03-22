@@ -28,6 +28,16 @@ export interface Patient {
   riskLevel?: 'low' | 'medium' | 'high';
   /** 对应旅程图数据中的 patient_id，有则可加载该患者旅程图 */
   timelineId?: string;
+  /** 列表表格：就诊时间 */
+  visitTime?: string;
+  /** 列表表格：科室 */
+  dept?: string;
+  /** 列表表格：医疗机构 */
+  hospital?: string;
+  /** 列表表格：主治医生 */
+  doctor?: string;
+  /** 是否有可展示的旅程时间线（patient_timeline.json 有对应 patient_id） */
+  hasTimeline?: boolean;
 }
 
 // Patient timeline / journey map
