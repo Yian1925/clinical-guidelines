@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import type { Patient } from '../../types';
+import { PATIENTS } from '../../data/emr/patients';
+import { useModalDialog } from '../../hooks/useModalDialog';
+import { roleButtonActivate } from '../../utils/keyboard';
 
 interface PatientSelectorProps {
   open: boolean;
@@ -8,21 +11,19 @@ interface PatientSelectorProps {
 }
 
 export default function PatientSelector({ open, onClose, onSelect }: PatientSelectorProps) {
-  const [patients, setPatients] = useState<Patient[]>([]);
   const [search, setSearch] = useState('');
+  const modalRef = useModalDialog(open, onClose);
 
-  useEffect(() => {
-    import('../../data/emr/patients.json')
-      .then((m) => setPatients(m.default as Patient[]))
-      .catch(() => setPatients([]));
-  }, []);
-
-  const filtered = patients.filter(
-    (p) =>
-      !search.trim() ||
-      p.name.includes(search) ||
-      p.admissionId.includes(search) ||
-      p.diagnosis.includes(search)
+  const filtered = useMemo(
+    () =>
+      PATIENTS.filter(
+        (p) =>
+          !search.trim() ||
+          p.name.includes(search) ||
+          p.admissionId.includes(search) ||
+          p.diagnosis.includes(search)
+      ),
+    [search]
   );
 
   const handleSelect = (p: Patient) => {
@@ -40,28 +41,31 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
 
   return (
     <div className="modal-backdrop open" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal patient-selector-modal" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={modalRef}
+        className="modal patient-selector-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-patient-selector-title"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-head">
-          <h3>选择患者 · 电子病历系统</h3>
-          <button type="button" className="modal-close" onClick={onClose}>×</button>
+          <h3 id="modal-patient-selector-title">选择患者 · 载入病历</h3>
+          <button type="button" className="modal-close" onClick={onClose} aria-label="关闭">
+            ×
+          </button>
         </div>
         <div className="modal-body">
           <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
             <input
+              id="patient-selector-search"
               type="text"
-              placeholder="搜索患者姓名、ID..."
+              className="toc-search-input"
+              placeholder="搜索姓名、住院号或诊断…"
+              aria-label="搜索患者姓名、住院号或诊断"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{
-                flex: 1,
-                padding: '8px 12px',
-                borderRadius: 8,
-                border: '0.5px solid var(--color-border-secondary)',
-                background: 'var(--color-background-secondary)',
-                fontSize: 13,
-                color: 'var(--color-text-primary)',
-                outline: 'none',
-              }}
+              style={{ flex: 1, minWidth: 0 }}
             />
             <button
               type="button"
@@ -87,7 +91,7 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
               onClick={() => handleSelect(p)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && handleSelect(p)}
+              onKeyDown={(e) => roleButtonActivate(e, () => handleSelect(p))}
             >
               <div className="emr-info">
                 <p>{p.name}</p>
@@ -97,6 +101,9 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
                     <span key={t} className={tagClass(t)}>{t}</span>
                   ))}
                 </div>
+              </div>
+              <div className="emr-diagnosis" title={p.diagnosis}>
+                {p.diagnosis}
               </div>
             </div>
           ))}

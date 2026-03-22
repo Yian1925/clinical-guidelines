@@ -16,6 +16,11 @@ const CAT_CFG: Record<string, { color: string; trackColor: string; cardBg: strin
 
 const CAT_ORDER = ['诊断', '病历文书', '检查', '化验', '医嘱'] as const;
 
+/** 用于左侧分类按钮锚点：折叠某类时仍按「全部展开」时的垂直位置，避免按钮跳动 */
+const NO_COLLAPSE: Record<string, boolean> = Object.fromEntries(
+  CAT_ORDER.map((c) => [c, false])
+) as Record<string, boolean>;
+
 function esc(s: unknown): string {
   if (s === null || s === undefined) return '';
   return String(s)
@@ -129,7 +134,18 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
     [data, collapsedCat]
   );
 
+  const fullMergedEvents = useMemo(
+    () => (data ? getMergedTimeline(data.timeline, NO_COLLAPSE) : []),
+    [data]
+  );
+
   const journeySvg = useMemo(() => buildMergedJourneySvg(mergedEvents, CAT_CFG), [mergedEvents]);
+
+  /** 仅用于左侧分类按钮垂直位置（与折叠状态无关） */
+  const refJourneySvg = useMemo(
+    () => buildMergedJourneySvg(fullMergedEvents, CAT_CFG),
+    [fullMergedEvents]
+  );
 
   const [svgH, setSvgH] = useState(journeySvg.svgH);
   const svgWrapRef = useRef<HTMLDivElement>(null);
@@ -197,16 +213,22 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
     setCollapsedCat((prev) => ({ ...prev, [cat]: !prev[cat] }));
   }, []);
 
-  const colHeight = mergedEvents.length === 0 ? Math.max(svgH, 200) : svgH;
+  const colHeight = Math.max(
+    refJourneySvg.svgH,
+    journeySvg.svgH,
+    svgH,
+    mergedEvents.length === 0 ? 200 : 0
+  );
   const pillCenterY = useMemo(
-    () => computeCategoryPillCenters(journeySvg.nodes, CAT_ORDER, colHeight, JOURNEY_SVG.CARD_H_EST),
-    [journeySvg.nodes, colHeight]
+    () =>
+      computeCategoryPillCenters(refJourneySvg.nodes, CAT_ORDER, colHeight, JOURNEY_SVG.CARD_H_EST),
+    [refJourneySvg.nodes, colHeight]
   );
 
   if (loading) {
     return (
       <div className="pj-v4" style={{ justifyContent: 'center', alignItems: 'center', minHeight: 200 }}>
-        <div className="journey-empty">加载旅程数据中…</div>
+        <div className="journey-empty">正在加载患者时间线…</div>
       </div>
     );
   }
@@ -214,7 +236,7 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
   if (!data) {
     return (
       <div className="pj-v4" style={{ justifyContent: 'center', alignItems: 'center', minHeight: 200 }}>
-        <div className="journey-empty">暂无旅程数据，请选择其他患者或确认该患者已接入病程数据。</div>
+        <div className="journey-empty">暂无时间线数据。请更换患者，或确认该患者已接入病程数据。</div>
       </div>
     );
   }
@@ -255,9 +277,9 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
             <span className="pj-v4-sep">|</span>
             <span>入院诊断：{pd.admission_diagnosis}</span>
             <span className="pj-v4-sep">|</span>
-            <span style={{ color: 'var(--pj-selected)', fontWeight: 600 }}>出院：{pd.discharge_diagnosis}</span>
+            <span className="pj-v4-meta-kv-black">出院：{pd.discharge_diagnosis}</span>
             <span className="pj-v4-sep">|</span>
-            <span style={{ color: 'var(--pj-selected)', fontWeight: 600 }}>结果：{pd.treatment_result}</span>
+            <span className="pj-v4-meta-kv-black">结果：{pd.treatment_result}</span>
           </div>
         </div>
         <div className="pj-v4-stat-boxes">
@@ -346,7 +368,6 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
                     onClick={() => toggleCategory(cat)}
                     title={hidden ? `展开画板内「${cat}」旅程` : `收起画板内「${cat}」旅程`}
                   >
-                    <span className="pj-v4-cat-pill-dot" style={{ background: cfg.color }} />
                     <span className="pj-v4-cat-pill-text" style={{ color: cfg.color }}>
                       {cat}
                     </span>

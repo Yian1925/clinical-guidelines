@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import type { TocItem } from '../../types';
+import { roleButtonActivate } from '../../utils/keyboard';
 
 interface GuidelineTreeProps {
   toc: TocItem[];
@@ -35,29 +36,17 @@ export default function GuidelineTree({ toc, activeId, onSelect, panelWidth }: G
   return (
     <div className="gl-toc" style={panelWidth ? { width: panelWidth, minWidth: panelWidth } : undefined}>
       <div className="toc-search-wrap">
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div className="toc-search-row">
           <input
+            id="gl-toc-search"
             type="text"
-            placeholder="搜索疾病名称…"
+            placeholder="搜索疾病或指南关键词…"
+            aria-label="搜索疾病或指南关键词"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             className="toc-search-input"
-            style={{ flex: 1 }}
           />
-          <button
-            type="button"
-            onClick={() => setKeyword((k) => k.trim())}
-            style={{
-              padding: '8px 12px',
-              borderRadius: 8,
-              border: '0.5px solid var(--color-border-secondary)',
-              background: 'var(--color-background-secondary)',
-              fontSize: 13,
-              color: 'var(--color-text-primary)',
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}
-          >
+          <button type="button" className="toc-search-btn" onClick={() => setKeyword((k) => k.trim())}>
             搜索
           </button>
         </div>
@@ -77,7 +66,7 @@ export default function GuidelineTree({ toc, activeId, onSelect, panelWidth }: G
                 role={hasChildren ? 'button' : undefined}
                 tabIndex={hasChildren ? 0 : -1}
                 onClick={toggle}
-                onKeyDown={(e) => hasChildren && e.key === 'Enter' && toggle()}
+                onKeyDown={(e) => hasChildren && roleButtonActivate(e, toggle)}
               >
                 <span>{item.label}</span>
                 {item.labelZh && <span className="zh">{item.labelZh}</span>}
@@ -90,7 +79,7 @@ export default function GuidelineTree({ toc, activeId, onSelect, panelWidth }: G
                   onClick={() => onSelect?.(child.id)}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => e.key === 'Enter' && onSelect?.(child.id)}
+                  onKeyDown={(e) => roleButtonActivate(e, () => onSelect?.(child.id))}
                 >
                   {child.label}
                 </div>

@@ -13,7 +13,7 @@ export default function EMRPanel({ patient, onClose }: EMRPanelProps) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
         <strong>当前患者</strong>
         {onClose && (
-          <button type="button" onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18 }}>×</button>
+          <button type="button" onClick={onClose} aria-label="关闭" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18 }}>×</button>
         )}
       </div>
       <div className="emr-av" style={{ marginBottom: 8 }}>{patient.name.slice(0, 1)}</div>

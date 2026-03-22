@@ -1,15 +1,17 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Patient } from '../../types';
+import { PATIENTS } from '../../data/emr/patients';
 import PatientJourneyV4 from './PatientJourneyV4';
+import DatePickerField from './DatePickerField';
 import { usePatientTimeline } from '../../hooks/usePatientTimeline';
 import { useAppStore } from '../../store';
+import { roleButtonActivate } from '../../utils/keyboard';
 import '../../styles/patients-list.css';
 
 type ViewMode = 'list' | 'journey';
 
 export default function PatientsPage() {
   const { setPatientsJourneyTopBar } = useAppStore();
-  const [patients, setPatients] = useState<Patient[]>([]);
   const [view, setView] = useState<ViewMode>('list');
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
@@ -20,23 +22,17 @@ export default function PatientsPage() {
   const [risk, setRisk] = useState('');
   const [searchQ, setSearchQ] = useState('');
 
-  useEffect(() => {
-    import('../../data/emr/patients.json')
-      .then((m) => setPatients(m.default as Patient[]))
-      .catch(() => setPatients([]));
-  }, []);
-
   const deptOptions = useMemo(() => {
     const s = new Set<string>();
-    patients.forEach((p) => {
+    PATIENTS.forEach((p) => {
       if (p.dept) s.add(p.dept);
     });
     return Array.from(s).sort();
-  }, [patients]);
+  }, []);
 
   const filtered = useMemo(() => {
     const q = searchQ.trim().toLowerCase();
-    return patients.filter((p) => {
+    return PATIENTS.filter((p) => {
       if (
         q &&
         !p.name.toLowerCase().includes(q) &&
@@ -53,7 +49,7 @@ export default function PatientsPage() {
       }
       return true;
     });
-  }, [patients, searchQ, dept, risk, dateStart, dateEnd, visitType]);
+  }, [searchQ, dept, risk, dateStart, dateEnd, visitType]);
 
   const timelineId =
     selectedPatient == null
@@ -102,52 +98,49 @@ export default function PatientsPage() {
 
   if (view === 'journey' && selectedPatient) {
     return (
-      <div className="page patients-page" style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
+      <div className="patients-page patients-page--journey" style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
         <div className="patients-journey-body" style={{ display: 'flex', flex: 1, flexDirection: 'column', minHeight: 0 }}>
           <PatientJourneyV4 listPatient={selectedPatient} data={timelineData} loading={loading} />
-        </div>
-        <div className="page-footnote">
-          患者旅程数据来源于病例数据库，经结构化处理后生成，用于展示患者诊疗时间线。
         </div>
       </div>
     );
   }
 
   return (
-    <div className="page patients-page" style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
+    <div className="patients-page patients-page--list">
       <div className="patients-list-root">
         <div className="patients-list-filters">
-          <div className="patients-list-f-group">
+          <div className="patients-list-f-group patients-list-f-group--type">
             <span className="patients-list-f-label">就诊类型</span>
             <select className="patients-list-f-select" value={visitType} onChange={(e) => setVisitType(e.target.value)}>
-              <option value="">请选择就诊类型</option>
+              <option value="">请选择</option>
               <option value="门诊">门诊</option>
               <option value="住院">住院</option>
               <option value="急诊">急诊</option>
             </select>
           </div>
-          <div className="patients-list-f-group">
+          <div className="patients-list-f-group patients-list-f-group--date">
             <span className="patients-list-f-label">就诊时间</span>
-            <input
-              className="patients-list-f-input"
-              type="text"
-              placeholder="开始时间"
+            <DatePickerField
+              id="patients-filter-date-start"
               value={dateStart}
-              onChange={(e) => setDateStart(e.target.value)}
+              onChange={setDateStart}
+              placeholder="开始日期"
+              aria-label="筛选开始日期"
             />
             <span className="patients-list-f-sep">至</span>
-            <input
-              className="patients-list-f-input"
-              type="text"
-              placeholder="结束时间"
+            <DatePickerField
+              id="patients-filter-date-end"
               value={dateEnd}
-              onChange={(e) => setDateEnd(e.target.value)}
+              onChange={setDateEnd}
+              placeholder="结束日期"
+              aria-label="筛选结束日期"
             />
           </div>
-          <div className="patients-list-f-group">
+          <div className="patients-list-f-group patients-list-f-group--dept">
             <span className="patients-list-f-label">科室选择</span>
             <select className="patients-list-f-select" value={dept} onChange={(e) => setDept(e.target.value)}>
-              <option value="">请选择科室</option>
+              <option value="">请选择</option>
               {deptOptions.map((d) => (
                 <option key={d} value={d}>
                   {d}
@@ -155,25 +148,27 @@ export default function PatientsPage() {
               ))}
             </select>
           </div>
-          <div className="patients-list-f-group">
+          <div className="patients-list-f-group patients-list-f-group--risk">
             <span className="patients-list-f-label">风险等级</span>
             <select className="patients-list-f-select" value={risk} onChange={(e) => setRisk(e.target.value)}>
-              <option value="">全部风险</option>
+              <option value="">全部等级</option>
               <option value="high">高危</option>
               <option value="medium">中危</option>
               <option value="low">低危</option>
             </select>
           </div>
-          <div className="patients-list-f-spacer" />
-          <div className="patients-list-search-wrap">
+          <div className="toc-search-row patients-list-search-row">
             <input
+              id="patients-list-search"
               type="search"
+              className="toc-search-input"
               placeholder="搜索姓名、编号、诊断…"
+              aria-label="搜索姓名、编号或诊断"
               value={searchQ}
               onChange={(e) => setSearchQ(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && applySearch()}
             />
-            <button type="button" className="patients-list-search-btn" onClick={applySearch}>
+            <button type="button" className="toc-search-btn" onClick={applySearch}>
               搜索
             </button>
           </div>
@@ -181,7 +176,7 @@ export default function PatientsPage() {
 
         <div className="patients-list-table-wrap">
           {filtered.length === 0 ? (
-            <div className="patients-list-empty">未找到匹配患者</div>
+            <div className="patients-list-empty">未找到患者。请调整筛选条件或修改搜索关键词。</div>
           ) : (
             <table className="patients-data-table">
               <thead>
@@ -202,7 +197,7 @@ export default function PatientsPage() {
                   <tr
                     key={p.id}
                     onClick={() => openJourney(p)}
-                    onKeyDown={(e) => e.key === 'Enter' && openJourney(p)}
+                    onKeyDown={(e) => roleButtonActivate(e, () => openJourney(p))}
                     role="button"
                     tabIndex={0}
                   >
@@ -226,7 +221,6 @@ export default function PatientsPage() {
           )}
         </div>
       </div>
-      <div className="page-footnote">点击表格行进入患者旅程图；当前仅部分患者接入完整病程数据。</div>
     </div>
   );
 }

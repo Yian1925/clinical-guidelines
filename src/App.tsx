@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import type { Patient } from './types';
 import { AppStoreProvider, useAppStore } from './store';
 import { useAgent } from './hooks/useAgent';
@@ -6,10 +6,11 @@ import { useGuideline } from './hooks/useGuideline';
 import Sidebar from './components/layout/Sidebar';
 import TopBar from './components/layout/TopBar';
 import ChatInterface from './components/agent/ChatInterface';
-import GuidelineViewer from './components/guidelines/GuidelineViewer';
 import PatientSelector from './components/emr/PatientSelector';
 import PatientsPage from './components/emr/PatientsPage';
 import './styles/platform.css';
+
+const GuidelineViewer = lazy(() => import('./components/guidelines/GuidelineViewer'));
 
 function AppContent() {
   const { page, setPage, patient, setPatient, patientsJourneyTopBar } = useAppStore();
@@ -29,7 +30,7 @@ function AppContent() {
     setPatient(p);
     setEmrModalOpen(false);
     const desc = `${p.gender}·${p.age}岁·${p.diagnosis}`;
-    const toastText = `已载入患者：${p.name}（${desc}）。后续问答将结合该患者病历数据进行分析。`;
+    const toastText = `已载入患者：${p.name}（${desc}）。后续医学问答将结合该患者病历。`;
     setToast(toastText);
   };
 
@@ -39,15 +40,15 @@ function AppContent() {
   };
 
   const pageConfig = page === 'chat'
-    ? { title: 'Agent 医学问答', badge: undefined }
+    ? { title: 'Agent 问答', badge: undefined }
     : page === 'guidelines'
-      ? { title: '指南数据库', badge: undefined }
-      : { title: '病例库', badge: undefined };
+      ? { title: '诊疗路径', badge: undefined }
+      : { title: '患者旅程', badge: undefined };
 
   return (
     <div className="shell" style={{ position: 'relative' }}>
       <Sidebar page={page} onPageChange={setPage} />
-      <div className="main">
+      <div className="main main--tinted">
         {toast && (
           <div
             role="alert"
@@ -83,15 +84,17 @@ function AppContent() {
             onSendMessage={sendMessage}
             onAskQuestion={askQuestion}
             onOpenPatientSelector={() => setEmrModalOpen(true)}
-            patientLabel={patient ? `ID ${patient.admissionId}` : '选择患者'}
+            patientLabel={patient ? `住院号 ${patient.admissionId}` : '选择患者'}
           />
         </div>
         <div className={`page ${page === 'guidelines' ? 'active' : ''}`} id="page-guidelines">
-          <GuidelineViewer
-            doc={doc}
-            onAskAboutNode={handleAskAboutNode}
-            onNavigateToChat={() => setPage('chat')}
-          />
+          <Suspense fallback={<div className="gl-main">正在加载诊疗路径…</div>}>
+            <GuidelineViewer
+              doc={doc}
+              onAskAboutNode={handleAskAboutNode}
+              onNavigateToChat={() => setPage('chat')}
+            />
+          </Suspense>
         </div>
         <div className={`page ${page === 'patients' ? 'active' : ''}`} id="page-patients">
           <PatientsPage />

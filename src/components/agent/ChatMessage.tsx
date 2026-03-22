@@ -1,5 +1,6 @@
 import type { MessageRole } from '../../types';
 import SourceCard from './SourceCard';
+import { sanitizeHtml } from '../../utils/sanitizeHtml';
 
 interface ChatMessageProps {
   role: MessageRole;
@@ -25,7 +26,7 @@ export default function ChatMessage({ role, text, sources = [], guidelineTocId, 
         {role === 'ai' ? 'AI' : <UserAvatarIcon />}
       </div>
       <div className={`bubble ${role}`}>
-        <span dangerouslySetInnerHTML={{ __html: text }} />
+        <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />
         {sources && sources.length > 0 && (
           <div className="source-row">
             {sources.map((s) => (

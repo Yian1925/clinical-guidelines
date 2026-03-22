@@ -183,7 +183,8 @@ export function buildMergedJourneySvg(
 
 /**
  * 左侧分类按钮的垂直位置：与该类事件在时间线上的包围盒垂直居中对齐；
- * 若当前无该类节点（收起），则在画布高度内均匀占位。
+ * 若当前无该类节点，则在画布高度内均匀占位。
+ * （调用方应对「全部展开」的参考节点传入，避免折叠后按钮重排。）
  */
 export function computeCategoryPillCenters(
   nodes: JourneyNodeModel[],

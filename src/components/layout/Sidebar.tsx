@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { PageId } from '../../types';
+import { roleButtonActivate } from '../../utils/keyboard';
 
 interface SidebarProps {
   page: PageId;
@@ -58,7 +59,7 @@ export default function Sidebar({ page, onPageChange }: SidebarProps) {
           onClick={() => onPageChange(navItems[0].id)}
           role="button"
           tabIndex={0}
-          onKeyDown={(e) => e.key === 'Enter' && onPageChange(navItems[0].id)}
+          onKeyDown={(e) => roleButtonActivate(e, () => onPageChange(navItems[0].id))}
         >
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M3 4h14v10H3z" rx="2" />
@@ -74,7 +75,7 @@ export default function Sidebar({ page, onPageChange }: SidebarProps) {
             onClick={() => onPageChange(item.id)}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && onPageChange(item.id)}
+            onKeyDown={(e) => roleButtonActivate(e, () => onPageChange(item.id))}
           >
             {item.icon === 'guidelines' && (
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -92,14 +93,14 @@ export default function Sidebar({ page, onPageChange }: SidebarProps) {
           </div>
         ))}
         <div className="nav-section">历史</div>
-        <div className="nav-item nav-history-item" style={{ fontSize: 13, padding: '7px 16px', color: '#666' }}>
-          弥漫大B细胞淋巴瘤诊断...
+        <div className="nav-item nav-history-item nav-history-demo">
+          弥漫大B细胞淋巴瘤诊断…
         </div>
-        <div className="nav-item nav-history-item" style={{ fontSize: 13, padding: '7px 16px', color: '#666' }}>
-          套细胞淋巴瘤一线治疗方案...
+        <div className="nav-item nav-history-item nav-history-demo">
+          套细胞淋巴瘤一线治疗方案…
         </div>
-        <div className="nav-item nav-history-item" style={{ fontSize: 13, padding: '7px 16px', color: '#666' }}>
-          滤泡性淋巴瘤分期评估...
+        <div className="nav-item nav-history-item nav-history-demo">
+          滤泡性淋巴瘤分期评估…
         </div>
       </nav>
     </aside>

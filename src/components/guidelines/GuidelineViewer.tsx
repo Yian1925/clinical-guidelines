@@ -7,13 +7,17 @@ import cervicalTreeData from '../../data/guidelines/CervicalCancerCols.json';
 import invasiveBreast3LayerData from '../../data/guidelines/nccn_invasive_breast_3layer.json';
 import type { LymphomaDoc } from '../../hooks/useGuideline';
 
+const SPLIT_MIN = 240;
+const SPLIT_MAX = 520;
+const SPLIT_STEP = 8;
+
 interface GuidelineViewerProps {
   doc: LymphomaDoc | null;
   onAskAboutNode?: (nodeTitle: string) => void;
   onNavigateToChat?: () => void;
 }
 
-export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigateToChat: _onNav }: GuidelineViewerProps) {
+export default function GuidelineViewer({ doc }: GuidelineViewerProps) {
   const [activeTocId, setActiveTocId] = useState<string | null>(null);
   const [tocWidth, setTocWidth] = useState(280);
   const [resizing, setResizing] = useState(false);
@@ -44,7 +48,7 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
     };
   }, [resizing]);
 
-  if (!doc) return <div className="gl-main">加载中...</div>;
+  if (!doc) return <div className="gl-main">正在加载指南目录…</div>;
 
   const currentTocId = activeTocId || 'tumor-breast';
   const hasCervicalPathway = currentTocId === 'tumor-cervical';
@@ -66,42 +70,31 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
           className={`pane-splitter ${resizing ? 'active' : ''}`}
           onMouseDown={() => setResizing(true)}
           role="separator"
+          tabIndex={0}
           aria-orientation="vertical"
-          aria-label="调整目录和画板宽度"
+          aria-label="调整目录和画板宽度，使用左右方向键微调"
+          aria-valuemin={SPLIT_MIN}
+          aria-valuemax={SPLIT_MAX}
+          aria-valuenow={tocWidth}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              setTocWidth((w) => Math.max(SPLIT_MIN, w - SPLIT_STEP));
+            } else if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              setTocWidth((w) => Math.min(SPLIT_MAX, w + SPLIT_STEP));
+            }
+          }}
         />
-        <div className="gl-main" style={{ display: 'flex', flexDirection: 'column', paddingTop: 8 }}>
-          <div
-            style={{
-              flexShrink: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-              padding: '8px 20px 12px',
-              marginBottom: 0,
-            }}
-          >
-            <span
-              style={{
-                fontSize: 15,
-                fontWeight: 700,
-                color: '#0F172A',
-                letterSpacing: '-0.01em',
-              }}
-            >
-              {currentLabel}
-            </span>
-            <span
-              style={{
-                fontSize: 12,
-                color: '#94A3B8',
-                marginTop: 2,
-              }}
-            >
+        <div className="gl-main gl-main--stack">
+          <div className="gl-doc-header">
+            <span className="gl-doc-title">{currentLabel}</span>
+            <span className="gl-doc-meta">
               {hasCervicalPathway
                 ? 'ESMO Clinical Practice Guidelines · 2017'
                 : hasEarlyBreastPathway
                   ? 'NCCN Clinical Practice Guidelines in Oncology · Invasive Breast Cancer (M0)'
-                  : '数据来源'}
+                  : '在左侧选择疾病后，将显示对应指南来源与说明'}
             </span>
           </div>
           {hasCervicalPathway ? (
@@ -115,14 +108,11 @@ export default function GuidelineViewer({ doc, onAskAboutNode: _onAsk, onNavigat
           ) : (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0 }}>
               <div className="journey-empty">
-                暂无该疾病的诊疗路径数据，请选择「宫颈癌 / 浸润性乳腺癌」或其他已接入疾病。
+                当前疾病尚未接入诊疗路径。请在左侧选择「宫颈癌」或「浸润性乳腺癌」等已接入病种。
               </div>
             </div>
           )}
         </div>
-      </div>
-      <div className="page-footnote">
-        标准诊疗路径来源于公开临床指南、医学文献及专家共识，仅供临床参考。
       </div>
     </>
   );

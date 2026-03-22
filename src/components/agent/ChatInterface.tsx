@@ -80,13 +80,13 @@ export default function ChatInterface({
       <div className="chat-area" ref={areaRef}>
         {showWelcome && (
           <div className="chat-welcome">
-            <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#2A8075', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+            <div className="chat-welcome-icon" aria-hidden>
               <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 22H8L12 11L17 37L23 20L27 28L34 15L38 29L40 22H44" />
               </svg>
             </div>
             <h2>您好，我是 MedGuide AI</h2>
-            <p>基于院内电子病历与标准诊疗路径，为您提供循证临床决策支持</p>
+            <p>结合本院电子病历与公开诊疗路径，为您提供循证临床决策支持</p>
             <div className="chips">
               <div className="chips-row">
                 {WELCOME_CHIPS.slice(0, 3).map((q) => (
@@ -124,7 +124,7 @@ export default function ChatInterface({
                       handleSend();
                     }
                   }}
-                  placeholder="输入医学问题，例如：DLBCL 一线治疗方案..."
+                  placeholder="输入临床问题，示例：DLBCL 一线治疗方案要点"
                   rows={4}
                 />
                 <div className="input-actions">
@@ -132,7 +132,7 @@ export default function ChatInterface({
                     <button
                       type="button"
                       className="ic-btn"
-                      title="上传"
+                      title="添加附件"
                       onClick={() => setUploadMenuOpen((v) => !v)}
                       aria-haspopup="true"
                       aria-expanded={uploadMenuOpen}
@@ -151,10 +151,10 @@ export default function ChatInterface({
                     {uploadMenuOpen && (
                       <div className="upload-dropdown">
                         <button type="button" className="upload-dropdown-item" onClick={() => { setUploadMenuOpen(false); setUploadFileOpen(true); }}>
-                          上传文件
+                          添加本地文件
                         </button>
                         <button type="button" className="upload-dropdown-item" onClick={() => { setUploadMenuOpen(false); setUploadFolderOpen(true); }}>
-                          上传文件夹
+                          添加文件夹
                         </button>
                       </div>
                     )}
@@ -211,7 +211,7 @@ export default function ChatInterface({
                   handleSend();
                 }
               }}
-              placeholder="输入医学问题，例如：DLBCL 一线治疗方案..."
+              placeholder="输入临床问题，示例：DLBCL 一线治疗方案要点"
               rows={2}
             />
             <div className="input-actions">

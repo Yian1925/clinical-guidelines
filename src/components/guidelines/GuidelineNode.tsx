@@ -1,4 +1,5 @@
 import type { GuidelineNodeData } from '../../types';
+import { sanitizeHtml } from '../../utils/sanitizeHtml';
 
 interface GuidelineNodeProps {
   node: GuidelineNodeData;
@@ -16,11 +17,21 @@ export default function GuidelineNode({ node, highlighted, onSelect }: Guideline
       style={highlighted ? { boxShadow: '0 0 0 2px #C84B2F' } : undefined}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
     >
       <div className="fnode-tag">{node.tag}</div>
       <div className="fnode-title">{node.title}</div>
-      {node.body && <div className="fnode-body" dangerouslySetInnerHTML={{ __html: node.body.replace(/\n/g, '<br/>') }} />}
+      {node.body && (
+        <div
+          className="fnode-body"
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(node.body.replace(/\n/g, '<br/>')) }}
+        />
+      )}
       {node.options && (
         <div className="radio-list">
           {node.options.map((opt) => (

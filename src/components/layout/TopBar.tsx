@@ -13,7 +13,7 @@ export default function TopBar({ title, badge, onNewChat, patientsJourney }: Top
     return (
       <header className="topbar topbar--patients-journey">
         <button type="button" className="topbar-back-btn" onClick={patientsJourney.onBack}>
-          ← 返回列表
+          返回
         </button>
       </header>
     );

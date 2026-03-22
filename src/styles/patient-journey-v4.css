@@ -26,7 +26,7 @@
   flex-direction: column;
   min-height: 0;
   flex: 1;
-  background: var(--pj-bg);
+  background: transparent;
   border-radius: 0;
   overflow: hidden;
 }
@@ -36,7 +36,7 @@
 }
 
 .pj-v4-journey-header {
-  background: var(--pj-white);
+  background: transparent;
   border-bottom: 1px solid var(--pj-border);
   padding: 14px 20px;
   display: flex;
@@ -94,6 +94,12 @@
 
 .pj-v4-meta .pj-v4-sep {
   color: var(--pj-border);
+}
+
+/* 出院 / 结果：标签与内容均用黑色，与入院诊断等主文一致 */
+.pj-v4-meta-kv-black {
+  color: var(--color-text-primary);
+  font-weight: 600;
 }
 
 .pj-v4-stat-boxes {
@@ -164,8 +170,7 @@
 }
 
 .pj-v4-toolbar {
-  background: var(--pj-white);
-  border-bottom: 1px solid var(--pj-border);
+  background: transparent;
   padding: 8px 20px 10px;
   display: flex;
   flex-direction: column;
@@ -216,7 +221,7 @@
   flex: 1;
   overflow: auto;
   padding: 16px 20px 24px;
-  background: var(--pj-bg);
+  background: transparent;
   min-height: 0;
 }
 
@@ -235,7 +240,7 @@
 
 .pj-v4-cat-label-col--left {
   position: relative;
-  width: 100px;
+  width: 68px;
   flex-shrink: 0;
   align-self: stretch;
 }
@@ -254,10 +259,10 @@
 .pj-v4-cat-pill {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 0;
   width: 100%;
-  padding: 8px 10px;
+  padding: 5px 4px;
   border: 1px solid var(--pj-border);
   border-radius: 8px;
   background: var(--pj-white);
@@ -278,23 +283,18 @@
   opacity: 0.55;
 }
 
-.pj-v4-cat-pill-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
 .pj-v4-cat-pill-text {
   flex: 1;
   min-width: 0;
   line-height: 1.25;
+  text-align: left;
 }
 
 .pj-v4-cat-pill-chev {
   font-size: 9px;
   color: var(--pj-text-light);
   flex-shrink: 0;
+  align-self: center;
 }
 
 .pj-v4-empty-timeline {
@@ -308,6 +308,12 @@
 .pj-v4-svg-canvas-wrap {
   position: relative;
   overflow: visible;
+}
+
+/* 蛇形时间线画布窄于轨道时在轨道内水平居中 */
+.pj-v4-cat-track--unified > .pj-v4-svg-canvas-wrap {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .pj-v4-svg-timeline {
