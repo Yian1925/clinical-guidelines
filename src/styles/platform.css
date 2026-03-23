@@ -224,6 +224,11 @@
   background: transparent;
   color: #FF5E1F;
 }
+/* 历史记录：不显示左侧橙色竖条（仅作用于 .nav-history-item，主菜单不变） */
+.nav-item.nav-history-item:hover:not(.active),
+.nav-item.nav-history-item.active {
+  border-left: none;
+}
 
 /* Main + TopBar */
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
@@ -921,7 +926,6 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14);
 }
 .patient-selector-modal { width: 480px; }
-/* 选择患者弹窗：搜索行与患者卡片略收窄并居中（不改动其它 modal） */
 .patient-selector-modal .toc-search-row,
 .patient-selector-modal .emr-patient {
   width: 100%;
