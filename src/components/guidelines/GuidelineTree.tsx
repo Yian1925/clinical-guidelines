@@ -21,11 +21,13 @@ export default function GuidelineTree({ toc, activeId, onSelect, panelWidth }: G
 
   const filtered = useMemo(() => {
     const k = keyword.trim();
+    const sortChildren = (children: TocItem['children']) =>
+      [...(children ?? [])].sort((a, b) => a.id.localeCompare(b.id, 'en'));
     if (!k) return toc;
     return toc
       .map((item): TocItem | null => {
         const labelMatch = item.label.includes(k) || item.labelZh?.includes(k);
-        const childMatches = (item.children ?? []).filter((c) => c.label.includes(k));
+        const childMatches = sortChildren((item.children ?? []).filter((c) => c.label.includes(k)));
         if (labelMatch) return item;
         if (childMatches.length > 0) return { ...item, children: childMatches };
         return null;
@@ -36,11 +38,17 @@ export default function GuidelineTree({ toc, activeId, onSelect, panelWidth }: G
   return (
     <div className="gl-toc" style={panelWidth ? { width: panelWidth, minWidth: panelWidth } : undefined}>
       <div className="toc-search-wrap">
-        <div className="toc-search-row">
+        <div className="toc-search-row toc-search-row--guideline">
+          <span className="toc-search-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="9" cy="9" r="6" />
+              <path d="M14 14l4 4" />
+            </svg>
+          </span>
           <input
             id="gl-toc-search"
             type="text"
-            placeholder="搜索疾病或指南关键词…"
+            placeholder="请输入疾病名称或关键词"
             aria-label="搜索疾病或指南关键词"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
@@ -72,7 +80,7 @@ export default function GuidelineTree({ toc, activeId, onSelect, panelWidth }: G
                 {item.labelZh && <span className="zh">{item.labelZh}</span>}
                 <span className="toc-parent-icon">{isExpanded ? '▾' : '▸'}</span>
               </div>
-              {isExpanded && item.children?.map((child) => (
+              {isExpanded && [...(item.children ?? [])].sort((a, b) => a.id.localeCompare(b.id, 'en')).map((child) => (
                 <div
                   key={child.id}
                   className={`toc-sub ${activeId === child.id ? 'active' : ''}`}

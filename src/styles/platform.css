@@ -745,7 +745,17 @@
   min-height: 0;
   background: transparent;
 }
-.toc-list-wrap { flex: 1; overflow-y: auto; padding: 0 8px; min-height: 0; }
+.toc-list-wrap {
+  flex: 1;
+  overflow-y: auto;
+  margin: 10px 16px 16px;
+  padding: 8px 12px 26px;
+  min-height: 0;
+  background: #fff;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
 .toc-head { padding: 8px 14px; font-size: var(--font-note); font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.6px; }
 .toc-item {
   padding: 10px 10px;
@@ -765,6 +775,19 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  font-size: 14px;
+  position: relative;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+}
+.toc-parent::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--palette-aqua) 38%, #eef4f1);
 }
 .toc-parent-icon {
   font-size: 26px;
@@ -1300,62 +1323,88 @@
   gap: 8px;
   align-items: stretch;
 }
+.gl-toc .toc-search-row--guideline {
+  position: relative;
+  gap: 10px;
+  align-items: center;
+}
+.gl-toc .toc-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #7b8e87;
+  pointer-events: none;
+  z-index: 1;
+}
+.gl-toc .toc-search-icon svg {
+  width: 100%;
+  height: 100%;
+}
 .toc-search-row .toc-search-input {
   flex: 1;
   min-width: 0;
 }
 /* 诊疗路径侧栏 + 选择患者弹窗：共用搜索条（mint 底、aqua 边、teal 聚焦） */
 .toc-search-btn {
-  padding: 8px 14px;
+  min-width: 58px;
+  height: 44px;
+  padding: 0 14px;
   border-radius: 8px;
-  border: 1.6px solid var(--palette-aqua);
-  background: var(--palette-mint);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--brand-heading);
+  border: none;
+  background: var(--palette-teal);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
   cursor: pointer;
   flex-shrink: 0;
   font-family: inherit;
   appearance: none;
   -webkit-appearance: none;
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(32, 159, 133, 0.28);
   transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 .toc-search-btn:hover {
-  background: color-mix(in srgb, var(--palette-mint) 78%, var(--palette-aqua) 22%);
-  border-color: color-mix(in srgb, var(--palette-aqua) 72%, var(--palette-teal) 28%);
-  box-shadow: none;
+  background: var(--brand-hover);
+  border-color: transparent;
+  box-shadow: 0 6px 14px rgba(32, 159, 133, 0.32);
 }
 .toc-search-btn:focus-visible {
-  outline: 2px solid var(--palette-teal);
+  outline: 2px solid rgba(32, 159, 133, 0.35);
   outline-offset: 2px;
 }
 .toc-search-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1.6px solid var(--palette-aqua);
-  background: var(--palette-mint);
-  font-size: 13px;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--palette-aqua) 70%, #dfe7e3);
+  background: color-mix(in srgb, var(--palette-mint) 85%, #fff);
+  font-size: 14px;
   color: var(--color-text-primary);
   outline: none;
   transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out),
     background var(--duration-fast) var(--ease-out);
 }
 .toc-search-input:hover {
-  background: color-mix(in srgb, var(--palette-mint) 88%, var(--palette-aqua) 12%);
-  border-color: color-mix(in srgb, var(--palette-aqua) 72%, var(--palette-teal) 28%);
+  background: color-mix(in srgb, var(--palette-mint) 78%, #fff 22%);
+  border-color: color-mix(in srgb, var(--palette-aqua) 55%, var(--palette-teal) 45%);
 }
 .toc-search-input:focus,
 .toc-search-input:focus-visible {
   border-color: var(--palette-teal);
-  box-shadow: 0 0 0 2px rgba(32, 159, 133, 0.22);
+  box-shadow: 0 0 0 2px rgba(32, 159, 133, 0.2);
   outline: none;
 }
 .toc-search-input::placeholder {
   color: var(--color-text-tertiary);
 }
+
+/* 仅诊疗路径目录顶部搜索框：参考卡片化搜索样式 */
+.gl-toc .toc-search-row--guideline .toc-search-input { padding-left: 42px; }
 
 /* 诊疗路径选项复选框：未选中时方框内背景为白色 */
 .guideline-option-checkbox {

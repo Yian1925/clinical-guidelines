@@ -22,7 +22,7 @@ export default function PatientsPage() {
   const [risk, setRisk] = useState('');
   const [searchQ, setSearchQ] = useState('');
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const deptOptions = useMemo(() => {
     const s = new Set<string>();
