@@ -361,7 +361,8 @@
   border-radius: var(--border-radius-lg);
   isolation: isolate;
   /* 患者旅程表格外框 */
-  border: 1px solid rgba(32, 159, 133, 0.22);
+  border: none;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
   box-sizing: border-box;
 }
 
@@ -459,6 +460,68 @@
   padding: 48px 20px;
   text-align: center;
   color: #888;
+}
+
+.patients-list-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 6px 4px 0;
+  color: #4a5c56;
+  font-size: 13px;
+}
+
+.patients-list-pagination-meta {
+  color: #556f68;
+  font-weight: 500;
+}
+
+.patients-list-pagination-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.patients-page-btn {
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #2e463f;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.patients-page-btn:hover:not(:disabled) {
+  background: #d0ebe4;
+  border-color: #b8ded5;
+}
+
+.patients-page-btn.active {
+  background: #209f85;
+  color: #fff;
+}
+
+.patients-page-arrow {
+  min-width: 24px;
+  width: 24px;
+}
+
+.patients-page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.patients-page-ellipsis {
+  padding: 0 6px;
+  color: #6c807a;
+  font-weight: 600;
 }
 
 /* 旅程全屏顶栏 */

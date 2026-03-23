@@ -21,6 +21,8 @@ export default function PatientsPage() {
   const [dept, setDept] = useState('');
   const [risk, setRisk] = useState('');
   const [searchQ, setSearchQ] = useState('');
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
   const deptOptions = useMemo(() => {
     const s = new Set<string>();
@@ -50,6 +52,24 @@ export default function PatientsPage() {
       return true;
     });
   }, [searchQ, dept, risk, dateStart, dateEnd, visitType]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchQ, dept, risk, dateStart, dateEnd, visitType]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const safePage = Math.min(page, totalPages);
+  const pagedPatients = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, safePage, pageSize]);
+
+  const pageItems = useMemo(() => {
+    if (totalPages <= 6) return Array.from({ length: totalPages }, (_, i) => i + 1);
+    if (safePage <= 3) return [1, 2, 3, '...', totalPages] as const;
+    if (safePage >= totalPages - 2) return [1, '...', totalPages - 2, totalPages - 1, totalPages] as const;
+    return [1, '...', safePage, '...', totalPages] as const;
+  }, [safePage, totalPages]);
 
   const timelineId =
     selectedPatient == null
@@ -193,7 +213,7 @@ export default function PatientsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((p) => (
+                {pagedPatients.map((p) => (
                   <tr
                     key={p.id}
                     onClick={() => openJourney(p)}
@@ -220,6 +240,48 @@ export default function PatientsPage() {
             </table>
           )}
         </div>
+        {filtered.length > 0 && (
+          <div className="patients-list-pagination">
+            <div className="patients-list-pagination-meta">Showing {pagedPatients.length} of {filtered.length} patients</div>
+            <div className="patients-list-pagination-nav" aria-label="分页导航">
+              <button
+                type="button"
+                className="patients-page-btn patients-page-arrow"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={safePage === 1}
+                aria-label="上一页"
+              >
+                ‹
+              </button>
+              {pageItems.map((item, idx) =>
+                item === '...' ? (
+                  <span key={`ellipsis-${idx}`} className="patients-page-ellipsis">
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={item}
+                    type="button"
+                    className={`patients-page-btn ${safePage === item ? 'active' : ''}`}
+                    onClick={() => setPage(item)}
+                    aria-current={safePage === item ? 'page' : undefined}
+                  >
+                    {item}
+                  </button>
+                )
+              )}
+              <button
+                type="button"
+                className="patients-page-btn patients-page-arrow"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={safePage === totalPages}
+                aria-label="下一页"
+              >
+                ›
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

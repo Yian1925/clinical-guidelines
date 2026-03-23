@@ -405,10 +405,10 @@
 }
 .chip {
   background: #fff;
-  border: 1px solid #f4f4f4;
+  border: 1px solid color-mix(in srgb, var(--palette-aqua) 70%, #fff);
   appearance: none;
   -webkit-appearance: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 10px rgba(32, 159, 133, 0.08);
   padding: 8px 16px;
   border-radius: 999px;
   font-size: var(--font-body);
@@ -420,12 +420,12 @@
 .chip:hover,
 .chip:focus {
   background: #fff;
-  border-color: #209F85;
-  color: #209F85;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+  border-color: var(--palette-teal);
+  color: var(--palette-teal);
+  box-shadow: 0 6px 16px rgba(32, 159, 133, 0.12);
 }
 .chip:focus-visible {
-  outline: 2px solid rgba(0, 0, 0, 0.28);
+  outline: 2px solid rgba(32, 159, 133, 0.32);
   outline-offset: 2px;
 }
 
@@ -444,9 +444,9 @@
 }
 .avatar.ai { background: var(--brand); color: #fff; }
 .avatar.user {
-  background: linear-gradient(145deg, #5c7580 0%, #4a5f6a 100%);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--palette-aqua) 68%, #fff) 0%, var(--palette-aqua) 100%);
   color: #fff;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 .bubble {
   max-width: 75%;
@@ -531,14 +531,22 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  background-color: var(--color-chat-input-surface);
-  border: 1.6px solid rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  border: 1.6px solid color-mix(in srgb, var(--palette-aqua) 65%, #dfe7e3);
   border-radius: 12px;
   min-height: 200px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 8px 20px rgba(32, 159, 133, 0.08),
+    0 2px 6px rgba(15, 23, 42, 0.05);
   transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
 }
 .input-box:hover:not(:focus-within) {
   border-color: var(--form-control-border-hover);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 12px 28px rgba(32, 159, 133, 0.12),
+    0 4px 10px rgba(15, 23, 42, 0.06);
 }
 .input-box:focus-within {
   border-color: var(--brand);
@@ -868,14 +876,14 @@
   transition: box-shadow 0.15s;
 }
 .fnode:hover { box-shadow: 0 0 0 2px var(--brand); }
-.fnode.diag { background: var(--blue-bg); border: 1px solid #B5D4F4; color: #0C447C; }
+.fnode.diag { background: var(--blue-bg); border: 1px solid color-mix(in srgb, var(--palette-teal) 26%, var(--palette-aqua)); color: #1a5f51; }
 .fnode.choice { background: #fff; border: 1px solid var(--color-border-secondary); color: var(--color-text-primary); }
-.fnode.action { background: var(--green-bg); border: 1px solid #C0DD97; color: #27500A; }
-.fnode.warning { background: #FAEEDA; border: 1px solid #FAC775; color: #633806; }
+.fnode.action { background: var(--green-bg); border: 1px solid color-mix(in srgb, var(--palette-teal) 22%, var(--palette-aqua)); color: #1b5f51; }
+.fnode.warning { background: color-mix(in srgb, var(--palette-orange) 12%, #fff); border: 1px solid color-mix(in srgb, var(--palette-orange) 38%, #ffd8c9); color: #8e3e1f; }
 .fnode-tag { font-size: 10px; font-weight: 500; opacity: 0.7; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
 .fnode-title { font-weight: 500; font-size: 12px; margin-bottom: 4px; }
 .fnode-body { font-size: 11px; opacity: 0.85; line-height: 1.5; }
-.fnode-ref { display: inline-block; background: rgba(0,0,0,0.06); border-radius: 4px; padding: 1px 5px; font-size: 10px; margin-top: 4px; }
+.fnode-ref { display: inline-block; background: color-mix(in srgb, var(--palette-aqua) 40%, #fff); border-radius: 4px; padding: 1px 5px; font-size: 10px; margin-top: 4px; }
 .arrow { display: flex; align-items: center; align-self: center; color: var(--color-text-tertiary); font-size: 18px; margin-top: 30px; }
 .radio-list { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
 .radio-item { display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; }
@@ -1186,7 +1194,7 @@
 .journey-timeline-wrap {
   position: relative;
   padding-bottom: 28px;
-  --journey-time-arrow: #8a8a8a;
+  --journey-time-arrow: #6f8a82;
 }
 /* 竖直箭头 + 上方时间标签：箭头略右移、居中于时间下方，与时间留出间距 */
 .journey-time-v-wrap {

@@ -7,11 +7,11 @@ import '../../styles/patient-journey-v4.css';
 
 /** 与诊疗路径画板 InvasiveBreastCancerNCCN — ZONES 色系一致 */
 const CAT_CFG: Record<string, { color: string; trackColor: string; cardBg: string }> = {
-  诊断: { color: '#1A4776', trackColor: '#85B7EB', cardBg: '#EDF3FB' },
-  病历文书: { color: '#2A7D5E', trackColor: '#7CB89E', cardBg: '#F0F9F5' },
-  检查: { color: '#0D5C3E', trackColor: '#9CCEB4', cardBg: '#EDF8F3' },
-  化验: { color: '#8C4A10', trackColor: '#D8B48A', cardBg: '#FBF3ED' },
-  医嘱: { color: '#4A2880', trackColor: '#BCA8E0', cardBg: '#F2EDF9' },
+  诊断: { color: '#209F85', trackColor: '#209F85', cardBg: '#D0EBE4' },
+  病历文书: { color: '#1A8F78', trackColor: '#1A8F78', cardBg: '#F1F9F2' },
+  检查: { color: '#16846F', trackColor: '#16846F', cardBg: '#E6F4EF' },
+  化验: { color: '#B44E22', trackColor: '#FF5E1F', cardBg: '#FFF2EC' },
+  医嘱: { color: '#2A7A69', trackColor: '#2A7A69', cardBg: '#EAF5F1' },
 };
 
 const CAT_ORDER = ['诊断', '病历文书', '检查', '化验', '医嘱'] as const;
