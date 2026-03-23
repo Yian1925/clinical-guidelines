@@ -12,10 +12,10 @@
   --brand-surface: rgba(42, 128, 117, 0.09);
   --brand-surface-hover: rgba(42, 128, 117, 0.14);
   --brand-border-soft: rgba(42, 128, 117, 0.2);
-  --brand-heading: #1a4d47;
+  --brand-heading: #000000;
   --blue: #185FA5;
   --blue-bg: #E6F1FB;
-  --green: #3B6D11;
+  --green: #209F85;
   --green-bg: #EAF3DE;
   --font: 'Georgia', serif;
   --sans: system-ui, sans-serif;
@@ -76,7 +76,7 @@
 /* Sidebar */
 .sidebar {
   width: var(--nav-w);
-  background: linear-gradient(180deg, var(--sidebar-bg-top) 0%, var(--sidebar-bg-bottom) 100%);
+  background: #209F85;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -172,10 +172,9 @@
   padding: 9px 16px;
   cursor: pointer;
   border-radius: 0;
-  border-left: 3px solid transparent;
   transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
   font-size: var(--font-title-md);
-  color: #aaa;
+  color: #fff;
 }
 .nav-item:focus-visible {
   outline: 2px solid var(--brand);
@@ -183,17 +182,23 @@
   z-index: 1;
 }
 .nav-item:hover:not(.active) {
-  background: #2a2a2a;
-  color: #fff;
+  background: #F1F9F2;
+  color: #FF5E1F;
+  border-radius: 6px;
+  transform: translateX(4px);
 }
+
 .nav-item.active {
-  background: linear-gradient(90deg, rgba(42, 128, 117, 0.22) 0%, #2a2a2a 36%);
+  background: linear-gradient(135deg, #FF7A3D 0%, #FF5E1F 100%);
   color: #fff;
-  border-left-color: var(--brand);
+  border-radius: 6px;
   font-weight: 600;
+  position: relative;
+  transform: translateX(4px);
 }
+
 .nav-item.active:hover {
-  background: linear-gradient(90deg, rgba(42, 128, 117, 0.3) 0%, #303836 36%);
+  background: linear-gradient(135deg, #FF874F 0%, #FF5E1F 100%);
 }
 .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
 .nav-section {
@@ -209,25 +214,19 @@
 .nav-item.nav-history-item.nav-history-demo {
   font-size: 13px;
   padding: 7px 16px;
-  color: #aeb8c3;
+  color: #fff;
   cursor: default;
 }
 .nav-item.nav-history-item.nav-history-demo:hover {
   background: transparent;
-  color: #aeb8c3;
+  color: #FF5E1F;
 }
 
 /* Main + TopBar */
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
-/*
- * 侧栏右侧唯一壳层渐变（与 Agent 页一致）；子页面大块区域用 transparent，
- * 勿再铺整块 #fff / 独立渐变，避免视觉分层。
- */
 .main--tinted {
   background:
-    var(--chat-shell-radial-a),
-    var(--chat-shell-radial-b),
-    var(--chat-shell-gradient);
+    #fff;
   background-repeat: no-repeat;
 }
 .main--tinted .topbar {
@@ -395,7 +394,7 @@
   justify-content: center;
 }
 .chip {
-  background: #eaf3f0;
+  background: #F1F9F2;
   border: 1px solid rgba(42, 128, 117, 0.22);
   padding: 8px 16px;
   border-radius: 999px;

@@ -85,7 +85,7 @@ export default function ChatInterface({
                 <path d="M4 22H8L12 11L17 37L23 20L27 28L34 15L38 29L40 22H44" />
               </svg>
             </div>
-            <h2>您好，我是 MedGuide AI</h2>
+            <h2>  你好，我是 MedGuide AI</h2>
             <p>结合本院电子病历与公开诊疗路径，为您提供循证临床决策支持</p>
             <div className="chips">
               <div className="chips-row">
