@@ -360,6 +360,9 @@
   background: #fff;
   border-radius: var(--border-radius-lg);
   isolation: isolate;
+  /* 患者旅程表格外框 */
+  border: 1px solid rgba(32, 159, 133, 0.22);
+  box-sizing: border-box;
 }
 
 .patients-data-table {
@@ -375,7 +378,7 @@
   font-size: 14px;
   color: #1a3d36;
   font-weight: 600;
-  border-bottom: 1px solid rgba(32, 159, 133, 0.14);
+  border-bottom: 1px solid rgba(32, 159, 133, 0.28);
   position: sticky;
   top: 0;
   z-index: 5;
@@ -401,7 +404,10 @@
   padding: 10px 14px;
   font-size: 13px;
   color: #1a1a1a;
-  border-bottom: 1px solid #eef3f7;
+  border-bottom: 1px solid rgba(32, 159, 133, 0.14);
+}
+.patients-data-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .patients-td-num {
