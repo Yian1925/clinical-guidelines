@@ -56,7 +56,7 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
           </button>
         </div>
         <div className="modal-body">
-          <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+          <div className="toc-search-row">
             <input
               id="patient-selector-search"
               type="text"
@@ -65,22 +65,8 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
               aria-label="搜索患者姓名、住院号或诊断"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{ flex: 1, minWidth: 0 }}
             />
-            <button
-              type="button"
-              onClick={() => setSearch((s) => s.trim())}
-              style={{
-                padding: '8px 12px',
-                borderRadius: 8,
-                border: '0.5px solid var(--color-border-secondary)',
-                background: 'var(--color-background-secondary)',
-                fontSize: 13,
-                color: 'var(--color-text-primary)',
-                cursor: 'pointer',
-                flexShrink: 0,
-              }}
-            >
+            <button type="button" className="toc-search-btn" onClick={() => setSearch((s) => s.trim())}>
               搜索
             </button>
           </div>

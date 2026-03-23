@@ -373,14 +373,14 @@
   padding: 10px 14px;
   text-align: left;
   font-size: 14px;
-  color: #2d4a44;
+  color: #1a3d36;
   font-weight: 600;
-  border-bottom: 1px solid rgba(42, 128, 117, 0.14);
+  border-bottom: 1px solid rgba(32, 159, 133, 0.14);
   position: sticky;
   top: 0;
   z-index: 5;
   white-space: nowrap;
-  background: #f4f9f7;
+  background: #f1f9f2;
 }
 
 .patients-data-table tbody tr {
@@ -394,7 +394,7 @@
 }
 
 .patients-data-table tbody tr:hover {
-  background: rgba(42, 128, 117, 0.06);
+  background: rgba(32, 159, 133, 0.06);
 }
 
 .patients-data-table tbody td {
@@ -405,7 +405,7 @@
 }
 
 .patients-td-num {
-  color: #1a5c52;
+  color: #1a7a68;
   font-weight: 600;
   font-size: 12px;
 }
@@ -429,15 +429,15 @@
 }
 
 .patients-risk-low {
-  background: #e5f5f2;
-  color: #1e7d6b;
+  background: #d0ebe4;
+  color: #209f85;
 }
 
 .patients-tag-pill {
   display: inline-block;
   font-size: 10px;
-  background: rgba(42, 128, 117, 0.1);
-  color: #1a5c52;
+  background: rgba(32, 159, 133, 0.1);
+  color: #1a7a68;
   padding: 1px 6px;
   border-radius: 3px;
   margin-right: 3px;
@@ -482,8 +482,8 @@
 }
 
 .patients-back-btn:hover {
-  border-color: #2a8075;
-  color: #2a8075;
+  border-color: #209f85;
+  color: #209f85;
 }
 
 .patients-journey-title {

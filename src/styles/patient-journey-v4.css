@@ -1,15 +1,15 @@
-/* Patient journey v4 — scoped to .pj-v4, aligned with app brand #2A8075 */
+/* Patient journey v4 — 与全局四色体系一致 (#F1F9F2 / #209F85) */
 .pj-v4 {
-  --pj-primary: #0b3b60;
-  --pj-primary-light: #1a5a8a;
-  --pj-primary-pale: #e8f4f8;
-  --pj-selected: #2a8075;
-  --pj-selected-bg: rgba(42, 128, 117, 0.12);
+  --pj-primary: #0d3d33;
+  --pj-primary-light: #1a8f78;
+  --pj-primary-pale: #d0ebe4;
+  --pj-selected: #209f85;
+  --pj-selected-bg: rgba(32, 159, 133, 0.12);
   --pj-text: #1a1a1a;
-  --pj-text-mid: #444;
-  --pj-text-light: #888;
-  --pj-border: #e0e7ed;
-  --pj-bg: #f7f9fb;
+  --pj-text-mid: #4a5c56;
+  --pj-text-light: #7a8a84;
+  --pj-border: color-mix(in srgb, #d0ebe4 70%, #e0e7ed);
+  --pj-bg: #f1f9f2;
   --pj-white: #fff;
   --pj-shadow: 0 2px 10px rgba(0, 0, 0, 0.09);
   --pj-shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.13);
@@ -79,9 +79,9 @@
 }
 
 .pj-v4-tag-green {
-  background: #e0f2ef;
+  background: #d0ebe4;
   color: var(--pj-selected);
-  border: 1px solid rgba(42, 128, 117, 0.25);
+  border: 1px solid rgba(32, 159, 133, 0.25);
 }
 
 .pj-v4-meta {
@@ -275,7 +275,7 @@
 }
 
 .pj-v4-cat-pill:hover {
-  background: #f7f9fb;
+  background: #f1f9f2;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
@@ -343,7 +343,7 @@
 
 .pj-v4-tl-card--active {
   border-color: var(--pj-selected) !important;
-  box-shadow: 0 0 0 2px rgba(42, 128, 117, 0.18);
+  box-shadow: 0 0 0 2px rgba(32, 159, 133, 0.18);
 }
 
 .pj-v4-tl-card-title {
@@ -698,7 +698,7 @@
 
 .pj-v4-s-node.pj-v4-node-active .pj-v4-node-card {
   border-color: var(--pj-selected) !important;
-  box-shadow: 0 0 0 2px rgba(42, 128, 117, 0.18);
+  box-shadow: 0 0 0 2px rgba(32, 159, 133, 0.18);
 }
 
 .pj-v4-nc-title {
