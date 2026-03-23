@@ -4,7 +4,7 @@ import type { PageId } from '../types';
 import type { Patient } from '../types';
 
 /** 病例库进入某位患者旅程时，顶栏替换为返回 + 标题（原「病例库」文案位置） */
-export type PatientsJourneyTopBar = { patientName: string; onBack: () => void };
+export type PatientsJourneyTopBar = { patientName: string; admissionId: string; onBack: () => void };
 
 interface AppState {
   page: PageId;

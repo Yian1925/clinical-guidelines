@@ -12,8 +12,11 @@ export default function TopBar({ title, badge, onNewChat, patientsJourney }: Top
   if (patientsJourney) {
     return (
       <header className="topbar topbar--patients-journey">
-        <button type="button" className="topbar-back-btn" onClick={patientsJourney.onBack}>
-          返回
+        <button type="button" className="topbar-crumb-btn" onClick={patientsJourney.onBack} aria-label="返回患者旅程列表">
+          <span className="topbar-crumb-chevron" aria-hidden="true">
+            ›
+          </span>
+          <span className="topbar-crumb-label">{patientsJourney.patientName} · {patientsJourney.admissionId}</span>
         </button>
       </header>
     );

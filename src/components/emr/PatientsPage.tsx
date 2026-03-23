@@ -105,6 +105,7 @@ export default function PatientsPage() {
     if (view === 'journey' && selectedPatient) {
       setPatientsJourneyTopBar({
         patientName: selectedPatient.name,
+        admissionId: selectedPatient.admissionId,
         onBack: backToList,
       });
       return () => setPatientsJourneyTopBar(null);
@@ -194,94 +195,96 @@ export default function PatientsPage() {
           </div>
         </div>
 
-        <div className="patients-list-table-wrap">
-          {filtered.length === 0 ? (
-            <div className="patients-list-empty">未找到患者。请调整筛选条件或修改搜索关键词。</div>
-          ) : (
-            <table className="patients-data-table">
-              <thead>
-                <tr>
-                  <th>患者编号</th>
-                  <th>姓名</th>
-                  <th>性别</th>
-                  <th>年龄</th>
-                  <th>诊断</th>
-                  <th>科室</th>
-                  <th>就诊时间</th>
-                  <th>风险</th>
-                  <th>医院</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pagedPatients.map((p) => (
-                  <tr
-                    key={p.id}
-                    onClick={() => openJourney(p)}
-                    onKeyDown={(e) => roleButtonActivate(e, () => openJourney(p))}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <td className="patients-td-num">{p.admissionId}</td>
-                    <td style={{ fontWeight: 600 }}>{p.name}</td>
-                    <td>{p.gender}</td>
-                    <td>{p.age}岁</td>
-                    <td style={{ maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.diagnosis}>
-                      {p.diagnosis}
-                    </td>
-                    <td>{p.dept ?? '—'}</td>
-                    <td>{p.visitTime ?? '—'}</td>
-                    <td>
-                      <span className={riskBadgeClass(p.riskLevel)}>{riskLabel(p.riskLevel)}</span>
-                    </td>
-                    <td>{p.hospital ?? '—'}</td>
+        <div className="patients-list-data-panel">
+          <div className="patients-list-table-wrap">
+            {filtered.length === 0 ? (
+              <div className="patients-list-empty">未找到患者。请调整筛选条件或修改搜索关键词。</div>
+            ) : (
+              <table className="patients-data-table">
+                <thead>
+                  <tr>
+                    <th>患者编号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>年龄</th>
+                    <th>诊断</th>
+                    <th>科室</th>
+                    <th>就诊时间</th>
+                    <th>风险</th>
+                    <th>医院</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {pagedPatients.map((p) => (
+                    <tr
+                      key={p.id}
+                      onClick={() => openJourney(p)}
+                      onKeyDown={(e) => roleButtonActivate(e, () => openJourney(p))}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <td><span className="patients-td-num">{p.admissionId}</span></td>
+                      <td style={{ fontWeight: 600 }}>{p.name}</td>
+                      <td>{p.gender}</td>
+                      <td>{p.age}岁</td>
+                      <td style={{ maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.diagnosis}>
+                        {p.diagnosis}
+                      </td>
+                      <td>{p.dept ?? '—'}</td>
+                      <td>{p.visitTime ?? '—'}</td>
+                      <td>
+                        <span className={riskBadgeClass(p.riskLevel)}>{riskLabel(p.riskLevel)}</span>
+                      </td>
+                      <td>{p.hospital ?? '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+          {filtered.length > 0 && (
+            <div className="patients-list-pagination">
+              <div className="patients-list-pagination-meta">Showing {pagedPatients.length} of {filtered.length} patients</div>
+              <div className="patients-list-pagination-nav" aria-label="分页导航">
+                <button
+                  type="button"
+                  className="patients-page-btn patients-page-arrow"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={safePage === 1}
+                  aria-label="上一页"
+                >
+                  ‹
+                </button>
+                {pageItems.map((item, idx) =>
+                  item === '...' ? (
+                    <span key={`ellipsis-${idx}`} className="patients-page-ellipsis">
+                      …
+                    </span>
+                  ) : (
+                    <button
+                      key={item}
+                      type="button"
+                      className={`patients-page-btn ${safePage === item ? 'active' : ''}`}
+                      onClick={() => setPage(item)}
+                      aria-current={safePage === item ? 'page' : undefined}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+                <button
+                  type="button"
+                  className="patients-page-btn patients-page-arrow"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={safePage === totalPages}
+                  aria-label="下一页"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
           )}
         </div>
-        {filtered.length > 0 && (
-          <div className="patients-list-pagination">
-            <div className="patients-list-pagination-meta">Showing {pagedPatients.length} of {filtered.length} patients</div>
-            <div className="patients-list-pagination-nav" aria-label="分页导航">
-              <button
-                type="button"
-                className="patients-page-btn patients-page-arrow"
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={safePage === 1}
-                aria-label="上一页"
-              >
-                ‹
-              </button>
-              {pageItems.map((item, idx) =>
-                item === '...' ? (
-                  <span key={`ellipsis-${idx}`} className="patients-page-ellipsis">
-                    …
-                  </span>
-                ) : (
-                  <button
-                    key={item}
-                    type="button"
-                    className={`patients-page-btn ${safePage === item ? 'active' : ''}`}
-                    onClick={() => setPage(item)}
-                    aria-current={safePage === item ? 'page' : undefined}
-                  >
-                    {item}
-                  </button>
-                )
-              )}
-              <button
-                type="button"
-                className="patients-page-btn patients-page-arrow"
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                disabled={safePage === totalPages}
-                aria-label="下一页"
-              >
-                ›
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

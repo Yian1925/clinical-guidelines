@@ -8,10 +8,10 @@ import '../../styles/patient-journey-v4.css';
 /** 与诊疗路径画板 InvasiveBreastCancerNCCN — ZONES 色系一致 */
 const CAT_CFG: Record<string, { color: string; trackColor: string; cardBg: string }> = {
   诊断: { color: '#209F85', trackColor: '#209F85', cardBg: '#D0EBE4' },
-  病历文书: { color: '#1A8F78', trackColor: '#1A8F78', cardBg: '#F1F9F2' },
-  检查: { color: '#16846F', trackColor: '#16846F', cardBg: '#E6F4EF' },
-  化验: { color: '#B44E22', trackColor: '#FF5E1F', cardBg: '#FFF2EC' },
-  医嘱: { color: '#2A7A69', trackColor: '#2A7A69', cardBg: '#EAF5F1' },
+  病历文书: { color: '#2F6FCD', trackColor: '#2F6FCD', cardBg: '#EAF2FF' },
+  检查: { color: '#1A8F78', trackColor: '#1A8F78', cardBg: '#E6F4EF' },
+  化验: { color: '#A66A1F', trackColor: '#C7923B', cardBg: '#F9F1E2' },
+  医嘱: { color: '#7B4FB6', trackColor: '#7B4FB6', cardBg: '#F2ECFA' },
 };
 
 const CAT_ORDER = ['诊断', '病历文书', '检查', '化验', '医嘱'] as const;
@@ -112,6 +112,7 @@ interface Props {
 export default function PatientJourneyV4({ listPatient, data, loading }: Props) {
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [ttPos, setTtPos] = useState<{ left: number; top: number } | null>(null);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
   const [collapsedCat, setCollapsedCat] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(CAT_ORDER.map((c) => [c, false])) as Record<string, boolean>
   );
@@ -209,6 +210,22 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
     return { ev, cat, cfg: CAT_CFG[cat] };
   }, [activeKey, data, mergedEvents]);
 
+  // Tooltip can be much taller than the previous fixed estimate; clamp by actual rendered size.
+  useEffect(() => {
+    if (!activeEvent || !ttPos || !tooltipRef.current) return;
+    const rect = tooltipRef.current.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const minPad = 8;
+    let left = ttPos.left;
+    let top = ttPos.top;
+    if (rect.right > vw - minPad) left = Math.max(minPad, vw - rect.width - minPad);
+    if (rect.left < minPad) left = minPad;
+    if (rect.bottom > vh - minPad) top = Math.max(minPad, vh - rect.height - minPad);
+    if (rect.top < minPad) top = minPad;
+    if (left !== ttPos.left || top !== ttPos.top) setTtPos({ left, top });
+  }, [activeEvent, ttPos]);
+
   const toggleCategory = useCallback((cat: string) => {
     setCollapsedCat((prev) => ({ ...prev, [cat]: !prev[cat] }));
   }, []);
@@ -283,13 +300,6 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
           </div>
         </div>
         <div className="pj-v4-stat-boxes">
-          <div className="pj-v4-stat-box">
-            <div className="pj-v4-stat-value-row">
-              <span className="pj-v4-stat-num">{sum?.total_events ?? '—'}</span>
-              <span className="pj-v4-stat-unit">次</span>
-            </div>
-            <div className="pj-v4-stat-label">全程事件</div>
-          </div>
           <div className="pj-v4-stat-box">
             <div className="pj-v4-stat-value-row">
               <span className="pj-v4-stat-num">{sum?.event_types?.['检查'] ?? '—'}</span>
@@ -521,7 +531,7 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
       {activeEvent && ttPos && (
         <>
           <div className="pj-v4-tt-overlay pj-v4-visible" onClick={closeTooltip} aria-hidden />
-          <div className="pj-v4-tooltip" style={{ left: ttPos.left, top: ttPos.top }}>
+          <div className="pj-v4-tooltip" ref={tooltipRef} style={{ left: ttPos.left, top: ttPos.top }}>
             <TooltipBody ev={activeEvent.ev} cat={activeEvent.cat} cfg={activeEvent.cfg} onClose={closeTooltip} />
           </div>
         </>

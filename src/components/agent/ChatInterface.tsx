@@ -22,6 +22,45 @@ const WELCOME_CHIPS = [
   '淋巴瘤患者的骨髓活检指征？',
 ];
 
+function renderChipIcon(index: number) {
+  const iconType = index % 5;
+  if (iconType === 0) {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 10h4l2-5 2 10 2-5h4" />
+      </svg>
+    );
+  }
+  if (iconType === 1) {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3.5" y="3.5" width="13" height="13" rx="2.5" />
+        <path d="M7 8h6M7 11h6M7 14h4" />
+      </svg>
+    );
+  }
+  if (iconType === 2) {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="9" cy="9" r="5.5" />
+        <path d="M13.2 13.2L17 17" />
+      </svg>
+    );
+  }
+  if (iconType === 3) {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 10h12M10 4v12" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 15l4-4 3 3 5-7" />
+    </svg>
+  );
+}
+
 export default function ChatInterface({
   messages,
   loading,
@@ -89,15 +128,21 @@ export default function ChatInterface({
             <p>结合本院电子病历与公开诊疗路径，为您提供循证临床决策支持</p>
             <div className="chips">
               <div className="chips-row">
-                {WELCOME_CHIPS.slice(0, 3).map((q) => (
+                {WELCOME_CHIPS.slice(0, 3).map((q, idx) => (
                   <button key={q} type="button" className="chip" onClick={() => handleChip(q)}>
+                    <span className="chip-icon" aria-hidden="true">
+                      {renderChipIcon(idx)}
+                    </span>
                     {q.length > 20 ? q.slice(0, 18) + '…' : q}
                   </button>
                 ))}
               </div>
               <div className="chips-row">
-                {WELCOME_CHIPS.slice(3).map((q) => (
+                {WELCOME_CHIPS.slice(3).map((q, idx) => (
                   <button key={q} type="button" className="chip" onClick={() => handleChip(q)}>
+                    <span className="chip-icon" aria-hidden="true">
+                      {renderChipIcon(idx + 3)}
+                    </span>
                     {q.length > 20 ? q.slice(0, 18) + '…' : q}
                   </button>
                 ))}
@@ -166,6 +211,7 @@ export default function ChatInterface({
                   </button>
                 </div>
               </div>
+              <p className="chat-input-note">可输入疾病或治疗问题，回答基于指南与循证医学，仅供临床参考。</p>
             </div>
           </div>
         )}
@@ -222,6 +268,7 @@ export default function ChatInterface({
               </button>
             </div>
           </div>
+          <p className="chat-input-note">可输入疾病或治疗问题，回答基于指南与循证医学，仅供临床参考。</p>
         </div>
       )}
       <UploadFileModal open={uploadFileOpen} onClose={() => setUploadFileOpen(false)} />

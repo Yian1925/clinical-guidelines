@@ -353,22 +353,31 @@
   flex-shrink: 0;
 }
 
+.patients-list-data-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: -2px 0 12px;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.04),
+    0 12px 28px rgba(15, 23, 42, 0.14),
+    0 -8px 20px rgba(15, 23, 42, 0.08);
+}
+
 .patients-list-table-wrap {
   flex: 1;
   overflow: auto;
   min-height: 0;
   background: #fff;
-  border-radius: var(--border-radius-lg);
+  border-radius: 0;
   isolation: isolate;
-  /* 患者旅程表格外框 */
   border: none;
-  margin: 4px 0 0;
-  box-shadow:
-    0 0 0 1px rgba(15, 23, 42, 0.04),
-    0 12px 28px rgba(15, 23, 42, 0.14),
-    0 -8px 20px rgba(15, 23, 42, 0.08),
-    inset 12px 0 16px -16px rgba(15, 23, 42, 0.16),
-    inset -12px 0 16px -16px rgba(15, 23, 42, 0.16);
+  margin: 0;
+  box-shadow: none;
   box-sizing: border-box;
 }
 
@@ -390,7 +399,7 @@
   top: 0;
   z-index: 5;
   white-space: nowrap;
-  background: #f1f9f2;
+  background: #f3f4f2;
 }
 
 .patients-data-table tbody tr {
@@ -418,9 +427,14 @@
 }
 
 .patients-td-num {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--palette-aqua) 65%, #f5faf8);
   color: #1a7a68;
   font-weight: 600;
   font-size: 12px;
+  line-height: 1.2;
 }
 
 .patients-risk-badge {
@@ -472,10 +486,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
-  padding: 6px 4px 0;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 10px 12px;
   color: #4a5c56;
   font-size: 13px;
+  background: #f3f4f2;
+  border-top: 1px solid color-mix(in srgb, var(--palette-aqua) 55%, #e8efeb);
 }
 
 .patients-list-pagination-meta {

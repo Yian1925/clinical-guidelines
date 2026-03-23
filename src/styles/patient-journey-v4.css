@@ -37,8 +37,8 @@
 
 .pj-v4-journey-header {
   background: transparent;
-  border-bottom: 1px solid var(--pj-border);
-  padding: 14px 20px;
+  border-bottom: none;
+  padding: 14px 20px 0;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -46,13 +46,32 @@
 }
 
 .pj-v4-journey-header--compact {
-  align-items: flex-start;
-  gap: 16px;
+  align-items: stretch;
+  gap: 26px;
+}
+
+.pj-v4-journey-header--compact > .pj-v4-info,
+.pj-v4-journey-header--compact > .pj-v4-stat-boxes {
+  flex-basis: 0;
+  width: 0;
+}
+
+.pj-v4-journey-header--compact > .pj-v4-info {
+  flex-grow: 1.35;
+}
+
+.pj-v4-journey-header--compact > .pj-v4-stat-boxes {
+  flex-grow: 0.65;
 }
 
 .pj-v4-info {
-  flex: 1;
+  flex: 1.35 1 0;
   min-width: 0;
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
 }
 
 .pj-v4-name-row {
@@ -80,7 +99,7 @@
 
 .pj-v4-tag-green {
   background: #d0ebe4;
-  color: var(--pj-selected);
+  color: var(--pj-primary);
   border: 1px solid rgba(32, 159, 133, 0.25);
 }
 
@@ -106,15 +125,16 @@
   display: flex;
   align-items: stretch;
   justify-content: space-around;
-  flex: 1;
+  flex: 0.65 1 0;
   min-width: 0;
-  max-width: 520px;
+  max-width: none;
   flex-shrink: 1;
-  /* background: #eef1f5; */
+  background: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 12px 8px;
   gap: 0;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
 }
 
 .pj-v4-stat-box {
@@ -170,13 +190,17 @@
 }
 
 .pj-v4-toolbar {
-  background: transparent;
+  margin: 12px 20px 0;
+  background: #fff;
+  border: none;
+  border-radius: 12px 12px 0 0;
   padding: 8px 20px 10px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 6px;
   flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
 }
 
 .pj-v4-legend {
@@ -220,9 +244,13 @@
 .pj-v4-scroll {
   flex: 1;
   overflow: auto;
+  margin: 0 20px 16px;
   padding: 16px 20px 24px;
-  background: transparent;
+  background: #fff;
+  border: none;
+  border-radius: 0 0 12px 12px;
   min-height: 0;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
 }
 
 /* 单条时间线 + 左侧五类标签（与各类事件区段垂直对齐） */
@@ -753,9 +781,12 @@
   padding: 0;
   min-width: 240px;
   max-width: 320px;
+  max-height: calc(100vh - 16px);
   box-shadow: var(--pj-shadow-lg);
   z-index: 200;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .pj-v4-tt-header {
@@ -802,6 +833,8 @@
 
 .pj-v4-tt-body {
   padding: 10px 14px 12px;
+  overflow: auto;
+  min-height: 0;
 }
 
 .pj-v4-tt-kv {
