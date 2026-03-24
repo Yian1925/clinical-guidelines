@@ -268,7 +268,6 @@ export default function ChatInterface({
               </button>
             </div>
           </div>
-          <p className="chat-input-note">可输入疾病或治疗问题，回答基于指南与循证医学，仅供临床参考。</p>
         </div>
       )}
       <UploadFileModal open={uploadFileOpen} onClose={() => setUploadFileOpen(false)} />
