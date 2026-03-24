@@ -1,228 +1,266 @@
-import { useState, useRef, useEffect, useId } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ChatMessage from './ChatMessage';
-import UploadFileModal from './UploadFileModal';
-import UploadFolderModal from './UploadFolderModal';
-import type { ChatMessage as ChatMessageType } from '../../types';
+import type { ChatMessage as ChatMessageType, ChatSourceLink } from '../../types';
 import { useAppStore } from '../../store';
+import PatientJourneyV4 from '../emr/PatientJourneyV4';
+import { usePatientTimeline } from '../../hooks/usePatientTimeline';
 
 interface ChatInterfaceProps {
   messages: ChatMessageType[];
   loading: boolean;
   onSendMessage: (content: string) => void;
-  onAskQuestion: (q: string) => void;
+  onResetChat: () => void;
   onOpenPatientSelector: () => void;
   patientLabel: string;
 }
 
-const WELCOME_CHIPS = [
-  '宫颈癌（Cervical cancer）的一线治疗方案是什么？',
-  '套细胞淋巴瘤的诊断标准和病理特征？',
-  '滤泡性淋巴瘤如何分期？Ann Arbor分期标准',
-  'R-CHOP方案的具体剂量和周期？',
-  '淋巴瘤患者的骨髓活检指征？',
-];
+const DEFAULT_QUESTION_TYPE = '治疗选择';
+const DEFAULT_OUTPUT_TEMPLATE = 'MDT讨论版';
+const QUICK_ASK_EXAMPLES = [
+  'HER2-low 晚期乳腺癌在内分泌经治后，何时优先选择 ADC？',
+  '局部晚期宫颈癌同步放化疗时，哪些患者可以考虑免疫联合？',
+  '保乳术后高龄 HR+ 低危患者，省略放疗的边界条件是什么？',
+] as const;
 
-function renderChipIcon(index: number) {
-  const iconType = index % 5;
-  if (iconType === 0) {
-    return (
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 10h4l2-5 2 10 2-5h4" />
-      </svg>
-    );
+function inferDiseaseAndStageFromPatientDiagnosis(diagnosis: string): { disease: string; stage: string } {
+  const lower = diagnosis.toLowerCase();
+  if (lower.includes('宫颈')) {
+    return { disease: '宫颈癌', stage: '初评、诊断与分期' };
   }
-  if (iconType === 1) {
-    return (
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3.5" y="3.5" width="13" height="13" rx="2.5" />
-        <path d="M7 8h6M7 11h6M7 14h4" />
-      </svg>
-    );
+  if (lower.includes('乳腺') || lower.includes('breast')) {
+    return { disease: '浸润性乳腺癌', stage: '初评、病理与分子分型' };
   }
-  if (iconType === 2) {
-    return (
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="9" cy="9" r="5.5" />
-        <path d="M13.2 13.2L17 17" />
-      </svg>
-    );
+  if (lower.includes('肺') || lower.includes('lung')) {
+    return { disease: '肺癌', stage: '初评、诊断与分期' };
   }
-  if (iconType === 3) {
-    return (
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4 10h12M10 4v12" />
-      </svg>
-    );
-  }
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 15l4-4 3 3 5-7" />
-    </svg>
-  );
+  // fallback: keep diagnosis truthfully instead of forcing a known demo disease
+  return { disease: diagnosis || '未指定病种', stage: '阶段待结合病程判定' };
 }
 
 export default function ChatInterface({
   messages,
   loading,
   onSendMessage,
-  onAskQuestion: _onAskQuestion,
+  onResetChat,
   onOpenPatientSelector,
   patientLabel,
 }: ChatInterfaceProps) {
-  const [input, setInput] = useState('');
+  const [activeTab, setActiveTab] = useState<'patient' | 'question'>('question');
+  const [patientConcern, setPatientConcern] = useState('');
+  const [quickQuestion, setQuickQuestion] = useState('');
+  const [showJourneyFullscreen, setShowJourneyFullscreen] = useState(false);
   const areaRef = useRef<HTMLDivElement>(null);
-  const welcomeInputRef = useRef<HTMLTextAreaElement>(null);
-  const uploadMenuRef = useRef<HTMLDivElement>(null);
-  const { setPage, setGuidelineTocId } = useAppStore();
-  const uploadMaskIdA = useId();
-  const [uploadMenuOpen, setUploadMenuOpen] = useState(false);
-  const [uploadFileOpen, setUploadFileOpen] = useState(false);
-  const [uploadFolderOpen, setUploadFolderOpen] = useState(false);
+  const {
+    patient,
+    setPage,
+    setGuidelineTocId,
+    setLiteratureFocusEvidenceId,
+    setLiteratureDeepLink,
+    setPatientsListDeepLink,
+    setPatientsOpenJourneyAdmissionId,
+    setSynthesisEntryTarget,
+    setChatEntryTarget,
+  } = useAppStore();
+
+  const timelineId =
+    patient == null
+      ? null
+      : patient.hasTimeline === false
+        ? null
+        : patient.timelineId ?? patient.admissionId ?? null;
+  const { data: timelineData, loading: timelineLoading } = usePatientTimeline(timelineId);
 
   useEffect(() => {
     if (areaRef.current) areaRef.current.scrollTop = areaRef.current.scrollHeight;
   }, [messages, loading]);
 
   useEffect(() => {
-    const closeMenu = (e: MouseEvent) => {
-      if (uploadMenuRef.current && !uploadMenuRef.current.contains(e.target as Node)) {
-        setUploadMenuOpen(false);
-      }
-    };
-    if (uploadMenuOpen) {
-      document.addEventListener('mousedown', closeMenu);
-      return () => document.removeEventListener('mousedown', closeMenu);
+    if (!patient) return;
+    setActiveTab('patient');
+    if (!patientConcern.trim()) {
+      setPatientConcern(`请基于住院号 ${patient.admissionId} 的病程，给出本阶段的关键诊疗决策、风险监测点和下一步策略。`);
     }
-  }, [uploadMenuOpen]);
+  }, [patient, patientConcern]);
 
-  const handleSend = () => {
-    const q = input.trim();
+  const handlePatientRun = () => {
+    if (!patient) return;
+    const inferred = inferDiseaseAndStageFromPatientDiagnosis(patient.diagnosis);
+    const question = patientConcern.trim();
+    if (!question) return;
+    const composed = [
+      `病种：${inferred.disease}`,
+      `阶段：${inferred.stage}`,
+      `问题类型：${DEFAULT_QUESTION_TYPE}`,
+      `输出模板：${DEFAULT_OUTPUT_TEMPLATE}`,
+      `当前问题：${question}`,
+    ].join('\n');
+    onSendMessage(composed);
+  };
+
+  const handleQuickAsk = () => {
+    const q = quickQuestion.trim();
     if (!q) return;
-    setInput('');
+    setQuickQuestion('');
     onSendMessage(q);
   };
 
-  const handleChip = (q: string) => {
-    setInput(q);
-    welcomeInputRef.current?.focus();
+  const goToResource = (source: ChatSourceLink) => {
+    // clear synthesis return context when jumping from chat sources
+    setSynthesisEntryTarget(null);
+    if (source.targetPage === 'guidelines') {
+      setChatEntryTarget('guidelines');
+      if (source.guidelineTocId) setGuidelineTocId(source.guidelineTocId);
+      setPage('guidelines');
+      return;
+    }
+    if (source.targetPage === 'literature') {
+      setChatEntryTarget('literature');
+      if (source.evidenceId) {
+        setLiteratureDeepLink(null);
+        setLiteratureFocusEvidenceId(source.evidenceId);
+      }
+      setPage('literature');
+      return;
+    }
+    setChatEntryTarget('patients');
+    if (source.admissionId) {
+      setPatientsOpenJourneyAdmissionId(source.admissionId);
+    } else {
+      setPatientsOpenJourneyAdmissionId(null);
+      if (source.diagnosisKeywords && source.diagnosisKeywords.length > 0) {
+        setPatientsListDeepLink({ diagnosisKeywords: source.diagnosisKeywords });
+      }
+    }
+    setPage('patients');
   };
-
-  const goToGuidelines = (tocId?: string) => {
-    if (tocId) setGuidelineTocId(tocId);
-    setPage('guidelines');
-  };
-
-  const showWelcome = messages.length === 0 && !loading;
 
   return (
     <>
       <div className="chat-area" ref={areaRef}>
-        {showWelcome && (
-          <div className="chat-welcome">
-            <div className="chat-welcome-icon" aria-hidden>
-              <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 22H8L12 11L17 37L23 20L27 28L34 15L38 29L40 22H44" />
-              </svg>
-            </div>
-            <h2>  你好，我是 MedGuide AI</h2>
-            <p>结合本院电子病历与公开诊疗路径，为您提供循证临床决策支持</p>
-            <div className="chips">
-              <div className="chips-row">
-                {WELCOME_CHIPS.slice(0, 3).map((q, idx) => (
-                  <button key={q} type="button" className="chip" onClick={() => handleChip(q)}>
-                    <span className="chip-icon" aria-hidden="true">
-                      {renderChipIcon(idx)}
-                    </span>
-                    {q.length > 20 ? q.slice(0, 18) + '…' : q}
-                  </button>
-                ))}
-              </div>
-              <div className="chips-row">
-                {WELCOME_CHIPS.slice(3).map((q, idx) => (
-                  <button key={q} type="button" className="chip" onClick={() => handleChip(q)}>
-                    <span className="chip-icon" aria-hidden="true">
-                      {renderChipIcon(idx + 3)}
-                    </span>
-                    {q.length > 20 ? q.slice(0, 18) + '…' : q}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="chat-input-wrap chat-input-below-chips">
-              <div style={{ display: 'flex', gap: 1, marginBottom: 0 }}>
-                <button type="button" className="patient-pill" onClick={onOpenPatientSelector}>
-                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="10" cy="8" r="4" />
-                    <path d="M3 18c0-4 3-6 7-6s7 2 7 6" />
-                  </svg>
-                  {patientLabel}
-                </button>
-              </div>
-              <div className="input-box">
-                <textarea
-                  ref={welcomeInputRef}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSend();
-                    }
-                  }}
-                  placeholder="输入临床问题，示例：DLBCL 一线治疗方案要点"
-                  rows={4}
-                />
-                <div className="input-actions">
-                  <div className="upload-trigger-wrap" ref={uploadMenuRef}>
-                    <button
-                      type="button"
-                      className="ic-btn"
-                      title="添加附件"
-                      onClick={() => setUploadMenuOpen((v) => !v)}
-                      aria-haspopup="true"
-                      aria-expanded={uploadMenuOpen}
-                    >
-                      <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <mask id={uploadMaskIdA} maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48" style={{ maskType: 'alpha' }}>
-                          <path d="M48 0H0V48H48V0Z" fill="#333" />
-                        </mask>
-                        <g mask={`url(#${uploadMaskIdA})`}>
-                          <path d="M6 24.0083V42H42V24" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M33 15L24 6L15 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M23.9917 32V6" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                        </g>
-                      </svg>
-                    </button>
-                    {uploadMenuOpen && (
-                      <div className="upload-dropdown">
-                        <button type="button" className="upload-dropdown-item" onClick={() => { setUploadMenuOpen(false); setUploadFileOpen(true); }}>
-                          添加本地文件
-                        </button>
-                        <button type="button" className="upload-dropdown-item" onClick={() => { setUploadMenuOpen(false); setUploadFolderOpen(true); }}>
-                          添加文件夹
-                        </button>
-                      </div>
+        <div className="agent-workbench">
+          <div className="agent-workbench-head">
+            <h2 className="agent-workbench-title">Agent 问答工作台</h2>
+            <button type="button" className="agent-outline-btn" onClick={onResetChat}>
+              新建会话
+            </button>
+          </div>
+
+          <div className="agent-tab-row" role="tablist" aria-label="Agent 问答模式">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'patient'}
+              className={`agent-tab-btn ${activeTab === 'patient' ? 'active' : ''}`}
+              onClick={() => setActiveTab('patient')}
+            >
+              导入患者
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'question'}
+              className={`agent-tab-btn ${activeTab === 'question' ? 'active' : ''}`}
+              onClick={() => setActiveTab('question')}
+            >
+              直接提问
+            </button>
+          </div>
+
+          {activeTab === 'patient' ? (
+            <div className="agent-patient-flow">
+              <button type="button" className="patient-pill" onClick={onOpenPatientSelector}>
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="10" cy="8" r="4" />
+                  <path d="M3 18c0-4 3-6 7-6s7 2 7 6" />
+                </svg>
+                {patientLabel}
+              </button>
+              {patient ? (
+                <>
+                  <p className="agent-patient-flow-text">
+                    已导入患者：<strong>{patient.name}</strong>（住院号 {patient.admissionId}）· {patient.diagnosis}
+                  </p>
+                  <p className="agent-section-kicker">系统已自动识别病种与阶段，你只需补充当前要讨论的问题。</p>
+                  <div className="agent-journey-inline">
+                    {timelineLoading ? (
+                      <div className="agent-journey-empty">正在加载患者旅程图…</div>
+                    ) : timelineData ? (
+                      <PatientJourneyV4 listPatient={patient} data={timelineData} loading={timelineLoading} />
+                    ) : (
+                      <div className="agent-journey-empty">该患者暂无可展示旅程图。</div>
                     )}
                   </div>
-                  <button type="button" className="send-btn" onClick={handleSend}>
-                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M18 10L3 4l3 6-3 6z" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <p className="chat-input-note">可输入疾病或治疗问题，回答基于指南与循证医学，仅供临床参考。</p>
+                  <div className="agent-patient-flow-actions">
+                    <button
+                      type="button"
+                      className="agent-outline-btn"
+                      onClick={() => setShowJourneyFullscreen(true)}
+                      disabled={!timelineData}
+                    >
+                      全屏查看当前导入病程
+                    </button>
+                  </div>
+
+                  <div className="agent-question-box">
+                    <textarea
+                      value={patientConcern}
+                      onChange={(e) => setPatientConcern(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                          e.preventDefault();
+                          handlePatientRun();
+                        }
+                      }}
+                      placeholder="基于该患者，输入当前最需要讨论的问题（Cmd/Ctrl + Enter 发送）"
+                      rows={3}
+                    />
+                    <div className="agent-question-actions">
+                      <button type="button" className="agent-run-btn" onClick={handlePatientRun}>
+                        基于该患者生成回答
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : null}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="agent-quick-ask">
+              <div className="agent-section-kicker">直接提问（无需导入患者）</div>
+              <div className="agent-presets">
+                {QUICK_ASK_EXAMPLES.map((q, idx) => (
+                  <button key={q} type="button" className="chip" onClick={() => setQuickQuestion(q)}>
+                    {idx + 1}. {q}
+                  </button>
+                ))}
+              </div>
+              <div className="agent-quick-ask-row">
+                <textarea
+                  value={quickQuestion}
+                  onChange={(e) => setQuickQuestion(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                      e.preventDefault();
+                      handleQuickAsk();
+                    }
+                  }}
+                  placeholder="示例：HER2-low 晚期乳腺癌在内分泌经治后，何时优先选择 ADC？（Cmd/Ctrl + Enter 发送）"
+                  rows={2}
+                />
+                <button type="button" className="agent-run-btn" onClick={handleQuickAsk}>
+                  直接提问
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
         {messages.map((msg) => (
           <ChatMessage
             key={msg.id}
             role={msg.role}
             text={msg.text}
             sources={msg.sources}
-            guidelineTocId={msg.guidelineTocId}
-            onSourceClick={goToGuidelines}
+            onSourceClick={goToResource}
           />
         ))}
         {loading && (
@@ -236,42 +274,28 @@ export default function ChatInterface({
           </div>
         )}
       </div>
-      {!showWelcome && (
-        <div className="chat-input-wrap chat-input-conversation">
-          <div style={{ display: 'flex', gap: 8, marginBottom: 0 }}>
-            <button type="button" className="patient-pill" onClick={onOpenPatientSelector}>
-              <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="10" cy="8" r="4" />
-                <path d="M3 18c0-4 3-6 7-6s7 2 7 6" />
-              </svg>
-              {patientLabel}
-            </button>
-          </div>
-          <div className="input-box">
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSend();
-                }
-              }}
-              placeholder="输入临床问题，示例：DLBCL 一线治疗方案要点"
-              rows={2}
-            />
-            <div className="input-actions">
-              <button type="button" className="send-btn" onClick={handleSend}>
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 10L3 4l3 6-3 6z" />
-                </svg>
+      {showJourneyFullscreen ? (
+        <div className="agent-journey-modal" role="dialog" aria-modal="true" aria-label="当前导入患者完整病程">
+          <div className="agent-journey-modal-card">
+            <div className="agent-journey-modal-head">
+              <div className="agent-journey-modal-title">
+                当前导入患者完整病程
+                {patient ? ` · ${patient.name}（${patient.admissionId}）` : ''}
+              </div>
+              <button type="button" className="agent-outline-btn" onClick={() => setShowJourneyFullscreen(false)}>
+                关闭
               </button>
+            </div>
+            <div className="agent-journey-modal-body">
+              {patient && timelineData ? (
+                <PatientJourneyV4 listPatient={patient} data={timelineData} loading={timelineLoading} />
+              ) : (
+                <div className="agent-journey-empty">该患者暂无可展示旅程图。</div>
+              )}
             </div>
           </div>
         </div>
-      )}
-      <UploadFileModal open={uploadFileOpen} onClose={() => setUploadFileOpen(false)} />
-      <UploadFolderModal open={uploadFolderOpen} onClose={() => setUploadFolderOpen(false)} />
+      ) : null}
     </>
   );
 }

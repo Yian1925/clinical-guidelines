@@ -3,6 +3,10 @@ import type { CSSProperties } from 'react';
 import type { Patient } from '../../types';
 import type { PatientTimelineV4, TimelineEventV4 } from '../../hooks/usePatientTimeline';
 import { buildMergedJourneySvg, computeCategoryPillCenters, JOURNEY_SVG } from './journeySvgLayout';
+import {
+  flattenTimelineEvents,
+  groupEventsByClinicalStage,
+} from '../../utils/clinicalStages';
 import '../../styles/patient-journey-v4.css';
 
 /** 与诊疗路径画板 InvasiveBreastCancerNCCN — ZONES 色系一致 */
@@ -109,7 +113,10 @@ interface Props {
   loading?: boolean;
 }
 
+type TimelineViewMode = 'raw' | 'stages';
+
 export default function PatientJourneyV4({ listPatient, data, loading }: Props) {
+  const [timelineView, setTimelineView] = useState<TimelineViewMode>('raw');
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [ttPos, setTtPos] = useState<{ left: number; top: number } | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -133,6 +140,11 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
   const mergedEvents = useMemo(
     () => (data ? getMergedTimeline(data.timeline, collapsedCat) : []),
     [data, collapsedCat]
+  );
+
+  const stageGroups = useMemo(
+    () => (data ? groupEventsByClinicalStage(flattenTimelineEvents(data.timeline)) : []),
+    [data]
   );
 
   const fullMergedEvents = useMemo(
@@ -298,6 +310,9 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
             <span className="pj-v4-sep">|</span>
             <span className="pj-v4-meta-kv-black">结果：{pd.treatment_result}</span>
           </div>
+          <div className="pj-v4-rwd-line">
+            数据来源：电子病历结构化抽取 · 路径重建用于回顾与讨论，不替代实时病历与医嘱
+          </div>
         </div>
         <div className="pj-v4-stat-boxes">
           <div className="pj-v4-stat-box">
@@ -324,6 +339,75 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
         </div>
       </header>
 
+      <div className="pj-v4-view-switch" role="tablist" aria-label="路径展示方式">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={timelineView === 'raw'}
+          className={`pj-v4-view-tab ${timelineView === 'raw' ? 'pj-v4-view-tab--active' : ''}`}
+          onClick={() => {
+            setTimelineView('raw');
+            closeTooltip();
+          }}
+        >
+          原始时间线
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={timelineView === 'stages'}
+          className={`pj-v4-view-tab ${timelineView === 'stages' ? 'pj-v4-view-tab--active' : ''}`}
+          onClick={() => {
+            setTimelineView('stages');
+            closeTooltip();
+          }}
+        >
+          诊疗阶段
+        </button>
+      </div>
+
+      {timelineView === 'stages' ? (
+        <div className="pj-v4-scroll pj-v4-scroll--stages">
+          <div className="pj-v4-stages">
+            <p className="pj-v4-stages-intro">
+              按「发现 → 检查 → 确诊 → 治疗 → 出院/随访」重组展示；映射规则为演示用途，可与左侧「原始时间线」对照。
+            </p>
+            {stageGroups.map((block) => (
+              <section key={block.id} className="pj-v4-stage-block">
+                <div className="pj-v4-stage-head">
+                  <span className="pj-v4-stage-num">{block.id}</span>
+                  <div className="pj-v4-stage-head-text">
+                    <div className="pj-v4-stage-title">{block.title}</div>
+                    <div className="pj-v4-stage-hint">{block.hint}</div>
+                  </div>
+                  <span className="pj-v4-stage-count">{block.events.length} 条</span>
+                </div>
+                {block.events.length === 0 ? (
+                  <div className="pj-v4-stage-empty">本阶段无映射事件</div>
+                ) : (
+                  <ul className="pj-v4-stage-list">
+                    {block.events.map((ev, idx) => {
+                      const title = getTitle(ev);
+                      const sub = getCardSubLine(ev, title);
+                      return (
+                        <li key={`${ev.date}-${ev.time}-${idx}`} className="pj-v4-stage-row">
+                          <span className="pj-v4-stage-cat">{esc(ev.category)}</span>
+                          <span className="pj-v4-stage-dt">
+                            {esc(ev.date.slice(5))} {esc(ev.time)}
+                          </span>
+                          <span className="pj-v4-stage-ev-title">{esc(title)}</span>
+                          {sub ? <span className="pj-v4-stage-ev-sub">{esc(sub)}</span> : null}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </section>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <>
       <div className="pj-v4-toolbar">
         <div className="pj-v4-legend">
           {CAT_ORDER.map((cat) => {
@@ -527,6 +611,8 @@ export default function PatientJourneyV4({ listPatient, data, loading }: Props) 
           </div>
         </div>
       </div>
+        </>
+      )}
 
       {activeEvent && ttPos && (
         <>

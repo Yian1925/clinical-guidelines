@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import type { Patient } from '../../types';
 import { PATIENTS } from '../../data/emr/patients';
 import PatientJourneyV4 from './PatientJourneyV4';
@@ -9,9 +9,22 @@ import { roleButtonActivate } from '../../utils/keyboard';
 import '../../styles/patients-list.css';
 
 type ViewMode = 'list' | 'journey';
+const ONCOLOGY_KEYWORDS = ['癌', '瘤', '淋巴', '肿瘤', 'oncology', 'her2', 'hr+'];
 
 export default function PatientsPage() {
-  const { setPatientsJourneyTopBar } = useAppStore();
+  const {
+    setPatientsJourneyTopBar,
+    page: routePage,
+    setPage: setRoutePage,
+    synthesisEntryTarget,
+    setSynthesisEntryTarget,
+    chatEntryTarget,
+    setChatEntryTarget,
+    patientsOpenJourneyAdmissionId,
+    setPatientsOpenJourneyAdmissionId,
+    patientsListDeepLink,
+    setPatientsListDeepLink,
+  } = useAppStore();
   const [view, setView] = useState<ViewMode>('list');
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
@@ -21,20 +34,44 @@ export default function PatientsPage() {
   const [dept, setDept] = useState('');
   const [risk, setRisk] = useState('');
   const [searchQ, setSearchQ] = useState('');
+  const [scopedDiagnosisKeywords, setScopedDiagnosisKeywords] = useState<string[] | null>(null);
+  const [showBackToSynthesis, setShowBackToSynthesis] = useState(false);
+  const [showBackToChat, setShowBackToChat] = useState(false);
+  const prevRouteRef = useRef(routePage);
   const [page, setPage] = useState(1);
   const pageSize = 15;
 
+  useEffect(() => {
+    if (routePage === 'patients') {
+      setShowBackToSynthesis(prevRouteRef.current === 'synthesis' && synthesisEntryTarget === 'patients');
+      setShowBackToChat(prevRouteRef.current === 'chat' && chatEntryTarget === 'patients');
+    }
+    prevRouteRef.current = routePage;
+  }, [routePage, synthesisEntryTarget, chatEntryTarget]);
+
+  const oncologyPatients = useMemo(() => {
+    return PATIENTS.filter((p) => {
+      const blob = `${p.diagnosis} ${(p.tags ?? []).join(' ')}`.toLowerCase();
+      return ONCOLOGY_KEYWORDS.some((k) => blob.includes(k.toLowerCase()));
+    });
+  }, []);
+
   const deptOptions = useMemo(() => {
     const s = new Set<string>();
-    PATIENTS.forEach((p) => {
+    oncologyPatients.forEach((p) => {
       if (p.dept) s.add(p.dept);
     });
     return Array.from(s).sort();
-  }, []);
+  }, [oncologyPatients]);
 
   const filtered = useMemo(() => {
     const q = searchQ.trim().toLowerCase();
-    return PATIENTS.filter((p) => {
+    return oncologyPatients.filter((p) => {
+      if (scopedDiagnosisKeywords && scopedDiagnosisKeywords.length > 0) {
+        const blob = `${p.diagnosis} ${(p.tags ?? []).join(' ')}`.toLowerCase();
+        const matched = scopedDiagnosisKeywords.some((k) => blob.includes(k.toLowerCase()));
+        if (!matched) return false;
+      }
       if (
         q &&
         !p.name.toLowerCase().includes(q) &&
@@ -51,7 +88,7 @@ export default function PatientsPage() {
       }
       return true;
     });
-  }, [searchQ, dept, risk, dateStart, dateEnd, visitType]);
+  }, [oncologyPatients, searchQ, dept, risk, dateStart, dateEnd, visitType, scopedDiagnosisKeywords]);
 
   useEffect(() => {
     setPage(1);
@@ -96,6 +133,31 @@ export default function PatientsPage() {
     setView('journey');
   };
 
+  useEffect(() => {
+    if (routePage !== 'patients' || !patientsOpenJourneyAdmissionId) return;
+    const aid = patientsOpenJourneyAdmissionId;
+    setPatientsOpenJourneyAdmissionId(null);
+    const p = PATIENTS.find((x) => x.admissionId === aid);
+    if (p) {
+      setSelectedPatient(p);
+      setView('journey');
+    }
+  }, [routePage, patientsOpenJourneyAdmissionId, setPatientsOpenJourneyAdmissionId]);
+
+  useEffect(() => {
+    if (routePage !== 'patients') {
+      setScopedDiagnosisKeywords(null);
+      return;
+    }
+    if (!patientsListDeepLink) return;
+    setPatientsListDeepLink(null);
+    const keywords = patientsListDeepLink.diagnosisKeywords.filter((k) => k.trim().length > 0);
+    setScopedDiagnosisKeywords(keywords.length > 0 ? keywords : null);
+    setView('list');
+    setSelectedPatient(null);
+    setSearchQ('');
+  }, [routePage, patientsListDeepLink, setPatientsListDeepLink]);
+
   const backToList = useCallback(() => {
     setView('list');
     setSelectedPatient(null);
@@ -117,6 +179,10 @@ export default function PatientsPage() {
     setSearchQ((s) => s.trim());
   };
 
+  const clearDiseaseScope = () => {
+    setScopedDiagnosisKeywords(null);
+  };
+
   if (view === 'journey' && selectedPatient) {
     return (
       <div className="patients-page patients-page--journey" style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
@@ -129,6 +195,44 @@ export default function PatientsPage() {
 
   return (
     <div className="patients-page patients-page--list">
+      <div className="rwd-library-header">
+        <div className="rwd-library-head-row">
+          <h2 className="rwd-library-title">真实世界病例</h2>
+          {showBackToSynthesis ? (
+            <button
+              type="button"
+              className="rwd-back-synthesis"
+              onClick={() => {
+                setSynthesisEntryTarget(null);
+                setRoutePage('synthesis');
+              }}
+            >
+              返回综合展示
+            </button>
+          ) : showBackToChat ? (
+            <button
+              type="button"
+              className="rwd-back-synthesis"
+              onClick={() => {
+                setChatEntryTarget(null);
+                setRoutePage('chat');
+              }}
+            >
+              返回Agent问答
+            </button>
+          ) : null}
+        </div>
+        {scopedDiagnosisKeywords && scopedDiagnosisKeywords.length > 0 ? (
+          <div className="rwd-scope-chip-row" role="status" aria-live="polite">
+            <span className="rwd-scope-chip">
+              病种过滤：{scopedDiagnosisKeywords.join(' / ')}（{filtered.length} 例）
+            </span>
+            <button type="button" className="rwd-scope-chip-clear" onClick={clearDiseaseScope}>
+              清除筛选
+            </button>
+          </div>
+        ) : null}
+      </div>
       <div className="patients-list-root">
         <div className="patients-list-filters">
           <div className="patients-list-f-group patients-list-f-group--type">

@@ -1,0 +1,178 @@
+[
+  {
+    "id": "cervical",
+    "name": "宫颈癌",
+    "subtitle": "按诊疗阶段汇总指南要点、文献证据与院内路径归纳。",
+    "guidelineTocId": "tumor-cervical",
+    "pathwaySourceLabel": "关联诊疗路径：宫颈癌（路径视图）",
+    "guidelineDataSource": "NCCN / ESMO 宫颈癌路径 · 编辑摘要（非授权全文）· 审阅基准 2026-01",
+    "literatureDataSource": "文献证据库 · 结构化条目（GRADE + 研究设计）",
+    "rwdDataSource": "电子病历结构化事件 · 路径重建（脱敏）",
+    "rwdDiagnosisKeywords": ["宫颈癌"],
+    "lastUpdatedLabel": "内容审阅：2026-01",
+    "agentOverviewQuestion": "请按「评估—早期—局部晚期—特殊人群」顺序，概括宫颈癌管理中的指南与证据分层思路，并说明何时需要 MDT。",
+    "stages": [
+      {
+        "id": "cx-assess",
+        "order": 1,
+        "title": "初评、诊断与分期",
+        "keyPoints": [
+          "病理类型与 FIGO 分期决定后续进入手术、根治性放化疗或全身治疗。",
+          "影像分期需同时评估局部与远处，避免低估。",
+          "疑难病例建议影像—病理联合读片。"
+        ],
+        "clinicalSummary": "明确病理类型（鳞癌/腺癌等）、FIGO 分期与可切除性，完成转移筛查以决定进入手术、根治性放化疗或全身治疗路径。",
+        "guidelinePoints": [
+          "妇科检查结合影像学（MRI 评估局部，CT/胸腹盆评估淋巴结与远处）是分期基础。",
+          "病理需确认组织学类型；腺癌与鳞癌在部分推荐上存在差异。",
+          "可疑转移时按指南完善补充检查，避免低估分期。"
+        ],
+        "institutionalNote": "本院初诊路径常同步安排盆腔 MRI 与胸腹盆 CT；疑难分期提交影像—病理联合读片。",
+        "literatureIds": [],
+        "rwdDemoAdmissionIds": ["Y2011101", "Y2011114"]
+      },
+      {
+        "id": "cx-early",
+        "order": 2,
+        "title": "早期局限性疾病",
+        "keyPoints": [
+          "可手术者首选根治性手术路径为主，部分可选放疗为主方案。",
+          "保留生育等需严格筛选并在指南框架内讨论。",
+          "术后辅助治疗依病理危险因素。"
+        ],
+        "clinicalSummary": "适合手术者以根治性手术±辅助治疗为主；部分患者可选择放疗为主方案，需由外科、放疗与肿瘤内科共同评估。",
+        "guidelinePoints": [
+          "早期可手术患者：根治性子宫切除 ± 淋巴结评估为常用路径之一。",
+          "保留生育等特殊情况需严格筛选并在指南框架内讨论。",
+          "术后辅助治疗指征依手术病理与危险因素决定。"
+        ],
+        "institutionalNote": "早期病例常规经妇科肿瘤 MDT；手术与放疗选择记录入径时间用于质控统计。",
+        "literatureIds": []
+      },
+      {
+        "id": "cx-locally-advanced",
+        "order": 3,
+        "title": "局部晚期 · 根治性放化疗",
+        "keyPoints": [
+          "同期含铂放化疗是局部晚期核心推荐。",
+          "免疫联合在高质量 RCT 中显示生存获益，需结合适应症与可及性。",
+          "近距离治疗与靶区规范不可忽视。"
+        ],
+        "clinicalSummary": "FIGO 2014 III–IVA 期等不可手术或不适合首选手术者，标准路径为体外放疗 + 近距离治疗 + 同期含铂化疗；免疫联合在循证与适应症扩展背景下进入讨论。",
+        "guidelinePoints": [
+          "同期放化疗（以顺铂为基础）是局部晚期的核心推荐。",
+          "放疗靶区与近距离治疗实施需符合指南技术规范。",
+          "免疫检查点抑制剂联合在符合条件人群中证据级别提升，需结合本地路径与药械可及性。"
+        ],
+        "institutionalNote": "本院同期化疗以顺铂周疗为主流；免疫联合多经伦理与药事路径后纳入个案讨论。",
+        "literatureIds": ["ev-002"]
+      },
+      {
+        "id": "cx-special-follow",
+        "order": 4,
+        "title": "特殊人群、复发转移与随访",
+        "keyPoints": [
+          "复发/转移按生物标志物与既往治疗分层选择全身方案。",
+          "妊娠合并宫颈癌证据稀疏，需母胎联合管理与伦理讨论。",
+          "随访频次与内容遵循指南。"
+        ],
+        "clinicalSummary": "妊娠合并宫颈癌等亚组证据稀疏，需个体化；复发转移进入以全身治疗为主的路径，并强调症状支持与临床试验入口。",
+        "guidelinePoints": [
+          "复发/转移性疾病按生物标志物、既往治疗与体能状态分层选择全身方案。",
+          "随访内容与频次遵循指南，异常症状及时评估。",
+          "特殊人群（如妊娠）优先多学科伦理与母胎联合管理。"
+        ],
+        "institutionalNote": "妊娠合并肿瘤走产科—妇科肿瘤联合门诊；复发患者常规登记临床试验筛选。",
+        "literatureIds": ["ev-005"]
+      }
+    ]
+  },
+  {
+    "id": "breast-ibc",
+    "name": "浸润性乳腺癌",
+    "subtitle": "按诊疗阶段汇总指南要点、文献证据与院内路径归纳。",
+    "guidelineTocId": "tumor-breast",
+    "pathwaySourceLabel": "关联诊疗路径：浸润性乳腺癌 M0（路径视图）",
+    "guidelineDataSource": "NCCN Invasive Breast Cancer · 编辑摘要（非授权全文）· 审阅基准 2026-01",
+    "literatureDataSource": "文献证据库 · 结构化条目（GRADE + 研究设计）",
+    "rwdDataSource": "电子病历结构化事件 · 路径重建（脱敏）",
+    "rwdDiagnosisKeywords": ["乳腺癌"],
+    "lastUpdatedLabel": "内容审阅：2026-01",
+    "agentOverviewQuestion": "请说明早期乳腺癌与晚期 HR+/HER2-low 在指南路径上的分界，并指出 DESTINY-Breast04 与老年保乳放疗省略试验分别回答的临床问题。",
+    "stages": [
+      {
+        "id": "br-assess",
+        "order": 1,
+        "title": "初评、病理与分子分型",
+        "keyPoints": [
+          "HR/HER2 状态决定全身治疗与 ADC 等路径。",
+          "病理切缘与分级影响局部与辅助治疗决策。",
+          "分期影像按风险分层选择。"
+        ],
+        "clinicalSummary": "确诊浸润性癌后，整合病理类型、分级、HR/HER2/Ki-67 等，完成分期检查以进入局部治疗或全身治疗决策。",
+        "guidelinePoints": [
+          "病理需明确浸润性癌类型与切缘状态（手术标本）。",
+          "HER2 检测需规范；IHC 与 ISH 判读影响抗 HER2 与 ADC 路径。",
+          "分期影像按局部与远处风险分层选择。"
+        ],
+        "institutionalNote": "病理科执行院内 HER2 双阅片；疑难病例提交分子病理会诊。",
+        "literatureIds": [],
+        "rwdDemoAdmissionIds": ["Y2010245", "Y2011120"]
+      },
+      {
+        "id": "br-local-surgery",
+        "order": 2,
+        "title": "早期 · 手术与全身辅助治疗决策",
+        "keyPoints": [
+          "保乳与全切在符合条件者肿瘤学结局相当；保乳多需放疗。",
+          "腋窝策略随 SLNB 与分期演变。",
+          "辅助全身治疗按亚型与基因风险。"
+        ],
+        "clinicalSummary": "可手术早期患者：乳房与腋窝手术策略、放疗指征及辅助/新辅助系统治疗由多学科综合肿瘤特征与患者意愿决定。",
+        "guidelinePoints": [
+          "保乳与全乳切除在符合条件者中肿瘤学结局相当；保乳需配合放疗（除极少数严格筛选低危）。",
+          "腋窝处理策略随前哨淋巴结与临床分期演变，遵循指南与临床试验更新。",
+          "辅助内分泌、化疗、靶向等按亚型与基因风险分层。"
+        ],
+        "institutionalNote": "乳腺外科—放疗—内科 MDT 固定时段；新辅助后病理反应影响后续强化治疗讨论。",
+        "literatureIds": []
+      },
+      {
+        "id": "br-bcs-rt",
+        "order": 3,
+        "title": "保乳术后 · 放疗与低危省略",
+        "keyPoints": [
+          "全乳放疗显著降低同侧复发；低危省略需严格符合指南条件。",
+          "老年 HR+ 低危是文献与指南讨论焦点之一。",
+          "内分泌依从性与放疗决策一并规划。"
+        ],
+        "clinicalSummary": "全乳放疗降低同侧复发风险；在严格符合试验与指南的低危、老年 HR+ 等人群中，省略放疗成为有条件讨论选项。",
+        "guidelinePoints": [
+          "多数保乳术后推荐全乳 ± 瘤床加量放疗。",
+          "低危省略放疗仅在符合指南列举条件时考虑，需充分知情。",
+          "内分泌治疗依从性与随访影像需与放疗决策一并规划。"
+        ],
+        "institutionalNote": "老年低危省略放疗需放疗科与内科双签知情模板；纳入科室季度复盘清单。",
+        "literatureIds": ["ev-004"]
+      },
+      {
+        "id": "br-advanced-her2low",
+        "order": 4,
+        "title": "晚期 · HR+ / HER2-low 全身治疗",
+        "keyPoints": [
+          "内分泌经治进展后 HER2-low 可考虑 ADC 升级路径。",
+          "病理 IHC/ISH 灰区需复核。",
+          "关注 ILD/肺炎监测与患者教育。"
+        ],
+        "clinicalSummary": "内分泌经治进展后，HER2-low 人群在指南与证据中出现 ADC 等升级选项；病理判读边界与不良反应管理是路径重点。",
+        "guidelinePoints": [
+          "HR+ 晚期一线/多线治疗按 CDK4/6、内分泌及化疗顺序递进。",
+          "HER2-low 定义需病理复核；符合条件者可考虑德曲妥珠单抗等（依指南版本）。",
+          "ILD/肺炎等不良反应需教育患者及早报告并规范处理。"
+        ],
+        "institutionalNote": "HER2-low 灰区病例提交病理复核后再开药；T-DXd 使用前完成肺基线评估。",
+        "literatureIds": ["ev-003"]
+      }
+    ]
+  }
+]

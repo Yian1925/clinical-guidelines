@@ -21,8 +21,28 @@ export default function GuidelineViewer({ doc }: GuidelineViewerProps) {
   const [activeTocId, setActiveTocId] = useState<string | null>(null);
   const [tocWidth, setTocWidth] = useState(280);
   const [resizing, setResizing] = useState(false);
+  const [showBackToSynthesis, setShowBackToSynthesis] = useState(false);
+  const [showBackToChat, setShowBackToChat] = useState(false);
   const layoutRef = useRef<HTMLDivElement | null>(null);
-  const { guidelineTocId, setGuidelineTocId } = useAppStore();
+  const {
+    page: routePage,
+    guidelineTocId,
+    setGuidelineTocId,
+    setPage,
+    synthesisEntryTarget,
+    setSynthesisEntryTarget,
+    chatEntryTarget,
+    setChatEntryTarget,
+  } = useAppStore();
+  const prevRouteRef = useRef(routePage);
+
+  useEffect(() => {
+    if (routePage === 'guidelines') {
+      setShowBackToSynthesis(prevRouteRef.current === 'synthesis' && synthesisEntryTarget === 'guidelines');
+      setShowBackToChat(prevRouteRef.current === 'chat' && chatEntryTarget === 'guidelines');
+    }
+    prevRouteRef.current = routePage;
+  }, [routePage, synthesisEntryTarget, chatEntryTarget]);
 
   useEffect(() => {
     if (guidelineTocId) {
@@ -88,7 +108,32 @@ export default function GuidelineViewer({ doc }: GuidelineViewerProps) {
         />
         <div className="gl-main gl-main--stack">
           <div className="gl-doc-header">
-            <span className="gl-doc-title">{currentLabel}</span>
+            <div className="gl-doc-head-row">
+              <span className="gl-doc-title">{currentLabel}</span>
+              {showBackToSynthesis ? (
+                <button
+                  type="button"
+                  className="gl-back-synthesis"
+                  onClick={() => {
+                    setSynthesisEntryTarget(null);
+                    setPage('synthesis');
+                  }}
+                >
+                  返回综合展示
+                </button>
+              ) : showBackToChat ? (
+                <button
+                  type="button"
+                  className="gl-back-synthesis"
+                  onClick={() => {
+                    setChatEntryTarget(null);
+                    setPage('chat');
+                  }}
+                >
+                  返回Agent问答
+                </button>
+              ) : null}
+            </div>
             <span className="gl-doc-meta">
               {hasCervicalPathway
                 ? 'ESMO Clinical Practice Guidelines · 2017'

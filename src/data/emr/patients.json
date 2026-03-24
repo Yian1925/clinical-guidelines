@@ -299,5 +299,50 @@
     "hospital": "省立医院",
     "doctor": "方医生",
     "hasTimeline": false
+  },
+  {
+    "id": "p21",
+    "name": "蒋某",
+    "gender": "女",
+    "age": 46,
+    "admissionId": "Y2011101",
+    "diagnosis": "宫颈鳞癌（IIB期）",
+    "tags": ["宫颈癌", "放化疗", "妇科肿瘤"],
+    "riskLevel": "high",
+    "visitTime": "2024-04-18",
+    "dept": "妇科肿瘤科",
+    "hospital": "肿瘤医院",
+    "doctor": "邵主任",
+    "hasTimeline": false
+  },
+  {
+    "id": "p22",
+    "name": "潘某",
+    "gender": "女",
+    "age": 39,
+    "admissionId": "Y2011114",
+    "diagnosis": "宫颈腺癌（IB2期）",
+    "tags": ["宫颈癌", "手术", "妇科肿瘤"],
+    "riskLevel": "medium",
+    "visitTime": "2024-04-26",
+    "dept": "妇科肿瘤科",
+    "hospital": "某三甲医院",
+    "doctor": "余主任",
+    "hasTimeline": false
+  },
+  {
+    "id": "p23",
+    "name": "唐某",
+    "gender": "女",
+    "age": 52,
+    "admissionId": "Y2011120",
+    "diagnosis": "浸润性乳腺癌（Luminal B）",
+    "tags": ["乳腺癌", "内分泌治疗", "化疗"],
+    "riskLevel": "high",
+    "visitTime": "2024-05-03",
+    "dept": "乳腺外科",
+    "hospital": "肿瘤医院",
+    "doctor": "金主任",
+    "hasTimeline": false
   }
 ]

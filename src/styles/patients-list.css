@@ -591,3 +591,96 @@
   flex-direction: column;
   overflow: hidden;
 }
+
+/* 真实世界病例库 — 页头说明（与全局顶栏标题区分） */
+.rwd-library-header {
+  flex-shrink: 0;
+  margin-bottom: 0;
+  padding: 4px 0 14px;
+}
+
+.rwd-library-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rwd-library-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0d3d33;
+  letter-spacing: -0.02em;
+}
+
+.rwd-back-synthesis {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  border-radius: 999px;
+  min-height: 28px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.rwd-back-synthesis:hover {
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.rwd-library-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4a5c56;
+  max-width: 72ch;
+}
+
+.rwd-library-desc strong {
+  color: #1a4d42;
+  font-weight: 600;
+}
+
+.rwd-scope-chip-row {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.rwd-scope-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.rwd-scope-chip-clear {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  border-radius: 999px;
+  min-height: 28px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.rwd-scope-chip-clear:hover {
+  border-color: #94a3b8;
+  color: #0f172a;
+}

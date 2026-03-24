@@ -12,7 +12,7 @@ export default function TopBar({ title, badge, onNewChat, patientsJourney }: Top
   if (patientsJourney) {
     return (
       <header className="topbar topbar--patients-journey">
-        <button type="button" className="topbar-crumb-btn" onClick={patientsJourney.onBack} aria-label="返回患者旅程列表">
+        <button type="button" className="topbar-crumb-btn" onClick={patientsJourney.onBack} aria-label="返回真实世界病例库列表">
           <span className="topbar-crumb-chevron" aria-hidden="true">
             ›
           </span>

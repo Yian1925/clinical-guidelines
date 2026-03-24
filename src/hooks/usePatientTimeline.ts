@@ -59,6 +59,39 @@ export interface PatientTimelineV4 {
   }>;
 }
 
+function normalizeTimelineForDisplay(raw: PatientTimelineV4): PatientTimelineV4 {
+  const dischargeDate = raw.patient.discharge_date;
+  if (!dischargeDate) return raw;
+
+  const dayMap = new Map<string, Array<PatientTimelineV4['timeline'][number]['events'][number]>>();
+  raw.timeline.forEach((day) => {
+    dayMap.set(day.date, [...day.events]);
+  });
+  if (!dayMap.has(dischargeDate)) dayMap.set(dischargeDate, []);
+
+  raw.timeline.forEach((day) => {
+    const keep: PatientTimelineV4['timeline'][number]['events'] = [];
+    day.events.forEach((ev) => {
+      const isDischargeDiagnosis =
+        ev.category === '诊断' && typeof ev.sub_type === 'string' && ev.sub_type.includes('出院诊断');
+      if (isDischargeDiagnosis && day.date !== dischargeDate) {
+        const target = dayMap.get(dischargeDate);
+        if (target) target.push({ ...ev, time: ev.time || '23:59' });
+        return;
+      }
+      keep.push(ev);
+    });
+    dayMap.set(day.date, keep);
+  });
+
+  const normalizedTimeline = Array.from(dayMap.entries())
+    .map(([date, events]) => ({ date, event_count: events.length, events }))
+    .filter((d) => d.events.length > 0)
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  return { ...raw, timeline: normalizedTimeline };
+}
+
 export function usePatientTimeline(patientId: string | null) {
   const [data, setData] = useState<PatientTimelineV4 | null>(null);
   const [loading, setLoading] = useState(false);
@@ -76,7 +109,7 @@ export function usePatientTimeline(patientId: string | null) {
           setData(null);
           return;
         }
-        setData(raw);
+        setData(normalizeTimelineForDisplay(raw));
       })
       .catch(() => setData(null))
       .finally(() => setLoading(false));

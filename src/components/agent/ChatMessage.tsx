@@ -1,15 +1,12 @@
-import type { MessageRole } from '../../types';
+import type { ChatSourceLink, MessageRole } from '../../types';
 import SourceCard from './SourceCard';
 import { sanitizeHtml } from '../../utils/sanitizeHtml';
 
 interface ChatMessageProps {
   role: MessageRole;
   text: string;
-  sources?: string[];
-  /** 点击引用时跳转到诊疗路径的 TOC id，如 tumor-cervical */
-  guidelineTocId?: string;
-  /** 点击引用来源时调用，可传入要跳转的 guidelineTocId */
-  onSourceClick?: (tocId?: string) => void;
+  sources?: ChatSourceLink[];
+  onSourceClick?: (source: ChatSourceLink) => void;
 }
 
 const UserAvatarIcon = () => (
@@ -19,7 +16,7 @@ const UserAvatarIcon = () => (
   </svg>
 );
 
-export default function ChatMessage({ role, text, sources = [], guidelineTocId, onSourceClick }: ChatMessageProps) {
+export default function ChatMessage({ role, text, sources = [], onSourceClick }: ChatMessageProps) {
   return (
     <div className={`msg-row ${role}`}>
       <div className={`avatar ${role}`}>
@@ -30,7 +27,7 @@ export default function ChatMessage({ role, text, sources = [], guidelineTocId, 
         {sources && sources.length > 0 && (
           <div className="source-row">
             {sources.map((s) => (
-              <SourceCard key={s} label={s} onClick={() => onSourceClick?.(guidelineTocId)} />
+              <SourceCard key={`${s.targetPage}-${s.label}`} label={s.label} onClick={() => onSourceClick?.(s)} />
             ))}
           </div>
         )}

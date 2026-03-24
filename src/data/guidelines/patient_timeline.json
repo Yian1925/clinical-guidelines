@@ -27,7 +27,7 @@
   "timeline": [
     {
       "date": "2017-10-19",
-      "event_count": 29,
+      "event_count": 27,
       "events": [
         {
           "time": "09:57",
@@ -36,16 +36,6 @@
           "content": {
             "diagnosis": "小细胞癌",
             "treat_result": null,
-            "with_surgery": null
-          }
-        },
-        {
-          "time": "09:57",
-          "category": "诊断",
-          "sub_type": "出院诊断（治疗类）",
-          "content": {
-            "diagnosis": "恶性肿瘤维持性化疗",
-            "treat_result": "好转",
             "with_surgery": null
           }
         },
@@ -67,16 +57,6 @@
             "diagnosis": "肺占位性质待排：中央型肺癌？纵膈恶性肿瘤？",
             "treat_result": null,
             "with_surgery": false
-          }
-        },
-        {
-          "time": "15:16",
-          "category": "诊断",
-          "sub_type": "出院诊断",
-          "content": {
-            "diagnosis": "左肺小细胞癌",
-            "treat_result": "好转",
-            "with_surgery": true
           }
         },
         {
@@ -2671,7 +2651,7 @@
     },
     {
       "date": "2017-10-29",
-      "event_count": 31,
+      "event_count": 33,
       "events": [
         {
           "time": "06:00",
@@ -2682,6 +2662,26 @@
             "order_text": "血清总胆红素",
             "class": "检验医嘱",
             "stop_datetime": "2017-10-29 06:00"
+          }
+        },
+        {
+          "time": "10:20",
+          "category": "诊断",
+          "sub_type": "出院诊断（治疗类）",
+          "content": {
+            "diagnosis": "恶性肿瘤维持性化疗",
+            "treat_result": "好转",
+            "with_surgery": null
+          }
+        },
+        {
+          "time": "10:20",
+          "category": "诊断",
+          "sub_type": "出院诊断",
+          "content": {
+            "diagnosis": "左肺小细胞癌",
+            "treat_result": "好转",
+            "with_surgery": true
           }
         },
         {

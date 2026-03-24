@@ -349,7 +349,9 @@
 /* 三页主内容区：背景由 .main--tinted 统一铺色 */
 #page-chat.active,
 #page-guidelines.active,
-#page-patients.active {
+#page-patients.active,
+#page-literature.active,
+#page-synthesis.active {
   min-height: 0;
   background: transparent;
 }
@@ -459,6 +461,258 @@
 .chip:focus-visible {
   outline: 2px solid rgba(32, 159, 133, 0.32);
   outline-offset: 2px;
+}
+
+.agent-workbench {
+  border: 1px solid #dbe4df;
+  border-radius: 12px;
+  background: #f8fbfa;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.agent-workbench-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.agent-workbench-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0d3d33;
+}
+
+.agent-patient-flow {
+  border: 1px solid #cfe1da;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.agent-tab-row {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #eef5f2;
+  margin-bottom: 10px;
+}
+
+.agent-tab-btn {
+  border: none;
+  background: transparent;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.agent-tab-btn.active {
+  background: #fff;
+  color: #0f172a;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
+}
+
+.agent-patient-flow-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.agent-patient-flow-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.agent-journey-inline {
+  margin-top: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: auto;
+  min-height: 280px;
+  max-height: min(72vh, 760px);
+}
+
+.agent-journey-inline .journey-v4-wrap {
+  min-height: 280px;
+}
+
+.agent-journey-empty {
+  padding: 24px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.agent-journey-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.agent-journey-modal-card {
+  width: min(1400px, 96vw);
+  height: min(92vh, 980px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 22px 52px rgba(15, 23, 42, 0.28);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}
+
+.agent-journey-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.agent-journey-modal-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.agent-journey-modal-body {
+  min-height: 0;
+  overflow: auto;
+  padding: 8px;
+}
+
+.agent-section-kicker {
+  margin: 6px 0 8px;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.agent-quick-ask {
+  margin-bottom: 10px;
+}
+
+.agent-quick-ask-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.agent-quick-ask-row textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1.4px solid #cfe1da;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 66px;
+}
+
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.agent-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.agent-field span {
+  font-size: 12px;
+  color: #4a5c56;
+  font-weight: 600;
+}
+
+.agent-field select {
+  border: 1.4px solid #cfe1da;
+  border-radius: 8px;
+  min-height: 34px;
+  padding: 6px 10px;
+  font-size: 13px;
+  background: #fff;
+}
+
+.agent-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.agent-question-box textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1.4px solid #cfe1da;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 86px;
+}
+
+.agent-question-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.agent-run-btn,
+.agent-outline-btn {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.agent-run-btn {
+  color: #fff;
+  background: #0f766e;
+  border: 1px solid #0f766e;
+}
+
+.agent-run-btn:hover {
+  background: #0d9488;
+}
+
+.agent-outline-btn {
+  color: #0f766e;
+  background: #fff;
+  border: 1px solid #8ed7c9;
+}
+
+.agent-outline-btn:hover {
+  border-color: #0f766e;
+}
+
+@media (max-width: 1100px) {
+  .agent-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .msg-row { display: flex; gap: 10px; align-items: flex-start; }
@@ -881,11 +1135,32 @@
   padding: 8px 20px 12px;
   margin-bottom: 0;
 }
+.gl-doc-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
 .gl-doc-title {
   font-size: 15px;
   font-weight: 700;
   color: var(--brand-heading);
   letter-spacing: -0.01em;
+}
+.gl-back-synthesis {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0f766e;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.gl-back-synthesis:hover {
+  border-color: #94a3b8;
+  color: #0d9488;
 }
 .gl-doc-meta {
   font-size: 12px;
@@ -1008,6 +1283,66 @@
 }
 .patient-selector-modal .toc-search-row {
   margin-bottom: 18px;
+}
+.patient-import-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #eef5f2;
+  margin-bottom: 12px;
+}
+.patient-import-tab {
+  border: none;
+  background: transparent;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.patient-import-tab.active {
+  background: #fff;
+  color: #0f172a;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
+}
+.patient-import-pane {
+  width: 100%;
+  max-width: 406px;
+  margin: 0 auto;
+}
+.patient-import-dropzone {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1.2px dashed #8ed7c9;
+  background: #f8fffd;
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+}
+.patient-import-dropzone-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f766e;
+}
+.patient-import-dropzone-sub {
+  font-size: 12px;
+  color: #64748b;
+}
+.patient-import-error {
+  margin: 8px 0 0;
+  color: #b91c1c;
+  font-size: 12px;
+}
+.patient-import-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.patient-import-actions--template {
+  justify-content: flex-start;
 }
 .modal-head {
   padding: 16px;

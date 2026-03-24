@@ -10,7 +10,9 @@ interface SidebarProps {
 const navItems: { id: PageId; label: string; labelZh: string; icon: string }[] = [
   { id: 'chat', label: 'Agent 问答', labelZh: 'AI助手', icon: 'chat' },
   { id: 'guidelines', label: '诊疗路径', labelZh: '指南', icon: 'guidelines' },
-  { id: 'patients', label: '患者旅程', labelZh: '旅程图', icon: 'patients' },
+  { id: 'patients', label: '真实世界病例库', labelZh: 'RWD', icon: 'patients' },
+  { id: 'literature', label: '文献证据库', labelZh: '文献', icon: 'literature' },
+  { id: 'synthesis', label: '综合展示', labelZh: '对照', icon: 'synthesis' },
 ];
 
 export default function Sidebar({ page, onPageChange }: SidebarProps) {
@@ -87,6 +89,21 @@ export default function Sidebar({ page, onPageChange }: SidebarProps) {
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="10" cy="10" r="7" />
                 <path d="M10 7v3l2 2" />
+              </svg>
+            )}
+            {item.icon === 'literature' && (
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M4 4h5v12H4V4z" strokeLinejoin="round" />
+                <path d="M11 4h5v12h-5V4z" strokeLinejoin="round" />
+                <path d="M6 7h2M6 10h2M6 13h1" strokeLinecap="round" />
+                <path d="M13 7h2M13 10h2M13 13h1" strokeLinecap="round" />
+              </svg>
+            )}
+            {item.icon === 'synthesis' && (
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <rect x="2.5" y="3" width="6" height="14" rx="1" />
+                <rect x="10.5" y="3" width="7" height="6.5" rx="1" />
+                <rect x="10.5" y="10.5" width="7" height="6.5" rx="1" />
               </svg>
             )}
             {item.label} <span className="zh">{item.labelZh}</span>
