@@ -70,7 +70,7 @@ export default function Sidebar({ page, onPageChange }: SidebarProps) {
           {navItems[0].label} <span className="zh">{navItems[0].labelZh}</span>
         </div>
         <div className="nav-section">临床资源</div>
-        {navItems.slice(1).map((item) => (
+        {navItems.slice(1).filter((item) => item.id !== 'patients').map((item) => (
           <div
             key={item.id}
             className={`nav-item ${page === item.id ? 'active' : ''}`}

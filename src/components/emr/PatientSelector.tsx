@@ -141,15 +141,6 @@ export default function PatientSelector({ open, onClose, onSelect }: PatientSele
             >
               导入医院数据
             </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={mode === 'library'}
-              className={`patient-import-tab ${mode === 'library' ? 'active' : ''}`}
-              onClick={() => setMode('library')}
-            >
-              从演示库选择
-            </button>
           </div>
 
           {mode === 'import' ? (
